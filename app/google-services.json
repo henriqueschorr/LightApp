@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "912909161569",
+    "firebase_url": "https://lightapp-d3dc5.firebaseio.com",
+    "project_id": "lightapp-d3dc5",
+    "storage_bucket": "lightapp-d3dc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912909161569:android:71857e900db6148e",
+        "android_client_info": {
+          "package_name": "tcc.lightapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912909161569-abje354mqmqf3g3eabsr58ill0l4b82m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tcc.lightapp",
+            "certificate_hash": "da68de358b2dfdcd0bec3af199ed4e4a7ac70bdf"
+          }
+        },
+        {
+          "client_id": "912909161569-isis6rhcroo8qb4bdq4o3k12ffroum88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTlTurZJ0lLujDrrB9fWll1RyXoeHRJ18"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912909161569-isis6rhcroo8qb4bdq4o3k12ffroum88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
