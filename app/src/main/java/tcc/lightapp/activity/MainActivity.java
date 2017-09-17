@@ -1,16 +1,17 @@
-package tcc.lightapp;
+package tcc.lightapp.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import tcc.lightapp.R;
 
 public class MainActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
     FirebaseUser user;
     String userName;
 
@@ -21,20 +22,28 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
-        userName = args.getString("nome");
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-//        userName = user.getDisplayName();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        if(args != null) {
+            userName = args.getString("nome");
+        } else {
+            userName = user.getDisplayName();
+        }
 
         TextView mNome = (TextView) findViewById(R.id.nome);
 
         mNome.setText("Bem vindo " + userName);
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        myRef.setValue("Hello, World!");
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        mAuth.signOut();
+        finish();
+        return true;
     }
 
 }

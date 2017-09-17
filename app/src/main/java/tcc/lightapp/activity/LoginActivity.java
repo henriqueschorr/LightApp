@@ -1,4 +1,4 @@
-package tcc.lightapp;
+package tcc.lightapp.activity;
 
 
 import android.content.Intent;
@@ -7,15 +7,22 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import tcc.lightapp.R;
+import tcc.lightapp.domain.User;
 
 
 /**
@@ -29,6 +36,8 @@ public class LoginActivity extends BaseActivity implements
     private EditText mEmailField;
     private EditText mPasswordField;
     private EditText mNameField;
+    private Button mRegisterButton;
+    private Button mLoginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,14 +64,23 @@ public class LoginActivity extends BaseActivity implements
         mPasswordField = (EditText) findViewById(R.id.password);
         mNameField = (EditText) findViewById(R.id.name);
 
-        findViewById(R.id.register_button).setOnClickListener(this);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        mRegisterButton = (Button) findViewById(R.id.register_button);
+        mLoginButton = (Button) findViewById(R.id.login_button);
+
+
+        mRegisterButton.setOnClickListener(this);
+        mLoginButton.setOnClickListener(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        if (mAuth.getCurrentUser() != null) {
+            //Navigate to Main Activity
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -71,6 +89,12 @@ public class LoginActivity extends BaseActivity implements
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        setupLogin();
     }
 
     public void createAccount(String email, String password) {
@@ -96,6 +120,9 @@ public class LoginActivity extends BaseActivity implements
                                 }
                             });
 
+                            //Creates the user in the RealTime Database
+                            createUser(name);
+
                             //Navigate to Main Activity
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             Bundle params = new Bundle();
@@ -107,8 +134,6 @@ public class LoginActivity extends BaseActivity implements
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             toast("Authentication failed.");
                         }
-
-                        // ...
                     }
                 });
     }
@@ -126,9 +151,6 @@ public class LoginActivity extends BaseActivity implements
 
                             //Navigate to Main Activity
                             Intent intent = new Intent(getContext(), MainActivity.class);
-                            Bundle params = new Bundle();
-                            params.putString("nome", user.getDisplayName());
-                            intent.putExtras(params);
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -143,29 +165,21 @@ public class LoginActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (!validateForm()) {
-            return;
-        }
         if (i == R.id.register_button) {
             //If you are registering, shows the Name field to register it
-            if (mNameField.getText().toString().equals("")){
-                mNameField.setVisibility(View.VISIBLE);
-                TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.name_parent);
-                textInputLayout.setVisibility(View.VISIBLE);
-                mNameField.setError("Required.");
-                toast("Informe um nome");
-            } else {
-                createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-            }
-        } else if (i == R.id.sign_in_button) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        }
-// else if (i == R.id.sign_out_button) {
-//            signOut();
-//        } else if (i == R.id.verify_email_button) {
-//            sendEmailVerification();
-//        }
+            setupRegister();
 
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        } else if (i == R.id.login_button) {
+            if (mLoginButton.getText().equals(getString(R.string.action_register))) {
+                validateForm();
+                createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            } else {
+                validateForm();
+                signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            }
+        }
     }
 
     private boolean validateForm() {
@@ -196,9 +210,42 @@ public class LoginActivity extends BaseActivity implements
                 mNameField.setError(null);
             }
         }
-
-
         return valid;
+    }
+
+    public void createUser(String userName) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        String email = mAuth.getCurrentUser().getEmail();
+        String userId = mAuth.getCurrentUser().getUid();
+
+        User user = new User(userName, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
+    public void setupRegister(){
+        mNameField.setVisibility(View.VISIBLE);
+        TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.name_parent);
+        textInputLayout.setVisibility(View.VISIBLE);
+
+        mRegisterButton.setVisibility(View.INVISIBLE);
+        mLoginButton.setText(R.string.action_register);
+    }
+
+    public void setupLogin(){
+        mNameField.setVisibility(View.INVISIBLE);
+        TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.name_parent);
+        textInputLayout.setVisibility(View.INVISIBLE);
+
+        mRegisterButton.setVisibility(View.VISIBLE);
+        mLoginButton.setText(R.string.action_sign_in);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        setupLogin();
+        return true;
     }
 
 

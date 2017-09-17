@@ -1,4 +1,4 @@
-package tcc.lightapp;
+package tcc.lightapp.activity;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
