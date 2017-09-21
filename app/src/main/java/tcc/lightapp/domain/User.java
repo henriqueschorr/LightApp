@@ -7,7 +7,7 @@ package tcc.lightapp.domain;
 public class User {
     public String userName;
     public String email;
-    public boolean online;
+    public boolean available;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -16,6 +16,14 @@ public class User {
     public User(String username, String email) {
         this.userName = username;
         this.email = email;
-        this.online = false;
+        this.available = false;
+    }
+
+    public void setAvailable(){
+        available = true;
+    }
+
+    public void setUnavailable(){
+        available = false;
     }
 }
