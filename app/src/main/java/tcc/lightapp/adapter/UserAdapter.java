@@ -18,14 +18,12 @@ import tcc.lightapp.domain.User;
  */
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolder>{
-    private final Context context;
-    private final List<User> users;
-    private UserOnClickListener userOnClickListener;
+    private List<User> users;
+    private Context context;
 
-    public UserAdapter(Context context, List<User> users, UserOnClickListener userOnClickListener){
-        this.context = context;
+    public UserAdapter(List<User> users, Context context){
         this.users = users;
-        this.userOnClickListener = userOnClickListener;
+        this.context = context;
     }
 
     @Override
@@ -45,19 +43,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         User user = users.get(position);
 
         holder.tNome.setText(user.userName);
-
-        if(userOnClickListener != null){
-            holder.itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    userOnClickListener.onClickUser(holder.itemView, position);
-                }
-            });
-        }
     }
 
-    public interface UserOnClickListener{
-        void onClickUser(View view, int idx);
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView){
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
@@ -66,9 +56,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
 
         public UsersViewHolder(View view){
             super(view);
-
-            tNome = (TextView) view.findViewById(R.id.userName);
             cardView = (CardView) view.findViewById(R.id.card_view);
+            tNome = (TextView) view.findViewById(R.id.userName);
         }
     }
 }
