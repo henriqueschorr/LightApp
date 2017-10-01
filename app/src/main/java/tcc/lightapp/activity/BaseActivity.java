@@ -2,7 +2,10 @@ package tcc.lightapp.activity;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
+
+import tcc.lightapp.R;
 
 /**
  * Created by Henrique on 16/09/2017.

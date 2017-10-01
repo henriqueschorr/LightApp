@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import tcc.lightapp.R;
-import tcc.lightapp.domain.User;
+import tcc.lightapp.models.User;
 
 /**
  * Created by Henrique on 20/09/2017.

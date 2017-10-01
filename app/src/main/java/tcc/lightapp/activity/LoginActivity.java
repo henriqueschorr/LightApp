@@ -20,9 +20,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import tcc.lightapp.R;
-import tcc.lightapp.domain.User;
+import tcc.lightapp.models.User;
+import tcc.lightapp.utils.Constants;
 
 
 /**
@@ -92,7 +94,7 @@ public class LoginActivity extends BaseActivity implements
     }
 
     @Override
-    public void onRestart(){
+    public void onRestart() {
         super.onRestart();
         setupLogin();
     }
@@ -126,7 +128,7 @@ public class LoginActivity extends BaseActivity implements
                             //Navigate to Main Activity
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             Bundle params = new Bundle();
-                            params.putString("nome", name);
+                            params.putString(Constants.ARG_USER_NAME, name);
                             intent.putExtras(params);
                             startActivity(intent);
                         } else {
@@ -218,13 +220,14 @@ public class LoginActivity extends BaseActivity implements
 
         String email = mAuth.getCurrentUser().getEmail();
         String userId = mAuth.getCurrentUser().getUid();
+        String firebaseToken = FirebaseInstanceId.getInstance().getToken();
 
-        User user = new User(userName, email, userId);
+        User user = new User(userName, email, userId, firebaseToken);
 
-        mDatabase.child("users").child(userId).setValue(user);
+        mDatabase.child(Constants.ARG_USERS).child(userId).setValue(user);
     }
 
-    public void setupRegister(){
+    public void setupRegister() {
         mNameField.setVisibility(View.VISIBLE);
         TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.name_parent);
         textInputLayout.setVisibility(View.VISIBLE);
@@ -233,7 +236,7 @@ public class LoginActivity extends BaseActivity implements
         mLoginButton.setText(R.string.action_register);
     }
 
-    public void setupLogin(){
+    public void setupLogin() {
         mNameField.setVisibility(View.INVISIBLE);
         TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.name_parent);
         textInputLayout.setVisibility(View.INVISIBLE);
@@ -243,7 +246,7 @@ public class LoginActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         setupLogin();
         return true;
     }
