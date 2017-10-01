@@ -45,6 +45,8 @@ public class MainActivity extends BaseActivity {
     protected RecyclerView mRecyclerView;
     private UserAdapter mUserAdapter;
 
+    int counter = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,41 +67,17 @@ public class MainActivity extends BaseActivity {
 
         setAvailability(true);
 
-//        TextView mNome = (TextView) findViewById(R.id.nome);
-//
-//        mNome.setText("Bem vindo " + userName);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getAvailableUsers();
 
         mUserAdapter = new UserAdapter(availableUsers, MainActivity.this);
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setAdapter(mUserAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mUserAdapter);
 
-        Button view = (Button) findViewById(R.id.view);
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                mRecyclerView.setHasFixedSize(true);
-                mRecyclerView.setAdapter(mUserAdapter);
-
-
-
-
-
-            }
-        });
 
     }
 
@@ -125,7 +103,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setAvailability(boolean available){
-        User updateUser = new User(userName, user.getEmail());
+        User updateUser = new User(userName, user.getEmail(), user.getUid());
         if(available){
             updateUser.setAvailable();
         } else {
@@ -147,15 +125,25 @@ public class MainActivity extends BaseActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                availableUsers = mUserAdapter.getUsers();
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()){
                     if(userSnapshot.child("available").getValue().toString()=="true"){
                         Log.d(TAG, userSnapshot.child("userName").getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child("available").getValue().toString());
                         User availableUser = userSnapshot.getValue(User.class);
-                        availableUsers.add(availableUser);
-                        mUserAdapter.notifyItemInserted(availableUsers.size() - 1);
-                    }
-                }
+                        if (!availableUsers.contains(availableUser) && !availableUser.getAuthID().equals(user.getUid())) {
+                            mUserAdapter.addUser(availableUser);
+                            mUserAdapter.notifyItemInserted(availableUsers.indexOf(availableUser));
+                        }
+                    } else {
+                        User availableUser = userSnapshot.getValue(User.class);
+                        if (availableUsers.contains(availableUser)) {
+                            mUserAdapter.removeUser(availableUsers.indexOf(availableUser));
+                            mUserAdapter.notifyItemRemoved(availableUsers.indexOf(availableUser));
+                        }
 
+                    }
+
+                }
             }
 
             @Override

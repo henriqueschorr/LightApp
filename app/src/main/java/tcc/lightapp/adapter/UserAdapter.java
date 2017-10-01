@@ -50,6 +50,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    public void addUser (User user){
+        users.add(user);
+    }
+
+    public void removeUser (int position){
+        users.remove(position);
+    }
+
+    public List<User> getUsers(){
+        return users;
+    }
+
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
         public TextView tNome;
         CardView cardView;

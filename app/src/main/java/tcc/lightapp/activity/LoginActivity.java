@@ -219,7 +219,7 @@ public class LoginActivity extends BaseActivity implements
         String email = mAuth.getCurrentUser().getEmail();
         String userId = mAuth.getCurrentUser().getUid();
 
-        User user = new User(userName, email);
+        User user = new User(userName, email, userId);
 
         mDatabase.child("users").child(userId).setValue(user);
     }

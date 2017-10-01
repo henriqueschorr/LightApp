@@ -2,34 +2,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/email_login_form"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
-        <Button
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="View" />
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:cacheColorHint="@android:color/transparent"
-            android:clipToPadding="false"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:listSelector="@android:color/transparent"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical" />
-    </LinearLayout>
 </FrameLayout>
