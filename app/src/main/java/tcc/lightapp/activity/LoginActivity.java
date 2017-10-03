@@ -78,11 +78,11 @@ public class LoginActivity extends BaseActivity implements
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-//        if (mAuth.getCurrentUser() != null) {
-//            //Navigate to Main Activity
-//            Intent intent = new Intent(getContext(), MainActivity.class);
-//            startActivity(intent);
-//        }
+        if (mAuth.getCurrentUser() != null) {
+            //Navigate to Main Activity
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override

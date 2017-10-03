@@ -34,7 +34,6 @@ public class MainActivity extends BaseActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private String userName;
     private static final String TAG = "Login";
     private List<User> availableUsers = new ArrayList<User>();
     protected RecyclerView mRecyclerView;
@@ -52,17 +51,9 @@ public class MainActivity extends BaseActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        if (args != null) {
-            userName = args.getString(Constants.ARG_USER_NAME);
-        } else {
-            userName = user.getDisplayName();
-        }
-
         setAvailability(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        getAvailableUsers();
 
         mUserAdapter = new UserAdapter(availableUsers, MainActivity.this, onClickUser());
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recyclerView);
@@ -70,6 +61,8 @@ public class MainActivity extends BaseActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mUserAdapter);
+
+        getAvailableUsers();
     }
 
     @Override
@@ -81,19 +74,13 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setAvailability(boolean available) {
-
-        User updateUser = new User(userName, user.getEmail(), user.getUid(), FirebaseInstanceId.getInstance().getToken());
-        if (available) {
-            updateUser.setAvailable();
-        } else {
-            updateUser.setUnavailable();
-        }
-        updateUserDatabase(updateUser);
-    }
-
-    public void updateUserDatabase(User updateUser) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid(), updateUser);
+
+        if (available) {
+            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, true);
+        } else {
+            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/"  + Constants.ARG_USER_AVAILABLE, false);
+        }
 
         mDatabase.updateChildren(childUpdates);
     }
@@ -119,9 +106,7 @@ public class MainActivity extends BaseActivity {
                             mUserAdapter.removeUser(availableUsers.indexOf(availableUser));
                             mUserAdapter.notifyItemRemoved(availableUsers.indexOf(availableUser));
                         }
-
                     }
-
                 }
             }
 
