@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,8 +40,6 @@ public class MainActivity extends BaseActivity {
     protected RecyclerView mRecyclerView;
     private UserAdapter mUserAdapter;
 
-    int counter = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +52,7 @@ public class MainActivity extends BaseActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        if(args != null) {
+        if (args != null) {
             userName = args.getString(Constants.ARG_USER_NAME);
         } else {
             userName = user.getDisplayName();
@@ -65,42 +64,26 @@ public class MainActivity extends BaseActivity {
 
         getAvailableUsers();
 
-        mUserAdapter = new UserAdapter(availableUsers, MainActivity.this);
+        mUserAdapter = new UserAdapter(availableUsers, MainActivity.this, onClickUser());
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mUserAdapter);
-
-
-
     }
 
-//    private UserAdapter.UserOnClickListener onClickUser(){
-//        return new UserAdapter.UserOnClickListener(){
-//            @Override
-//            public void onClickUser(View view, int idx){
-//                User u = availableUsers.get(idx);
-////                Intent intent = new Intent(getContext(), UserActivity.class);
-////                intent.putExtra("carro", Parcels.wrap(c));
-////                startActivity(intent);
-//
-//            }
-//        };
-//    }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         setAvailability(false);
         mAuth.signOut();
         finish();
         return true;
     }
 
-    public void setAvailability(boolean available){
+    public void setAvailability(boolean available) {
 
         User updateUser = new User(userName, user.getEmail(), user.getUid(), FirebaseInstanceId.getInstance().getToken());
-        if(available){
+        if (available) {
             updateUser.setAvailable();
         } else {
             updateUser.setUnavailable();
@@ -108,22 +91,22 @@ public class MainActivity extends BaseActivity {
         updateUserDatabase(updateUser);
     }
 
-    public void updateUserDatabase(User updateUser){
+    public void updateUserDatabase(User updateUser) {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid(), updateUser);
 
         mDatabase.updateChildren(childUpdates);
     }
 
-    public void getAvailableUsers(){
+    public void getAvailableUsers() {
         DatabaseReference databaseReference = mDatabase.child(Constants.ARG_USERS).getRef();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 availableUsers = mUserAdapter.getUsers();
-                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()){
-                    if(userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString()=="true"){
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    if (userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString() == "true") {
                         Log.d(TAG, userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString());
                         User availableUser = userSnapshot.getValue(User.class);
                         if (!availableUsers.contains(availableUser) && !availableUser.getAuthID().equals(user.getUid())) {
@@ -149,6 +132,19 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private UserAdapter.UserOnClickListener onClickUser() {
+        return new UserAdapter.UserOnClickListener() {
+            @Override
+            public void onClickUser(View view, int idx) {
+                User user = availableUsers.get(idx);
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.putExtra(Constants.ARG_RECEIVER, user.getEmail());
+                intent.putExtra(Constants.ARG_RECEIVER_UID, user.getAuthID());
+                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.getFirebaseToken());
+                startActivity(intent);
+            }
+        };
+    }
 
 
 }

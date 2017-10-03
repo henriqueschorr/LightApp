@@ -20,10 +20,12 @@ import tcc.lightapp.models.User;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolder>{
     private List<User> users;
     private Context context;
+    private UserOnClickListener userOnClickListener;
 
-    public UserAdapter(List<User> users, Context context){
+    public UserAdapter(List<User> users, Context context, UserOnClickListener userOnClickListener){
         this.users = users;
         this.context = context;
+        this.userOnClickListener = userOnClickListener;
     }
 
     @Override
@@ -43,6 +45,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         User user = users.get(position);
 
         holder.tNome.setText(user.userName);
+
+        if(userOnClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    userOnClickListener.onClickUser(holder.itemView, position);
+                }
+            });
+        }
     }
 
     @Override
@@ -60,6 +71,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
 
     public List<User> getUsers(){
         return users;
+    }
+
+    public interface UserOnClickListener{
+        void onClickUser(View view, int idx);
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
