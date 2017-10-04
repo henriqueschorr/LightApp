@@ -2,7 +2,10 @@ package tcc.lightapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import tcc.lightapp.R;
+import tcc.lightapp.adapter.TabsAdapter;
 import tcc.lightapp.adapter.UserAdapter;
 import tcc.lightapp.fcm.MyFirebaseInstanceIDService;
 import tcc.lightapp.fragment.IndividualFragment;
@@ -42,39 +46,26 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        user = mAuth.getCurrentUser();
-
-        setAvailability(true);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_container,
-                IndividualFragment.newInstance(),
-                IndividualFragment.class.getSimpleName());
-        fragmentTransaction.commit();
+        setupViewPagerTabs();
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        setAvailability(false);
-        mAuth.signOut();
-        finish();
-        return true;
-    }
+    private void setupViewPagerTabs(){
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
 
-    public void setAvailability(boolean available) {
-        Map<String, Object> childUpdates = new HashMap<>();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        if (available) {
-            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, true);
-        } else {
-            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/"  + Constants.ARG_USER_AVAILABLE, false);
-        }
+        tabLayout.setupWithViewPager(viewPager);
+        int cor = ContextCompat.getColor(getContext(), R.color.white);
+        tabLayout.setTabTextColors(cor, cor);
 
-        mDatabase.updateChildren(childUpdates);
+//        int tabIdx = Prefs.getInteger(getContext(), "tabIdx");
+//        viewPager.setCurrentItem(tabIdx);
+
+
     }
 }

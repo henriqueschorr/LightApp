@@ -46,10 +46,10 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
