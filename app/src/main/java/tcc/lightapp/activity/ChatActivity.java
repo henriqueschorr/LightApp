@@ -37,7 +37,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     private Button mSendMessage;
     private ChatPresenter mChatPresenter;
     private ChatAdapter mChatAdapter;
-    private List<ChatMessage> mChatMessages;
+    private List<ChatMessage> mChatMessages = new ArrayList<ChatMessage>();
     protected RecyclerView mRecyclerView;
     private DatabaseReference mDatabase;
 
@@ -69,8 +69,6 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         });
 
         mChatPresenter = new ChatPresenter(this);
-
-        mChatPresenter.getMessage(mSenderUid, mReceiverUid);
 
         mChatAdapter = new ChatAdapter(mChatMessages, this);
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view_chat);

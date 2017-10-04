@@ -2,10 +2,13 @@ package tcc.lightapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 import tcc.lightapp.R;
@@ -16,19 +19,19 @@ import tcc.lightapp.models.ChatMessage;
  */
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder>{
-    private List<ChatMessage> mChatsMessages;
+    private List<ChatMessage> mChatMessages;
     private Context context;
     private static final int VIEW_TYPE_ME = 1;
     private static final int VIEW_TYPE_OTHER = 2;
 
     public ChatAdapter(List<ChatMessage> chatMessages, Context context) {
-        mChatsMessages = chatMessages;
+        this.mChatMessages = chatMessages;
         this.context = context;
     }
 
     @Override
     public int getItemCount() {
-        return this.mChatsMessages != null ? this.mChatsMessages.size() : 0;
+        return this.mChatMessages != null ? this.mChatMessages.size() : 0;
     }
 
     @Override
@@ -56,15 +59,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 //        } else {
 //            configureOtherChatViewHolder((OtherChatViewHolder) holder, position);
 //        }
-        ChatMessage chatMessage = mChatsMessages.get(position);
+        ChatMessage chatMessage = mChatMessages.get(position);
+
+        String alphabet = chatMessage.sender.substring(0, 1);
+
         viewHolder.chatMessage.setText(chatMessage.message);
-        viewHolder.userAlphabet.setText("A");
+        viewHolder.userAlphabet.setText(alphabet);
     }
 
     //
     public void add(ChatMessage chatMessage) {
-        mChatsMessages.add(chatMessage);
-        notifyItemInserted(mChatsMessages.size() - 1);
+        mChatMessages.add(chatMessage);
+        notifyItemInserted(mChatMessages.indexOf(chatMessage));
     }
 //
 
@@ -88,15 +94,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 //
 
 //
-//    @Override
-//    public int getItemViewType(int position) {
-//        if (TextUtils.equals(mChatsMessages.get(position).senderUid,
-//                FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-//            return VIEW_TYPE_ME;
-//        } else {
-//            return VIEW_TYPE_OTHER;
-//        }
-//    }
+    @Override
+    public int getItemViewType(int position) {
+        if (TextUtils.equals(mChatMessages.get(position).senderUid,
+                FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            return VIEW_TYPE_ME;
+        } else {
+            return VIEW_TYPE_OTHER;
+        }
+    }
 //
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         public TextView chatMessage;
