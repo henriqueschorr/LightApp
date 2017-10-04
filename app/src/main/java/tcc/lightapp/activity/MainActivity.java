@@ -2,6 +2,7 @@ package tcc.lightapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import java.util.Map;
 import tcc.lightapp.R;
 import tcc.lightapp.adapter.UserAdapter;
 import tcc.lightapp.fcm.MyFirebaseInstanceIDService;
+import tcc.lightapp.fragment.IndividualFragment;
 import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
 
@@ -34,18 +36,11 @@ public class MainActivity extends BaseActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private static final String TAG = "Login";
-    private List<User> availableUsers = new ArrayList<User>();
-    protected RecyclerView mRecyclerView;
-    private UserAdapter mUserAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = getIntent();
-        Bundle args = intent.getExtras();
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -55,14 +50,12 @@ public class MainActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mUserAdapter = new UserAdapter(availableUsers, MainActivity.this, onClickUser());
-        mRecyclerView = (RecyclerView) this.findViewById(R.id.recyclerView);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mUserAdapter);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_container,
+                IndividualFragment.newInstance(),
+                IndividualFragment.class.getSimpleName());
+        fragmentTransaction.commit();
 
-        getAvailableUsers();
     }
 
     @Override
@@ -84,52 +77,4 @@ public class MainActivity extends BaseActivity {
 
         mDatabase.updateChildren(childUpdates);
     }
-
-    public void getAvailableUsers() {
-        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_USERS).getRef();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                availableUsers = mUserAdapter.getUsers();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    if (userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString() == "true") {
-                        Log.d(TAG, userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString());
-                        User availableUser = userSnapshot.getValue(User.class);
-                        if (!availableUsers.contains(availableUser) && !availableUser.getAuthID().equals(user.getUid())) {
-                            mUserAdapter.addUser(availableUser);
-                            mUserAdapter.notifyItemInserted(availableUsers.indexOf(availableUser));
-                        }
-                    } else {
-                        User availableUser = userSnapshot.getValue(User.class);
-                        if (availableUsers.contains(availableUser)) {
-                            mUserAdapter.removeUser(availableUsers.indexOf(availableUser));
-                            mUserAdapter.notifyItemRemoved(availableUsers.indexOf(availableUser));
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private UserAdapter.UserOnClickListener onClickUser() {
-        return new UserAdapter.UserOnClickListener() {
-            @Override
-            public void onClickUser(View view, int idx) {
-                User user = availableUsers.get(idx);
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(Constants.ARG_RECEIVER, user.getEmail());
-                intent.putExtra(Constants.ARG_RECEIVER_UID, user.getAuthID());
-                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.getFirebaseToken());
-                startActivity(intent);
-            }
-        };
-    }
-
-
 }
