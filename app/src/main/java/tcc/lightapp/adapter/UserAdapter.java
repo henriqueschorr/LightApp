@@ -44,7 +44,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
     public void onBindViewHolder(final UsersViewHolder holder, final int position) {
         User user = users.get(position);
 
-        holder.tNome.setText(user.userName);
+        holder.userName.setText(user.userName);
 
         if (userOnClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -78,13 +78,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
-        public TextView tNome;
-        CardView cardView;
+        public TextView userName;
 
         public UsersViewHolder(View view) {
             super(view);
-            cardView = (CardView) view.findViewById(R.id.card_view);
-            tNome = (TextView) view.findViewById(R.id.userName);
+            userName = (TextView) view.findViewById(R.id.userName);
         }
     }
 }

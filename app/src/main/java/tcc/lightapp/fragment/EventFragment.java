@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,76 +23,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcc.lightapp.R;
-import tcc.lightapp.adapter.GroupAdapter;
-import tcc.lightapp.fragment.dialog.CreateGroupDialog;
-import tcc.lightapp.models.GroupRoom;
-import tcc.lightapp.models.User;
+import tcc.lightapp.adapter.EventAdapter;
+import tcc.lightapp.models.Event;
 import tcc.lightapp.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GroupFragment extends Fragment {
+public class EventFragment extends Fragment {
     private View mFragmentView;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private List<GroupRoom> groupRooms = new ArrayList<GroupRoom>();
-    private GroupAdapter mGroupAdapter;
+    private List<Event> events = new ArrayList<Event>();
+    private EventAdapter mEventAdapter;
     protected RecyclerView mRecyclerView;
 
-    public static GroupFragment newInstance() {
-        GroupFragment fragment = new GroupFragment();
+    public static EventFragment newInstance() {
+        EventFragment fragment = new EventFragment();
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mFragmentView = inflater.inflate(R.layout.fragment_group, container, false);
+        mFragmentView = inflater.inflate(R.layout.fragment_event, container, false);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        mGroupAdapter = new GroupAdapter(groupRooms, mFragmentView.getContext());
+        mEventAdapter = new EventAdapter(events, mFragmentView.getContext());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentView.getContext()));
-        mRecyclerView.setAdapter(mGroupAdapter);
-
-        getGroupRooms();
-
+        mRecyclerView.setAdapter(mEventAdapter);
+//
+        getEvents();
+//
         setClickListener();
 
         return mFragmentView;
-//        TODO: Create onClick event
     }
 
     public void setClickListener() {
-        FloatingActionButton createGroupButton = (FloatingActionButton) mFragmentView.findViewById(R.id.create_group);
+        FloatingActionButton createGroupButton = (FloatingActionButton) mFragmentView.findViewById(R.id.create_event);
 
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                CreateGroupDialog.showDialog(getFragmentManager());
+//                TODO: Create Activity with event creation form
             }
         });
     }
 
-    public void getGroupRooms() {
-        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_GROUPS).getRef();
+    public void getEvents() {
+        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_EVENTS).getRef();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                groupRooms = mGroupAdapter.getGroupRooms();
+                events = mEventAdapter.getEvents();
                 for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
-                    GroupRoom groupRoom = groupSnapshot.getValue(GroupRoom.class);
-                    if(!groupRooms.contains(groupRoom)) {
-                        mGroupAdapter.addGroupRoom(groupRoom);
-                        mGroupAdapter.notifyItemInserted(groupRooms.indexOf(groupRoom));
+                    Event event = groupSnapshot.getValue(Event.class);
+                    if(!events.contains(event)) {
+                        mEventAdapter.addEvent(event);
+                        mEventAdapter.notifyItemInserted(events.indexOf(event));
                     }
                 }
             }
@@ -104,4 +99,5 @@ public class GroupFragment extends Fragment {
             }
         });
     }
+
 }

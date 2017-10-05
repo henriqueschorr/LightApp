@@ -17,6 +17,11 @@
     </string>
     <string name="type_a_message">Escreva uma mensagem...</string>
     <string name="auth_failed">Authentication failed</string>
+    <string name="create_group">Create group</string>
+    <string name="prompt_group_name">Enter the Group name</string>
+    <string name="ok">Ok</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

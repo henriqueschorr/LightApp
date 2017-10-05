@@ -12,45 +12,32 @@ public class GroupRoom {
     public String groupName;
     public String adminUid;
     public List<String> membersUid;
-    public List<ChatMessage> messages;
+    public List<ChatMessage> chatMessages;
+
+    public GroupRoom(){
+    }
 
     public GroupRoom(String groupKey, String groupName, String adminUid) {
         this.groupKey = groupKey;
         this.groupName = groupName;
         this.adminUid = adminUid;
         this.membersUid = new ArrayList<String>();
-        membersUid.add(adminUid);
+        this.membersUid.add(adminUid);
     }
 
-    public String getRoomId() {
-        return groupKey;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GroupRoom groupRoom = (GroupRoom) o;
+
+        return groupKey.equals(groupRoom.groupKey);
+
     }
 
-    public void setRoomId(String roomId) {
-        this.groupKey = roomId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public List<String> getMemberUid() {
-        return membersUid;
-    }
-
-    public void setMemberUid(List<String> memberUid) {
-        this.membersUid = memberUid;
-    }
-
-    public List<ChatMessage> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<ChatMessage> messages) {
-        this.messages = messages;
+    @Override
+    public int hashCode() {
+        return groupKey.hashCode();
     }
 }

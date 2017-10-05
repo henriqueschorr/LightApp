@@ -71,6 +71,8 @@ public class LoginActivity extends BaseActivity implements
 
         mRegisterButton.setOnClickListener(this);
         mLoginButton.setOnClickListener(this);
+
+//        TODO: Create loading effect when getting data
     }
 
     @Override

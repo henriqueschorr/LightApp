@@ -5,20 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import tcc.lightapp.R;
-import tcc.lightapp.fragment.GroupFragment;
-import tcc.lightapp.fragment.IndividualFragment;
+import tcc.lightapp.fragment.EventFragment;
 
-public class GroupActivity extends BaseActivity {
+public class EventActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group);
+        setContentView(R.layout.activity_event);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.group_container,
-                GroupFragment.newInstance(),
-                GroupFragment.class.getSimpleName());
+                EventFragment.newInstance(),
+                EventFragment.class.getSimpleName());
         fragmentTransaction.commit();
     }
 }

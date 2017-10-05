@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <AutoCompleteTextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/group_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/prompt_group_name"
+        android:inputType="text"
+        android:maxLines="1"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp" />
+

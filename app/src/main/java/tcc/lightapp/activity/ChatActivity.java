@@ -81,6 +81,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         mRecyclerView.setAdapter(mChatAdapter);
 
         getChatRoom();
+//        TODO: Fix Send button (Fix it in the right side of the screen)
     }
 
     public void getChatRoom() {

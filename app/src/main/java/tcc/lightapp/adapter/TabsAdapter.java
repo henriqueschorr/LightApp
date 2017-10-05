@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import tcc.lightapp.fragment.EventFragment;
 import tcc.lightapp.fragment.GroupFragment;
 import tcc.lightapp.fragment.IndividualFragment;
 
@@ -46,7 +47,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
         } else if (position == 1){
             f = GroupFragment.newInstance();
         } else {
-            f = IndividualFragment.newInstance();
+            f = EventFragment.newInstance();
         }
         return f;
     }

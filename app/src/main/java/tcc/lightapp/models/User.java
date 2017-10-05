@@ -23,14 +23,6 @@ public class User {
         this.available = false;
     }
 
-    public void setAvailable() {
-        available = true;
-    }
-
-    public void setUnavailable() {
-        available = false;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,39 +43,12 @@ public class User {
         return authID;
     }
 
-    public void setAuthID(String authID) {
-        this.authID = authID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
     }
 
     public String getFirebaseToken() {
         return firebaseToken;
     }
 
-    public void setFirebaseToken(String firebaseToken) {
-        this.firebaseToken = firebaseToken;
-    }
 }
