@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +44,7 @@ public class MainActivity extends BaseActivity {
         setupViewPagerTabs();
     }
 
-    private void setupViewPagerTabs(){
+    private void setupViewPagerTabs() {
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
@@ -79,16 +80,17 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         mViewPager.setCurrentItem(mTabIndex);
     }
 
     @Override
-    public void onBackPressed() {
+    public boolean onOptionsItemSelected(MenuItem item) {
         setAvailability(false);
         mAuth.signOut();
         finish();
+        return true;
     }
 
     public void setAvailability(boolean available) {
@@ -97,7 +99,7 @@ public class MainActivity extends BaseActivity {
         if (available) {
             childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, true);
         } else {
-            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/"  + Constants.ARG_USER_AVAILABLE, false);
+            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, false);
         }
 
         mDatabase.updateChildren(childUpdates);

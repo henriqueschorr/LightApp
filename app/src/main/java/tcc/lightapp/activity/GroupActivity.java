@@ -8,7 +8,7 @@ import tcc.lightapp.R;
 import tcc.lightapp.fragment.GroupFragment;
 import tcc.lightapp.fragment.IndividualFragment;
 
-public class GroupActivity extends AppCompatActivity {
+public class GroupActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +20,11 @@ public class GroupActivity extends AppCompatActivity {
                 GroupFragment.newInstance(),
                 GroupFragment.class.getSimpleName());
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finish();
     }
 }

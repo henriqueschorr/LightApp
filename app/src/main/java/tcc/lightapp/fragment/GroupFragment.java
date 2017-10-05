@@ -24,7 +24,7 @@ import tcc.lightapp.models.GroupRoom;
  */
 public class GroupFragment extends Fragment {
     private View mFragmentView;
-//    private FloatingActionButton mCreateGroup;
+    //    private FloatingActionButton mCreateGroup;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -51,24 +51,21 @@ public class GroupFragment extends Fragment {
         return mFragmentView;
     }
 
-    public void setClickListener(){
+    public void setClickListener() {
         FloatingActionButton createGroupButton = (FloatingActionButton) mFragmentView.findViewById(R.id.create_group);
 
-        createGroupButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 createGroup();
             }
         });
     }
 
-    public void createGroup(){
-        List<String> membersUid = new ArrayList<String>();
-        membersUid.add(user.getUid());
-
+    public void createGroup() {
         DatabaseReference groups = mDatabase.child("groups").push();
         String groupKey = groups.getKey();
 
-        GroupRoom groupRoom = new GroupRoom(groupKey, "Group 1", user.getUid(), membersUid);
+        GroupRoom groupRoom = new GroupRoom(groupKey, "Group 1", user.getUid());
 
         groups.setValue(groupRoom);
     }

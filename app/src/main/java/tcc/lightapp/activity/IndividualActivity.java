@@ -17,7 +17,7 @@ import tcc.lightapp.R;
 import tcc.lightapp.fragment.IndividualFragment;
 import tcc.lightapp.utils.Constants;
 
-public class IndividualActivity extends AppCompatActivity {
+public class IndividualActivity extends BaseActivity {
 
 
     @Override

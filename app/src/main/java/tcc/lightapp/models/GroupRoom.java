@@ -1,5 +1,6 @@
 package tcc.lightapp.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,11 +14,12 @@ public class GroupRoom {
     public List<String> membersUid;
     public List<ChatMessage> messages;
 
-    public GroupRoom(String groupKey, String groupName, String adminUid, List<String> membersUid) {
+    public GroupRoom(String groupKey, String groupName, String adminUid) {
         this.groupKey = groupKey;
         this.groupName = groupName;
         this.adminUid = adminUid;
-        this.membersUid = membersUid;
+        this.membersUid = new ArrayList<String>();
+        membersUid.add(adminUid);
     }
 
     public String getRoomId() {
