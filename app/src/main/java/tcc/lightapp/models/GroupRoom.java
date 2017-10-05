@@ -7,25 +7,25 @@ import java.util.List;
  */
 
 public class GroupRoom {
-    public String roomId;
+    public String groupKey;
     public String groupName;
     public String adminUid;
     public List<String> membersUid;
     public List<ChatMessage> messages;
 
-    public GroupRoom(String roomId, String groupName, String adminUid, List<String> membersUid) {
-        this.roomId = roomId;
+    public GroupRoom(String groupKey, String groupName, String adminUid, List<String> membersUid) {
+        this.groupKey = groupKey;
         this.groupName = groupName;
         this.adminUid = adminUid;
         this.membersUid = membersUid;
     }
 
     public String getRoomId() {
-        return roomId;
+        return groupKey;
     }
 
     public void setRoomId(String roomId) {
-        this.roomId = roomId;
+        this.groupKey = roomId;
     }
 
     public String getGroupName() {
