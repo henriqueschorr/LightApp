@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import tcc.lightapp.fragment.GroupFragment;
 import tcc.lightapp.fragment.IndividualFragment;
 
 /**
@@ -28,7 +29,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position){
         if (position == 0){
 //            return  context.getString(R.string.classicos);
-            return "Indi";
+            return "Individual";
         } else if (position == 1){
 //            return  context.getString(R.string.esportivos);
             return "Grupo";
@@ -43,7 +44,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
         if (position == 0){
             f = IndividualFragment.newInstance();
         } else if (position == 1){
-            f = IndividualFragment.newInstance();
+            f = GroupFragment.newInstance();
         } else {
             f = IndividualFragment.newInstance();
         }

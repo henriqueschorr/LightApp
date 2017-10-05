@@ -13,4 +13,5 @@ public class Constants {
     public static final String ARG_UID = "uid";
     public static final String ARG_USER_AVAILABLE = "available";
     public static final String ARG_USER_NAME = "userName";
+    public static final String ARG_TAB_INDEX = "tabIndex";
 }

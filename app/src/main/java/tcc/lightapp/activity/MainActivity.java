@@ -1,42 +1,28 @@
 package tcc.lightapp.activity;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import tcc.lightapp.R;
 import tcc.lightapp.adapter.TabsAdapter;
-import tcc.lightapp.adapter.UserAdapter;
-import tcc.lightapp.fcm.MyFirebaseInstanceIDService;
-import tcc.lightapp.fragment.IndividualFragment;
-import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
+import tcc.lightapp.utils.SharedPrefUtil;
 
 public class MainActivity extends BaseActivity {
+    private int mTabIndex;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -46,26 +32,74 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        user = mAuth.getCurrentUser();
+
+        setAvailability(true);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupViewPagerTabs();
-
     }
 
     private void setupViewPagerTabs(){
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        tabLayout.setupWithViewPager(viewPager);
+        mTabLayout.setupWithViewPager(mViewPager);
         int cor = ContextCompat.getColor(getContext(), R.color.white);
-        tabLayout.setTabTextColors(cor, cor);
+        mTabLayout.setTabTextColors(cor, cor);
 
-//        int tabIdx = Prefs.getInteger(getContext(), "tabIdx");
-//        viewPager.setCurrentItem(tabIdx);
+        mViewPager.setOffscreenPageLimit(2);
 
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mTabIndex = tab.getPosition();
+                new SharedPrefUtil(getApplicationContext()).saveInt(Constants.ARG_TAB_INDEX, mTabIndex);
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mTabIndex = new SharedPrefUtil(getApplicationContext()).getInt(Constants.ARG_TAB_INDEX);
+        mViewPager.setCurrentItem(mTabIndex);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mViewPager.setCurrentItem(mTabIndex);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setAvailability(false);
+        mAuth.signOut();
+        finish();
+    }
+
+    public void setAvailability(boolean available) {
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        if (available) {
+            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, true);
+        } else {
+            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/"  + Constants.ARG_USER_AVAILABLE, false);
+        }
+
+        mDatabase.updateChildren(childUpdates);
     }
 }

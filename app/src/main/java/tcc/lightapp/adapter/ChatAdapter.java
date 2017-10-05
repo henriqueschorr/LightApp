@@ -50,15 +50,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
         return viewHolder;
     }
-//
+
     @Override
     public void onBindViewHolder(ChatViewHolder viewHolder, int position) {
-//        if (TextUtils.equals(mChatsMessages.get(position).senderUid,
-//                FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-//            configureMyChatViewHolder((MyChatViewHolder) holder, position);
-//        } else {
-//            configureOtherChatViewHolder((OtherChatViewHolder) holder, position);
-//        }
         ChatMessage chatMessage = mChatMessages.get(position);
 
         String alphabet = chatMessage.sender.substring(0, 1);
@@ -67,33 +61,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         viewHolder.userAlphabet.setText(alphabet);
     }
 
-    //
     public void add(ChatMessage chatMessage) {
         mChatMessages.add(chatMessage);
         notifyItemInserted(mChatMessages.indexOf(chatMessage));
     }
-//
 
-//    private void configureMyChatViewHolder(MyChatViewHolder myChatViewHolder, int position) {
-//        ChatMessage chatMessage = mChatsMessages.get(position);
-//
-//        String alphabet = chatMessage.sender.substring(0, 1);
-//
-//        myChatViewHolder.txtChatMessage.setText(chatMessage.message);
-//        myChatViewHolder.txtUserAlphabet.setText(alphabet);
-//    }
-//
-//    private void configureOtherChatViewHolder(OtherChatViewHolder otherChatViewHolder, int position) {
-//        ChatMessage chatMessage = mChatsMessages.get(position);
-//
-//        String alphabet = chatMessage.sender.substring(0, 1);
-//
-//        otherChatViewHolder.txtChatMessage.setText(chatMessage.message);
-//        otherChatViewHolder.txtUserAlphabet.setText(alphabet);
-//    }
-//
-
-//
     @Override
     public int getItemViewType(int position) {
         if (TextUtils.equals(mChatMessages.get(position).senderUid,
@@ -103,7 +75,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             return VIEW_TYPE_OTHER;
         }
     }
-//
+
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         public TextView chatMessage;
         public TextView userAlphabet;
@@ -114,14 +86,5 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             userAlphabet = (TextView) itemView.findViewById(R.id.text_view_user_alphabet);
         }
     }
-////
-//    private static class OtherChatViewHolder extends RecyclerView.ViewHolder {
-//        private TextView txtChatMessage, txtUserAlphabet;
-//
-//        public OtherChatViewHolder(View itemView) {
-//            super(itemView);
-//            txtChatMessage = (TextView) itemView.findViewById(R.id.text_view_chat_message);
-//            txtUserAlphabet = (TextView) itemView.findViewById(R.id.text_view_user_alphabet);
-//        }
-//    }
+
 }
