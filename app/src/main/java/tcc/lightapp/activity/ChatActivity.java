@@ -1,23 +1,17 @@
 package tcc.lightapp.activity;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +22,7 @@ import tcc.lightapp.chat.ChatContract;
 import tcc.lightapp.chat.ChatPresenter;
 import tcc.lightapp.models.ChatMessage;
 import tcc.lightapp.utils.Constants;
-import tcc.lightapp.utils.SharedPrefUtil;
+import tcc.lightapp.utils.FirebaseChatMainApp;
 
 public class ChatActivity extends BaseActivity implements ChatContract.View {
     private String mSenderEmail;
@@ -41,32 +35,46 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     private ChatPresenter mChatPresenter;
     private ChatAdapter mChatAdapter;
     private List<ChatMessage> mChatMessages = new ArrayList<ChatMessage>();
+    private boolean isIndividual;
+    private Toolbar mToolbar;
     protected RecyclerView mRecyclerView;
-    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        mToolbar = setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        isIndividual = args.getBoolean(Constants.ARG_INDIVIDUAL);
 
         mSenderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         mSenderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mReceiverEmail = args.getString(Constants.ARG_RECEIVER);
-        mReceiverUid = args.getString(Constants.ARG_RECEIVER_UID);
+
+        if (isIndividual) {
+            mReceiverEmail = args.getString(Constants.ARG_RECEIVER_EMAIL);
+            mReceiverUid = args.getString(Constants.ARG_RECEIVER_UID);
+            getSupportActionBar().setTitle(args.getString(Constants.ARG_RECEIVER_NAME));
+
+        } else {
+            mReceiverEmail = args.getString(Constants.ARG_GROUP_NAME);
+            mReceiverUid = args.getString(Constants.ARG_GROUP_KEY);
+            getSupportActionBar().setTitle(mReceiverEmail);
+        }
+
         mReceiverFirebaseToken = args.getString(Constants.ARG_FIREBASE_TOKEN);
+
 
         mTextMessage = (EditText) findViewById(R.id.edit_text_message);
         mSendMessage = (Button) findViewById(R.id.send_text_message);
 
-        mSendMessage.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        mSendMessage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 sendMessage();
             }
         });
@@ -80,27 +88,33 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mChatAdapter);
 
+        FirebaseChatMainApp.setChatActivityOpen(true);
+
         getChatRoom();
 //        TODO: Fix Send button (Fix it in the right side of the screen)
     }
 
     public void getChatRoom() {
         mChatPresenter = new ChatPresenter(this);
-        mChatPresenter.getMessage(mSenderUid, mReceiverUid);
+        mChatPresenter.getMessage(mSenderUid, mReceiverUid, isIndividual);
     }
 
     private void sendMessage() {
         String message = mTextMessage.getText().toString();
+        mTextMessage.setText("");
+        ChatMessage chatMessage = null;
 
-        ChatMessage chatMessage = new ChatMessage(mSenderEmail,
+        chatMessage = new ChatMessage(mSenderEmail,
                 mReceiverEmail,
                 mSenderUid,
                 mReceiverUid,
                 message,
                 System.currentTimeMillis());
+
         mChatPresenter.sendMessage(this,
                 chatMessage,
-                mReceiverFirebaseToken);
+                mReceiverFirebaseToken,
+                isIndividual);
     }
 
     @Override
@@ -126,7 +140,9 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
+        FirebaseChatMainApp.setChatActivityOpen(false);
     }
+
 }

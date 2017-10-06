@@ -19,13 +19,17 @@ public class ChatPresenter implements ChatContract.Presenter, ChatContract.OnSen
     }
 
     @Override
-    public void sendMessage(Context context, ChatMessage chatMessage, String receiverFirebaseToken) {
-        mChatInteractor.sendMessageToFirebaseUser(context, chatMessage, receiverFirebaseToken);
+    public void sendMessage(Context context, ChatMessage chatMessage, String receiverFirebaseToken, boolean isIndividual) {
+        mChatInteractor.sendMessageToFirebaseUser(context, chatMessage, receiverFirebaseToken, isIndividual);
     }
 
     @Override
-    public void getMessage(String senderUid, String receiverUid) {
-        mChatInteractor.getMessageFromFirebaseUser(senderUid, receiverUid);
+    public void getMessage(String senderUid, String receiverUid, boolean isIndividual) {
+        if (isIndividual) {
+            mChatInteractor.getMessageFromFirebaseUser(senderUid, receiverUid);
+        } else {
+            mChatInteractor.getMessageFromFirebaseGroup(senderUid, receiverUid);
+        }
     }
 
     @Override

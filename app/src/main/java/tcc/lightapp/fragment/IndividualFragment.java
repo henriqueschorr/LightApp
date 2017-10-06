@@ -80,7 +80,7 @@ public class IndividualFragment extends Fragment {
                     if (userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString() == "true") {
                         Log.d(TAG, userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString());
                         User availableUser = userSnapshot.getValue(User.class);
-                        if (!availableUsers.contains(availableUser) && !availableUser.getAuthID().equals(user.getUid())) {
+                        if (!availableUsers.contains(availableUser) && !availableUser.authID.equals(user.getUid())) {
                             mUserAdapter.addUser(availableUser);
                             mUserAdapter.notifyItemInserted(availableUsers.indexOf(availableUser));
                         }
@@ -107,9 +107,11 @@ public class IndividualFragment extends Fragment {
             public void onClickUser(View view, int idx) {
                 User user = availableUsers.get(idx);
                 Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(Constants.ARG_RECEIVER, user.getEmail());
-                intent.putExtra(Constants.ARG_RECEIVER_UID, user.getAuthID());
-                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.getFirebaseToken());
+                intent.putExtra(Constants.ARG_RECEIVER_NAME, user.userName);
+                intent.putExtra(Constants.ARG_RECEIVER_EMAIL, user.email);
+                intent.putExtra(Constants.ARG_RECEIVER_UID, user.authID);
+                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
+                intent.putExtra(Constants.ARG_INDIVIDUAL, true);
                 startActivity(intent);
             }
         };

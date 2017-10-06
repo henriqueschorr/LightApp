@@ -20,12 +20,12 @@ import tcc.lightapp.models.GroupRoom;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupsViewHolder>{
     private List<GroupRoom> groupRooms;
     private Context context;
-//    private GroupOnClickListener groupOnClickListener;
+    private GroupOnClickListener groupOnClickListener;
 
-    public GroupAdapter(List<GroupRoom> groupRooms, Context context) {
+    public GroupAdapter(List<GroupRoom> groupRooms, Context context, GroupOnClickListener groupOnClickListener) {
         this.groupRooms = groupRooms;
         this.context = context;
-//        this.groupOnClickListener = groupOnClickListener;
+        this.groupOnClickListener = groupOnClickListener;
     }
 
     @Override
@@ -46,14 +46,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupsViewHo
 
         holder.groupName.setText(groupRoom.groupName);
 
-//        if (groupOnClickListener != null) {
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    groupOnClickListener.onClickGroup(holder.itemView, position);
-//                }
-//            });
-//        }
+        if (groupOnClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    groupOnClickListener.onClickGroup(holder.itemView, position);
+                }
+            });
+        }
     }
 
     @Override

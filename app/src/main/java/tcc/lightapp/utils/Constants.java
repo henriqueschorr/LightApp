@@ -5,8 +5,10 @@ package tcc.lightapp.utils;
  */
 public class Constants {
     public static final String ARG_USERS = "users";
-    public static final String ARG_RECEIVER = "receiver";
+    public static final String ARG_RECEIVER_NAME = "receiverName";
+    public static final String ARG_RECEIVER_EMAIL = "receiverEmail";
     public static final String ARG_RECEIVER_UID = "receiver_uid";
+    public static final String ARG_CHAT_ROOM = "chat_room";
     public static final String ARG_CHAT_ROOMS = "chat_rooms";
     public static final String ARG_FIREBASE_TOKEN = "firebaseToken";
     public static final String ARG_FRIENDS = "friends";
@@ -16,4 +18,7 @@ public class Constants {
     public static final String ARG_TAB_INDEX = "tabIndex";
     public static final String ARG_GROUPS = "groups";
     public static final String ARG_EVENTS = "events";
+    public static final String ARG_INDIVIDUAL = "individual";
+    public static final String ARG_GROUP_NAME = "groupName";
+    public static final String ARG_GROUP_KEY = "groupKey";
 }

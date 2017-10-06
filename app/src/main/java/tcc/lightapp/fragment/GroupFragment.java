@@ -1,6 +1,7 @@
 package tcc.lightapp.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcc.lightapp.R;
+import tcc.lightapp.activity.ChatActivity;
 import tcc.lightapp.adapter.GroupAdapter;
 import tcc.lightapp.fragment.dialog.CreateGroupDialog;
 import tcc.lightapp.models.GroupRoom;
@@ -57,7 +59,7 @@ public class GroupFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        mGroupAdapter = new GroupAdapter(groupRooms, mFragmentView.getContext());
+        mGroupAdapter = new GroupAdapter(groupRooms, mFragmentView.getContext(), onClickGroup());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
@@ -103,5 +105,20 @@ public class GroupFragment extends Fragment {
 
             }
         });
+    }
+
+    private GroupAdapter.GroupOnClickListener onClickGroup() {
+        return new GroupAdapter.GroupOnClickListener() {
+            @Override
+            public void onClickGroup(View view, int idx) {
+                GroupRoom groupRoom = groupRooms.get(idx);
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.putExtra(Constants.ARG_GROUP_NAME, groupRoom.groupName);
+                intent.putExtra(Constants.ARG_GROUP_KEY, groupRoom.groupKey);
+                intent.putExtra(Constants.ARG_INDIVIDUAL, false);
+//                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
+                startActivity(intent);
+            }
+        };
     }
 }

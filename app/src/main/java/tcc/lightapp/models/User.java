@@ -39,16 +39,4 @@ public class User {
         return authID.hashCode();
     }
 
-    public String getAuthID() {
-        return authID;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirebaseToken() {
-        return firebaseToken;
-    }
-
 }

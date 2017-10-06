@@ -20,15 +20,17 @@ public interface ChatContract {
     }
 
     interface Presenter {
-        void sendMessage(Context context, ChatMessage chatMessage, String receiverFirebaseToken);
+        void sendMessage(Context context, ChatMessage chatMessage, String receiverFirebaseToken, boolean isIndividual);
 
-        void getMessage(String senderUid, String receiverUid);
+        void getMessage(String senderUid, String receiverUid, boolean isIndividual);
     }
 
     interface Interactor {
-        void sendMessageToFirebaseUser(Context context, ChatMessage chatMessage, String receiverFirebaseToken);
+        void sendMessageToFirebaseUser(Context context, ChatMessage chatMessage, String receiverFirebaseToken, boolean isIndividual);
 
         void getMessageFromFirebaseUser(String senderUid, String receiverUid);
+
+        void getMessageFromFirebaseGroup(String senderUid, String groupKey);
     }
 
     interface OnSendMessageListener {

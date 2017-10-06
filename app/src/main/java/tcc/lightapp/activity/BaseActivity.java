@@ -20,4 +20,12 @@ public class BaseActivity extends AppCompatActivity {
     protected void toast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
+
+    protected Toolbar setUpToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+        return toolbar;
+    }
 }
