@@ -23,4 +23,6 @@
     <string name="confirm">Confirmar</string>
     <string name="cancel">Cancelar</string>
     <string name="send">Enviar</string>
+    <string name="isPrivate">Privado</string>
+    <string name="add_member">Adicionar amigos ao grupo</string>
 </resources>

@@ -123,15 +123,11 @@ public class ChatInteractor implements ChatContract.Interactor {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        //TODO: Investigate why it is not getting the first message????
-
         databaseReference.child(Constants.ARG_CHAT_ROOMS).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(room_type_1)) {
                     Log.e(TAG, "getMessageFromFirebaseUser: " + room_type_1 + " exists");
-                    Log.e(TAG, dataSnapshot.child(room_type_1).child("1507263911383").child("message").toString());
-                    Log.e(TAG, dataSnapshot.child(room_type_1).child("1507263982852").child("message").toString());
                     FirebaseDatabase.getInstance()
                             .getReference()
                             .child(Constants.ARG_CHAT_ROOMS)
@@ -196,22 +192,6 @@ public class ChatInteractor implements ChatContract.Interactor {
                     });
                 } else {
                     Log.e(TAG, "getMessageFromFirebaseUser: no such room available");
-//                    databaseReference.child(Constants.ARG_CHAT_ROOMS).getRef();
-//
-//                    databaseReference.addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
-//                                ChatMessage chatMessage = groupSnapshot.getValue(ChatMessage.class);
-//                                mOnGetMessagesListener.onGetMessagesSuccess(chatMessage);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
                 }
             }
 

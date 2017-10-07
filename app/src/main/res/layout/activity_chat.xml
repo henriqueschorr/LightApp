@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -18,7 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/send_message"
+        android:layout_below="@+id/app_bar"
         app:layoutManager="LinearLayoutManager" />
+
 
     <RelativeLayout
         android:id="@+id/send_message"
@@ -28,7 +31,7 @@
 
         <EditText
             android:id="@+id/edit_text_message"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_small"
             android:background="@drawable/rounded_rect_bg"
@@ -36,16 +39,20 @@
             android:imeOptions="actionSend"
             android:inputType="text"
             android:maxLines="1"
-            android:padding="@dimen/padding_small" />
+            android:padding="@dimen/padding_small"
+            android:layout_centerVertical="true"/>
 
         <Button
             android:id="@+id/send_text_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/send"
+            android:layout_margin="@dimen/margin_small"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"
             android:padding="@dimen/padding_small"
-            android:layout_margin="@dimen/margin_small"/>
+            android:text="@string/send"
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 

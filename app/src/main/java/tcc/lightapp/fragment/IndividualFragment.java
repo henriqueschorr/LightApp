@@ -39,7 +39,7 @@ public class IndividualFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private static final String TAG = "Login";
+    private static final String TAG = "UserList";
     private List<User> availableUsers = new ArrayList<User>();
     protected RecyclerView mRecyclerView;
     private UserAdapter mUserAdapter;

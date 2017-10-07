@@ -1,7 +1,9 @@
 package tcc.lightapp.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Henrique on 04/10/2017.
@@ -11,18 +13,20 @@ public class GroupRoom {
     public String groupKey;
     public String groupName;
     public String adminUid;
-    public List<String> membersUid;
+    public boolean isPrivate;
+    public Map<String, String> membersUid;
     public List<ChatMessage> chatMessages;
 
     public GroupRoom(){
     }
 
-    public GroupRoom(String groupKey, String groupName, String adminUid) {
+    public GroupRoom(String groupKey, String groupName, String adminUid, boolean isPrivate) {
         this.groupKey = groupKey;
         this.groupName = groupName;
         this.adminUid = adminUid;
-        this.membersUid = new ArrayList<String>();
-        this.membersUid.add(adminUid);
+        this.isPrivate = isPrivate;
+        this.membersUid = new HashMap<String, String>();
+        this.membersUid.put(adminUid, "true");
     }
 
     @Override

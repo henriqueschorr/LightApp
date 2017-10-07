@@ -71,7 +71,6 @@ public class GroupFragment extends Fragment {
         setClickListener();
 
         return mFragmentView;
-//        TODO: Create onClick event
     }
 
     public void setClickListener() {
@@ -94,8 +93,10 @@ public class GroupFragment extends Fragment {
                 for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
                     GroupRoom groupRoom = groupSnapshot.getValue(GroupRoom.class);
                     if(!groupRooms.contains(groupRoom)) {
-                        mGroupAdapter.addGroupRoom(groupRoom);
-                        mGroupAdapter.notifyItemInserted(groupRooms.indexOf(groupRoom));
+                        if ((groupRoom.isPrivate && groupRoom.membersUid.containsKey(user.getUid())) || !groupRoom.isPrivate){
+                            mGroupAdapter.addGroupRoom(groupRoom);
+                            mGroupAdapter.notifyItemInserted(groupRooms.indexOf(groupRoom));
+                        }
                     }
                 }
             }

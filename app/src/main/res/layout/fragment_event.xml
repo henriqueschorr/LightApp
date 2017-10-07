@@ -21,9 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:backgroundTint="@color/black"
+            android:layout_marginBottom="@dimen/margin_avg"
+            android:layout_marginRight="@dimen/margin_avg"
+            android:backgroundTint="@color/colorAccent"
             android:clickable="true"
             android:src="@drawable/ic_add_white_24dp" />
     </android.support.design.widget.CoordinatorLayout>

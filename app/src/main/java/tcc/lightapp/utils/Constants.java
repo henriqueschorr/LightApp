@@ -21,4 +21,6 @@ public class Constants {
     public static final String ARG_INDIVIDUAL = "individual";
     public static final String ARG_GROUP_NAME = "groupName";
     public static final String ARG_GROUP_KEY = "groupKey";
+    public static final String ARG_GROUP_MEMBER = "membersUid";
+    public static final String ARG_DEFAULT_VALUE = "true";
 }

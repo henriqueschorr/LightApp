@@ -3,6 +3,7 @@ package tcc.lightapp.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     private Context context;
     private static final int VIEW_TYPE_ME = 1;
     private static final int VIEW_TYPE_OTHER = 2;
+    private static final String TAG = "ChatAdapter";
 
     public ChatAdapter(List<ChatMessage> chatMessages, Context context) {
         this.mChatMessages = chatMessages;
@@ -63,6 +65,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     public void add(ChatMessage chatMessage) {
         mChatMessages.add(chatMessage);
+        Log.e(TAG, "Add");
         notifyItemInserted(mChatMessages.indexOf(chatMessage));
     }
 

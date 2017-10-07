@@ -11,11 +11,13 @@
 
     <TextView
         android:id="@+id/userName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/margin_avg"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_avg"
+        android:layout_toRightOf="@+id/checkbox"
         android:textSize="20sp" />
 
 
