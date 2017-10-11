@@ -51,7 +51,7 @@ public class CreateGroupDialog extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.create_group)
                 .setView(view)
-                .setPositiveButton(R.string.confirm,
+                .setPositiveButton(R.string.action_confirm,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String groupName = groupNameField.getText().toString();
@@ -60,7 +60,7 @@ public class CreateGroupDialog extends DialogFragment {
                                 dialog.dismiss();
                             }
                         }
-                ).setNegativeButton(R.string.cancel,
+                ).setNegativeButton(R.string.action_cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
@@ -80,5 +80,7 @@ public class CreateGroupDialog extends DialogFragment {
         GroupRoom groupRoom = new GroupRoom(groupKey, groupName, user.getUid(), isPrivate);
 
         groups.setValue(groupRoom);
+
+//        database.child(Constants.ARG_USERS).child(user.getUid()).child(Constants.ARG_GROUP_ADMIN).child(groupKey).setValue(groupName);
     }
 }

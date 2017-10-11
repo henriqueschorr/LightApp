@@ -117,6 +117,7 @@ public class GroupFragment extends Fragment {
                 intent.putExtra(Constants.ARG_GROUP_NAME, groupRoom.groupName);
                 intent.putExtra(Constants.ARG_GROUP_KEY, groupRoom.groupKey);
                 intent.putExtra(Constants.ARG_INDIVIDUAL, false);
+                intent.putExtra(Constants.ARG_GROUP_ADMIN, groupRoom.adminUid);
 //                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
                 startActivity(intent);
             }

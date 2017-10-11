@@ -14,6 +14,7 @@ public class User {
     public String email;
     public boolean available;
     public Map<String, String> groups;
+//    public Map<String, String> groupsAdmin;
     public Map<String, String> friends;
 
     public User() {

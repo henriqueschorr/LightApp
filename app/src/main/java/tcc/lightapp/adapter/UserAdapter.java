@@ -1,6 +1,7 @@
 package tcc.lightapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -24,8 +25,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
     private List<User> users;
     private Context context;
     private UserOnClickListener userOnClickListener;
+    private View mViewUser;
+    private View mViewFriend;
     private static final int USER_LIST = 1;
     private static final int FRIEND_LIST = 2;
+    private int teste;
 
     public UserAdapter(List<User> users, Context context) {
         this.users = users;
@@ -45,13 +49,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
 
     @Override
     public UsersViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view;
+        UsersViewHolder holder;
         if (viewType == USER_LIST) {
-            view = LayoutInflater.from(context).inflate(R.layout.adapter_users, viewGroup, false);
+            mViewUser = LayoutInflater.from(context).inflate(R.layout.adapter_users, viewGroup, false);
+            holder = new UsersViewHolder(mViewUser);
         } else {
-            view = LayoutInflater.from(context).inflate(R.layout.adapter_friends, viewGroup, false);
+            mViewFriend = LayoutInflater.from(context).inflate(R.layout.adapter_friends, viewGroup, false);
+            holder = new UsersViewHolder(mViewFriend);
         }
-        UsersViewHolder holder = new UsersViewHolder(view);
         return holder;
     }
 
@@ -61,11 +66,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
 
         holder.userName.setText(user.userName);
 
+        //                TODO: set item selected in screen
+        if(position == teste) {
+//            int red = Color.parseColor("#C62828");
+//            holder.cardView.setBackgroundColor(red);
+            holder.cardView.setSelected(true);
+        }
+
         if (userOnClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     userOnClickListener.onClickUser(holder.itemView, position);
+                    teste = position;
+                    notifyItemChanged(teste);
                 }
             });
         }
@@ -101,13 +115,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         }
     }
 
+    public void setItemSelected(){
+        View item = mViewFriend.findViewById(R.id.card_view);
+        item.setSelected(true);
+    }
+
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
         public TextView userName;
+        public CardView cardView;
 
         public UsersViewHolder(View view) {
             super(view);
             userName = (TextView) view.findViewById(R.id.userName);
-
+            cardView = (CardView) view.findViewById(R.id.card_view);
         }
     }
+
 }

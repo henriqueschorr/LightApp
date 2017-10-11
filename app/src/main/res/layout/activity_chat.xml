@@ -51,7 +51,7 @@
             android:textColor="@color/white"
             android:background="@color/colorPrimaryDark"
             android:padding="@dimen/padding_small"
-            android:text="@string/send"
+            android:text="@string/action_send"
             android:layout_centerVertical="true"/>
 
     </RelativeLayout>

@@ -49,6 +49,7 @@ public class AddMemberDialog extends DialogFragment {
     private List<User> friendsSelected = new ArrayList<User>();
     private String groupKey;
     private static final String TAG = "AddMember";
+    private View mView;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -60,25 +61,25 @@ public class AddMemberDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = (View) inflater.inflate(R.layout.dialog_add_member, null);
+        mView = (View) inflater.inflate(R.layout.dialog_add_member, null);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        mFriendAdapter = new UserAdapter(friends, view.getContext(), onClickUser());
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mFriendAdapter = new UserAdapter(friends, mView.getContext(), onClickUser());
+        mRecyclerView = (RecyclerView) mView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mView.getContext()));
         mRecyclerView.setAdapter(mFriendAdapter);
 
         getFriends();
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_member)
-                .setView(view)
-                .setPositiveButton(R.string.confirm,
+                .setView(mView)
+                .setPositiveButton(R.string.action_confirm,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 for(User friend : friendsSelected) {
@@ -87,7 +88,7 @@ public class AddMemberDialog extends DialogFragment {
                                 dialog.dismiss();
                             }
                         }
-                ).setNegativeButton(R.string.cancel,
+                ).setNegativeButton(R.string.action_cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
@@ -132,7 +133,6 @@ public class AddMemberDialog extends DialogFragment {
             public void onClickUser(View view, int idx) {
                 User friend = friends.get(idx);
                 friendsSelected.add(friend);
-//                TODO: set item selected in screen
             }
         };
     }

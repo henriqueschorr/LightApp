@@ -23,7 +23,7 @@
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="@dimen/margin_avg"
             android:layout_marginRight="@dimen/margin_avg"
-            android:backgroundTint="@color/colorAccent"
+            app:backgroundTint="@color/colorAccent"
             android:clickable="true"
             android:src="@drawable/ic_add_white_24dp" />
     </android.support.design.widget.CoordinatorLayout>

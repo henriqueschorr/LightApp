@@ -1,7 +1,9 @@
 package tcc.lightapp.models;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Henrique on 05/10/2017.
@@ -12,18 +14,20 @@ public class Event {
     public String adminUid;
     public String eventName;
     public String location;
-    public Date date;
-    public List<String> groupsKey;
+    public String date;
+    public String time;
+    public Map<String, String> groupsKey;
     public List<String> confirmedUsersUid;
 
     public Event(){}
 
-    public Event(String eventKey, String adminUid, String eventName, String location, Date date, List<String> groupsKey) {
+    public Event(String eventKey, String adminUid, String eventName, String location, String date, String time, Map<String, String> groupsKey) {
         this.eventKey = eventKey;
         this.adminUid = adminUid;
         this.eventName = eventName;
         this.location = location;
         this.date = date;
+        this.time = time;
         this.groupsKey = groupsKey;
     }
 

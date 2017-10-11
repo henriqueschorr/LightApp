@@ -34,12 +34,15 @@ import tcc.lightapp.utils.Constants;
 import tcc.lightapp.utils.FirebaseChatMainApp;
 
 public class ChatActivity extends BaseActivity implements ChatContract.View {
+    private DatabaseReference mDatabase;
+    private DatabaseReference mUserDatabase;
     private String mSenderEmail;
     private String mReceiverName;
     private String mReceiverEmail;
     private String mSenderUid;
     private String mReceiverUid;
     private String mReceiverFirebaseToken;
+    private String mGroupAdmin;
     private EditText mTextMessage;
     private Button mSendMessage;
     private ChatPresenter mChatPresenter;
@@ -58,6 +61,8 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         mToolbar = setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
 
@@ -75,8 +80,11 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         } else {
             mReceiverEmail = args.getString(Constants.ARG_GROUP_NAME);
             mReceiverUid = args.getString(Constants.ARG_GROUP_KEY);
+            mGroupAdmin = args.getString(Constants.ARG_GROUP_ADMIN);
             getSupportActionBar().setTitle(mReceiverEmail);
         }
+
+        mUserDatabase = mDatabase.child(Constants.ARG_USERS).child(mSenderUid);
 
         mReceiverFirebaseToken = args.getString(Constants.ARG_FIREBASE_TOKEN);
 
@@ -157,10 +165,16 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        String teste;
         if (isIndividual) {
             getMenuInflater().inflate(R.menu.menu_chat_indiv, menu);
+            FirebaseDatabase data = mUserDatabase.child(mSenderUid).child(Constants.ARG_GROUP_ADMIN).getDatabase();
         } else {
-            getMenuInflater().inflate(R.menu.menu_chat_group, menu);
+            if (mGroupAdmin.equals(mSenderUid)) {
+                getMenuInflater().inflate(R.menu.menu_chat_group_admin, menu);
+            } else {
+                getMenuInflater().inflate(R.menu.menu_chat_group, menu);
+            }
         }
         return true;
     }
@@ -169,7 +183,6 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int item = menuItem.getItemId();
         if (item == R.id.action_add_member) {
-//            addGroupMember();
             Bundle args = new Bundle();
             args.putString(Constants.ARG_GROUP_KEY, mReceiverUid);
             AddMemberDialog dialog = new AddMemberDialog();
@@ -178,23 +191,21 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             FragmentManager fragmentManager = getSupportFragmentManager();
             dialog.show(fragmentManager, "dialog_add_member");
             return true;
-        } else if (item == R.id.action_add_friend){
+        } else if (item == R.id.action_add_friend) {
             addFriend();
+        } else if (item == R.id.action_create_event){
+            //Navigate to Create Event Activity
+            Intent intent = new Intent(getContext(), CreateEventActivity.class);
+            Bundle params = new Bundle();
+            params.putString(Constants.ARG_GROUP_KEY, mReceiverUid);
+            params.putString(Constants.ARG_GROUP_NAME, mReceiverEmail);
+            intent.putExtras(params);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(menuItem);
     }
 
-    public void addGroupMember() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference groupDatabase = database.child(Constants.ARG_GROUPS).child(mReceiverUid);
-
-        groupDatabase.child(Constants.ARG_GROUP_MEMBER).child("rn6rccdj6WbfLR9KNbTLG3ZIS9J3").setValue(Constants.ARG_DEFAULT_VALUE);
-    }
-
-    public void addFriend(){
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userDatabase = database.child(Constants.ARG_USERS).child(mSenderUid);
-
-        userDatabase.child(Constants.ARG_FRIENDS).child(mReceiverUid).setValue(mReceiverName + "_" + mReceiverEmail);
+    public void addFriend() {
+        mUserDatabase.child(Constants.ARG_FRIENDS).child(mReceiverUid).setValue(mReceiverName + "_" + mReceiverEmail);
     }
 }

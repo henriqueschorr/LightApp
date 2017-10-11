@@ -8,21 +8,30 @@
     <string name="action_sign_in">Entrar</string>
     <string name="action_register">Registrar</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">Email inválido</string>
+    <string name="error_invalid_password">Senha muito curta</string>
+    <string name="error_incorrect_password">Senha errada</string>
+    <string name="error_field_required">Campo obrigatório</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
     <string name="type_a_message">Escreva uma mensagem...</string>
-    <string name="auth_failed">Authentication failed</string>
+    <string name="auth_failed">Falha na autenticação</string>
     <string name="create_group">Criar Grupo</string>
     <string name="prompt_group_name">Informe o nome do grupo</string>
-    <string name="ok">Ok</string>
-    <string name="confirm">Confirmar</string>
-    <string name="cancel">Cancelar</string>
-    <string name="send">Enviar</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_confirm">Confirmar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_send">Enviar</string>
+    <string name="action_create">Criar</string>
     <string name="isPrivate">Privado</string>
     <string name="add_member">Adicionar amigos ao grupo</string>
+    <string name="createEvent">Criar evento</string>
+    <string name="prompt_event_name">Nome do evento</string>
+    <string name="prompt_event_location">Local</string>
+    <string name="prompt_event_date">Data</string>
+    <string name="prompt_event_time">Horário</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

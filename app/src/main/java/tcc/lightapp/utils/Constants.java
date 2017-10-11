@@ -23,4 +23,6 @@ public class Constants {
     public static final String ARG_GROUP_KEY = "groupKey";
     public static final String ARG_GROUP_MEMBER = "membersUid";
     public static final String ARG_DEFAULT_VALUE = "true";
+    public static final String ARG_GROUP_ADMIN = "adminUid";
+    public static final String PROJECT_NUMBER = "912909161569";
 }

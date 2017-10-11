@@ -6,12 +6,12 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/padding_avg"
         android:layout_marginLeft="@dimen/padding_avg"
         android:layout_marginRight="@dimen/padding_avg"
         android:layout_marginTop="@dimen/padding_avg"
-        android:layout_marginBottom="@dimen/padding_avg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:scrollbars="vertical" />
 
 </FrameLayout>
