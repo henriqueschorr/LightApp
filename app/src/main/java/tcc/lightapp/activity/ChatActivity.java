@@ -15,11 +15,25 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +147,8 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
                 chatMessage,
                 mReceiverFirebaseToken,
                 isIndividual);
+
+        mDatabase.child(Constants.ARG_USERS).child(mSenderUid).child(Constants.ARG_MESSAGES).child(chatMessage.message).setValue(chatMessage.message);
     }
 
     @Override
@@ -193,7 +209,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             return true;
         } else if (item == R.id.action_add_friend) {
             addFriend();
-        } else if (item == R.id.action_create_event){
+        } else if (item == R.id.action_create_event) {
             //Navigate to Create Event Activity
             Intent intent = new Intent(getContext(), CreateEventActivity.class);
             Bundle params = new Bundle();
@@ -201,11 +217,51 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             params.putString(Constants.ARG_GROUP_NAME, mReceiverEmail);
             intent.putExtras(params);
             startActivity(intent);
+        } else if (item == R.id.action_do_sentiment_analysis) {
+            URL url = null;
+            try {
+                url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid" + mSenderUid);
+            } catch (MalformedURLException e) {
+                //erro
+            }
+
+            try {
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+//                text.setText(readStream(urlConnection.getInputStream()));
+                urlConnection.disconnect();
+            } catch (IOException e) {
+                //error
+            }
+
         }
         return super.onOptionsItemSelected(menuItem);
     }
 
     public void addFriend() {
         mUserDatabase.child(Constants.ARG_FRIENDS).child(mReceiverUid).setValue(mReceiverName + "_" + mReceiverEmail);
+    }
+
+    private String readStream(InputStream in) {
+        BufferedReader reader = null;
+        StringBuffer response = new StringBuffer();
+        try {
+            reader = new BufferedReader(new InputStreamReader(in));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return response.toString();
     }
 }

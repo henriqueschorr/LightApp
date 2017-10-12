@@ -13,6 +13,7 @@ public class User {
     public String userName;
     public String email;
     public boolean available;
+    public Map<String, String> messages;
     public Map<String, String> groups;
 //    public Map<String, String> groupsAdmin;
     public Map<String, String> friends;
