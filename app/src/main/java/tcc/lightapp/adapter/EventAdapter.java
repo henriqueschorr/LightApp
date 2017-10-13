@@ -41,9 +41,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventsViewHo
 
     @Override
     public void onBindViewHolder(final EventsViewHolder holder, final int position) {
-        Event groupRoom = events.get(position);
+        Event event = events.get(position);
 
-        holder.eventName.setText(groupRoom.eventName);
+        holder.eventName.setText(event.eventName);
 
 //        if (groupOnClickListener != null) {
 //            holder.itemView.setOnClickListener(new View.OnClickListener() {

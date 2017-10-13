@@ -4,6 +4,7 @@ package tcc.lightapp.activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.util.Log;
@@ -83,8 +84,8 @@ public class LoginActivity extends BaseActivity implements
         mAuth.addAuthStateListener(mAuthListener);
         if (mAuth.getCurrentUser() != null) {
             //Navigate to Main Activity
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
+            FirebaseUser user = mAuth.getCurrentUser();
+            navigateToMainActivity(user);
         }
     }
 
@@ -129,11 +130,7 @@ public class LoginActivity extends BaseActivity implements
                             createUser(name);
 
                             //Navigate to Main Activity
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            Bundle params = new Bundle();
-                            params.putString(Constants.ARG_USER_NAME, name);
-                            intent.putExtras(params);
-                            startActivity(intent);
+                            navigateToMainActivity(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -254,6 +251,22 @@ public class LoginActivity extends BaseActivity implements
         return true;
     }
 
+    public void navigateToMainActivity(FirebaseUser user){
+        Intent intent = null;
+        if (isMedic(user)){
+            intent = new Intent(getContext(), MainMedicActivity.class);
+        } else {
+            intent = new Intent(getContext(), MainActivity.class);
+        }
+        startActivity(intent);
+    }
 
+    public boolean isMedic (FirebaseUser user){
+        String[] emailSplit = user.getEmail().split("@");
+        if(emailSplit[1].contains("medic")){
+            return true;
+        }
+        return false;
+    }
 }
 

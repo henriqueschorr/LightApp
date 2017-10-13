@@ -184,7 +184,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         String teste;
         if (isIndividual) {
             getMenuInflater().inflate(R.menu.menu_chat_indiv, menu);
-            FirebaseDatabase data = mUserDatabase.child(mSenderUid).child(Constants.ARG_GROUP_ADMIN).getDatabase();
+//            FirebaseDatabase data = mUserDatabase.child(mSenderUid).child(Constants.ARG_GROUP_ADMIN).getDatabase();
         } else {
             if (mGroupAdmin.equals(mSenderUid)) {
                 getMenuInflater().inflate(R.menu.menu_chat_group_admin, menu);
@@ -209,6 +209,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             return true;
         } else if (item == R.id.action_add_friend) {
             addFriend();
+            return true;
         } else if (item == R.id.action_create_event) {
             //Navigate to Create Event Activity
             Intent intent = new Intent(getContext(), CreateEventActivity.class);
@@ -217,6 +218,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             params.putString(Constants.ARG_GROUP_NAME, mReceiverEmail);
             intent.putExtras(params);
             startActivity(intent);
+            return true;
         } else if (item == R.id.action_do_sentiment_analysis) {
             URL url = null;
             try {
@@ -228,12 +230,13 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             try {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
+                readStream(urlConnection.getInputStream());
 //                text.setText(readStream(urlConnection.getInputStream()));
                 urlConnection.disconnect();
             } catch (IOException e) {
                 //error
             }
-
+            return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }
