@@ -1,5 +1,6 @@
 package tcc.lightapp.activity;
 
+import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import tcc.lightapp.R;
 import tcc.lightapp.fragment.EventFragment;
 import tcc.lightapp.fragment.PatientsFragment;
+import tcc.lightapp.fragment.dialog.AddPatientDialog;
 
 public class MainMedicActivity extends BaseActivity {
     private FirebaseAuth mAuth;
@@ -26,9 +28,17 @@ public class MainMedicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_medic);
 
+        mAuth = FirebaseAuth.getInstance();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        user = mAuth.getCurrentUser();
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Runs the HTTP Request
+        //TODO: Make assynchrounus http request
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.patients_container,
@@ -47,9 +57,13 @@ public class MainMedicActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int item = menuItem.getItemId();
         if (item == R.id.action_add_patient) {
-            //TODO: add patient
+            AddPatientDialog.showDialog(getSupportFragmentManager());
+            return true;
+        } else {
+            mAuth.signOut();
+            finish();
             return true;
         }
-        return super.onOptionsItemSelected(menuItem);
+//        return super.onOptionsItemSelected(menuItem);
     }
 }

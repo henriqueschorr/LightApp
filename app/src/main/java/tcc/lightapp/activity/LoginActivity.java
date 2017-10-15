@@ -152,8 +152,7 @@ public class LoginActivity extends BaseActivity implements
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             //Navigate to Main Activity
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            startActivity(intent);
+                            navigateToMainActivity(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

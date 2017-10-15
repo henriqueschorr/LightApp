@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+
     <item
         android:id="@+id/action_add_friend"
         android:icon="@drawable/ic_person_add_white_24dp"
@@ -10,10 +11,4 @@
         android:title="Add Friend"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_do_sentiment_analysis"
-        android:icon="@drawable/ic_add_circle_white_24dp"
-        android:orderInCategory="100"
-        android:title="Do Sentiment Analysis"
-        app:showAsAction="always" />
 </menu>

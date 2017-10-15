@@ -1,15 +1,11 @@
 package tcc.lightapp.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcc.lightapp.R;
+import tcc.lightapp.activity.ReportsActivity;
 import tcc.lightapp.adapter.UserAdapter;
 import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
@@ -83,10 +80,9 @@ public class PatientsFragment extends Fragment {
                     String patientEmail = patientData[1];
 
                     User userPatient = new User(patientName, patientEmail, patientUid);
-                    if (!patients.contains(patientUid)) {
+                    if (!patients.contains(userPatient)) {
                         mPatientAdapter.addUser(userPatient);
-                        mPatientAdapter.notifyItemInserted(patients.indexOf(patientUid));
-
+                        mPatientAdapter.notifyItemInserted(patients.indexOf(userPatient));
                     }
                 }
             }
@@ -104,14 +100,14 @@ public class PatientsFragment extends Fragment {
             public void onClickUser(View view, int idx) {
                 //TODO: create patients report activity
                 //TODO:navigate to patients report
-//                User user = availableUsers.get(idx);
-//                Intent intent = new Intent(getContext(), ChatActivity.class);
-//                intent.putExtra(Constants.ARG_RECEIVER_NAME, user.userName);
+                User patient = patients.get(idx);
+                Intent intent = new Intent(getContext(), ReportsActivity.class);
+                intent.putExtra(Constants.ARG_UID, patient.authID);
 //                intent.putExtra(Constants.ARG_RECEIVER_EMAIL, user.email);
 //                intent.putExtra(Constants.ARG_RECEIVER_UID, user.authID);
 //                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
 //                intent.putExtra(Constants.ARG_INDIVIDUAL, true);
-//                startActivity(intent);
+                startActivity(intent);
             }
         };
     }

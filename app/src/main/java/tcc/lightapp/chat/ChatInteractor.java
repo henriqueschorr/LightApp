@@ -116,7 +116,7 @@ public class ChatInteractor implements ChatContract.Interactor {
                 .send();
     }
 
-    //    @Override
+    @Override
     public void getMessageFromFirebaseUser(String senderUid, String receiverUid) {
         final String room_type_1 = senderUid + "_" + receiverUid;
         final String room_type_2 = receiverUid + "_" + senderUid;
@@ -202,6 +202,7 @@ public class ChatInteractor implements ChatContract.Interactor {
         });
     }
 
+    @Override
     public void getMessageFromFirebaseGroup(String senderUid, final String groupKey) {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

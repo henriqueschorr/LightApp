@@ -6,10 +6,10 @@
     tools:context=".MainMedicActivity">
 
     <item
-        android:id="@+id/action_add_patient"
+        android:id="@+id/action_generate_report"
         android:orderInCategory="100"
-        android:title="Add Patient"
-        android:icon="@drawable/ic_person_add_white_24dp"
+        android:title="Generate Report"
+        android:icon="@drawable/ic_generate_report"
         app:showAsAction="always" />
 
 </menu>

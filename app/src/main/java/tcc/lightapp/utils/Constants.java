@@ -27,4 +27,5 @@ public class Constants {
     public static final String PROJECT_NUMBER = "912909161569";
     public static final String ARG_MESSAGES = "messages";
     public static final String ARG_PATIENTS = "patients";
+    public static final String ARG_REPORTS = "reports";
 }

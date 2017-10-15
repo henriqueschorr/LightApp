@@ -219,24 +219,6 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
             intent.putExtras(params);
             startActivity(intent);
             return true;
-        } else if (item == R.id.action_do_sentiment_analysis) {
-            URL url = null;
-            try {
-                url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid" + mSenderUid);
-            } catch (MalformedURLException e) {
-                //erro
-            }
-
-            try {
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                readStream(urlConnection.getInputStream());
-//                text.setText(readStream(urlConnection.getInputStream()));
-                urlConnection.disconnect();
-            } catch (IOException e) {
-                //error
-            }
-            return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }
@@ -245,26 +227,4 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         mUserDatabase.child(Constants.ARG_FRIENDS).child(mReceiverUid).setValue(mReceiverName + "_" + mReceiverEmail);
     }
 
-    private String readStream(InputStream in) {
-        BufferedReader reader = null;
-        StringBuffer response = new StringBuffer();
-        try {
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return response.toString();
-    }
 }

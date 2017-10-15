@@ -46,11 +46,6 @@ public class MainActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupViewPagerTabs();
-
-        //Runs the HTTP Request
-        //TODO: Make assynchrounus http request
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
     }
 
     private void setupViewPagerTabs() {

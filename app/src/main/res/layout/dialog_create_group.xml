@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <AutoCompleteTextView
         android:id="@+id/group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +12,6 @@
         android:layout_marginLeft="@dimen/margin_avg"
         android:layout_marginRight="@dimen/margin_avg"
         android:layout_marginTop="@dimen/margin_avg"
-        android:background="@drawable/rounded_rect_bg"
         android:hint="@string/prompt_group_name"
         android:inputType="text"
         android:maxLines="1" />

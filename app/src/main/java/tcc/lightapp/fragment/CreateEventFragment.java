@@ -47,7 +47,6 @@ public class CreateEventFragment extends Fragment{
         args.putString(Constants.ARG_GROUP_NAME, groupName);
         CreateEventFragment fragment = new CreateEventFragment();
         fragment.setArguments(args);
-
         return fragment;
     }
 
