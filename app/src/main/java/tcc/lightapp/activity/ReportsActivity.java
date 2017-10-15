@@ -25,30 +25,29 @@ import tcc.lightapp.models.Report;
 import tcc.lightapp.utils.Constants;
 
 public class ReportsActivity extends BaseActivity {
-    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private FirebaseUser user;
 
     private String mPatientUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report);
+        setContentView(R.layout.activity_reports);
 
-//        mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-//        user = mAuth.getCurrentUser();
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
-        mPatientUid = args.getString(Constants.ARG_UID);
+        //TODO mPatienUid is null when coming back from ReportActivity
+        if(mPatientUid == null) {
+            mPatientUid = args.getString(Constants.ARG_UID);
+        }
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.report_container,
+        fragmentTransaction.replace(R.id.reports_container,
                 ReportsFragment.newInstance(mPatientUid),
                 ReportsFragment.class.getSimpleName());
         fragmentTransaction.commit();
@@ -99,7 +98,6 @@ public class ReportsActivity extends BaseActivity {
                         Integer.parseInt(totalWords[1]));
 
                 mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS).child(String.valueOf(report.timestamp)).setValue(report);
-//                .setValue(String.valueOf(report.timestamp));
 
             } catch (IOException e) {
                 //error

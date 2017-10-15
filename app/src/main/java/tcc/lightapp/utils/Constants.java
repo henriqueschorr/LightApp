@@ -28,4 +28,11 @@ public class Constants {
     public static final String ARG_MESSAGES = "messages";
     public static final String ARG_PATIENTS = "patients";
     public static final String ARG_REPORTS = "reports";
+    public static final String ARG_REPORT_TIMESTAMP = "timestamp";
+    public static final String ARG_REPORT_POSITIVE = "positiveWords";
+    public static final String ARG_REPORT_NEGATIVE = "negativeWords";
+    public static final String ARG_REPORT_NEUTRAL = "neutralWords";
+    public static final String ARG_REPORT_CLASSIFIED = "classifiedWords";
+    public static final String ARG_REPORT_NOT_CLASSIFIED = "notClassifiedWords";
+    public static final String ARG_REPORT_TOTAL_WORDS = "totalWords";
 }

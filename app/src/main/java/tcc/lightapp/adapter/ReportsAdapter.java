@@ -21,12 +21,12 @@ import tcc.lightapp.models.Report;
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ReportsViewHolder>{
     private List<Report> reports;
     private Context context;
-//    private GroupOnClickListener groupOnClickListener;
+    private ReportOnClickListener reportOnClickListener;
 
-    public ReportsAdapter(List<Report> reports, Context context) {
+    public ReportsAdapter(List<Report> reports, Context context, ReportOnClickListener reportOnClickListener) {
         this.reports = reports;
         this.context = context;
-//        this.groupOnClickListener = groupOnClickListener;
+        this.reportOnClickListener = reportOnClickListener;
     }
 
     @Override
@@ -51,14 +51,14 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ReportsV
 
         holder.reportTimestamp.setText(date);
 
-//        if (groupOnClickListener != null) {
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    groupOnClickListener.onClickGroup(holder.itemView, position);
-//                }
-//            });
-//        }
+        if (reportOnClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reportOnClickListener.onClickReport(holder.itemView, position);
+                }
+            });
+        }
     }
 
     @Override

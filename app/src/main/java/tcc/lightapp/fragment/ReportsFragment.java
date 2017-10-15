@@ -1,5 +1,6 @@
 package tcc.lightapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import tcc.lightapp.R;
+import tcc.lightapp.activity.ReportActivity;
 import tcc.lightapp.adapter.ReportsAdapter;
 import tcc.lightapp.models.Report;
 import tcc.lightapp.utils.Constants;
@@ -53,7 +55,6 @@ public class ReportsFragment extends Fragment {
 
         Bundle mArgs = getArguments();
         mPatientUid = mArgs.getString(Constants.ARG_UID);
-
     }
 
     @Override
@@ -64,7 +65,7 @@ public class ReportsFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        mReportAdapter = new ReportsAdapter(reports, mFragmentView.getContext());
+        mReportAdapter = new ReportsAdapter(reports, mFragmentView.getContext(), onClickReport());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
@@ -97,5 +98,24 @@ public class ReportsFragment extends Fragment {
 
             }
         });
+    }
+
+    private ReportsAdapter.ReportOnClickListener onClickReport() {
+        return new ReportsAdapter.ReportOnClickListener() {
+            @Override
+            public void onClickReport(View view, int idx) {
+                Report report = reports.get(idx);
+                Intent intent = new Intent(getContext(), ReportActivity.class);
+                intent.putExtra(Constants.ARG_UID, report.userUid);
+                intent.putExtra(Constants.ARG_REPORT_TIMESTAMP, String.valueOf(report.timestamp));
+                intent.putExtra(Constants.ARG_REPORT_POSITIVE, String.valueOf(report.positiveWords));
+                intent.putExtra(Constants.ARG_REPORT_NEGATIVE, String.valueOf(report.negativeWords));
+                intent.putExtra(Constants.ARG_REPORT_NEUTRAL, String.valueOf(report.neutralWords));
+                intent.putExtra(Constants.ARG_REPORT_CLASSIFIED, String.valueOf(report.classifiedWords));
+                intent.putExtra(Constants.ARG_REPORT_NOT_CLASSIFIED, String.valueOf(report.notClassifiedWords));
+                intent.putExtra(Constants.ARG_REPORT_TOTAL_WORDS, String.valueOf(report.totalWords));
+                startActivity(intent);
+            }
+        };
     }
 }

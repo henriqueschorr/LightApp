@@ -71,6 +71,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainMedicActivity" />
         </activity>
+        <activity android:name=".activity.ReportActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ReportsActivity" />
+        </activity>
     </application>
 
 </manifest>
