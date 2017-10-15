@@ -24,9 +24,7 @@ import tcc.lightapp.utils.Constants;
 
 public class ReportFragment extends Fragment {
     private View mFragmentView;
-    private DatabaseReference mDatabase;
-    private String mPatientUid;
-    private String mReportKey;
+
     private String mPositive;
     private String mNegative;
     private String mNeutral;
@@ -34,7 +32,6 @@ public class ReportFragment extends Fragment {
     private String mNotClassified;
     private String mTotalWords;
 
-    private TextView mTimestampField;
     private TextView mPositiveField;
     private TextView mNegativeField;
     private TextView mNeutralField;
@@ -47,8 +44,6 @@ public class ReportFragment extends Fragment {
         super.onCreate(savedInstance);
 
         Bundle args = getArguments();
-        mPatientUid = args.getString(Constants.ARG_UID);
-        mReportKey = args.getString(Constants.ARG_REPORT_TIMESTAMP);
         mPositive = args.getString(Constants.ARG_REPORT_POSITIVE);
         mNegative = args.getString(Constants.ARG_REPORT_NEGATIVE);
         mNeutral = args.getString(Constants.ARG_REPORT_NEUTRAL);
@@ -63,16 +58,13 @@ public class ReportFragment extends Fragment {
         // Inflate the layout for this fragment
         mFragmentView = inflater.inflate(R.layout.fragment_report, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
         getFields();
         setFieldsContent();
 
-        return  mFragmentView;
+        return mFragmentView;
     }
 
-    public void getFields(){
-//        mTimestampField = mFragmentView.findViewById(R.id.report_timestamp);
+    public void getFields() {
         mPositiveField = mFragmentView.findViewById(R.id.report_positive);
         mNegativeField = mFragmentView.findViewById(R.id.report_negative);
         mNeutralField = mFragmentView.findViewById(R.id.report_neutral);
@@ -81,10 +73,7 @@ public class ReportFragment extends Fragment {
         mTotalWordsField = mFragmentView.findViewById(R.id.report_total_words);
     }
 
-    public void setFieldsContent(){
-
-//
-//        mTimestampField.setText(date);
+    public void setFieldsContent() {
         mPositiveField.setText(mPositive);
         mNegativeField.setText(mNegative);
         mNeutralField.setText(mNeutral);

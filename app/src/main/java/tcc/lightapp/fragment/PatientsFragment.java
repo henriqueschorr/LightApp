@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +33,7 @@ public class PatientsFragment extends Fragment {
     private View mFragmentView;
     protected RecyclerView mRecyclerView;
     private UserAdapter mPatientAdapter;
+    private ProgressBar mProgressBar;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -61,6 +63,8 @@ public class PatientsFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentView.getContext()));
         mRecyclerView.setAdapter(mPatientAdapter);
 
+        mProgressBar = (ProgressBar) mFragmentView.findViewById(R.id.progress_bar);
+
         getPatients();
         return mFragmentView;
     }
@@ -68,6 +72,8 @@ public class PatientsFragment extends Fragment {
     public void getPatients() {
         DatabaseReference userDatabase = mDatabase.child(Constants.ARG_USERS).getRef();
         DatabaseReference patientDatabase = userDatabase.child(user.getUid()).child(Constants.ARG_PATIENTS);
+
+        mProgressBar.setVisibility(View.VISIBLE);
 
         patientDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,6 +91,7 @@ public class PatientsFragment extends Fragment {
                         mPatientAdapter.notifyItemInserted(patients.indexOf(userPatient));
                     }
                 }
+                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override

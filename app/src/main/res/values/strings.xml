@@ -8,6 +8,9 @@
     <string name="auth_failed">Falha na autenticação</string>
     <string name="email_not_found">Email não encontrado</string>
 
+    <string name="report_generated">Relatório gerado</string>
+    <string name="report_generating">Gerando relatório</string>
+
     <string name="action_sign_in">Entrar</string>
     <string name="action_register">Registrar</string>
     <string name="action_ok">Ok</string>
@@ -23,6 +26,7 @@
     <string name="create_event">Criar evento</string>
 
     <string name="isPrivate">Privado</string>
+    <string name="required">Obrigatório</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>

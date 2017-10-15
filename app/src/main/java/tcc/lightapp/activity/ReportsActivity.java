@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,50 +68,58 @@ public class ReportsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int item = menuItem.getItemId();
         if (item == R.id.action_generate_report) {
-            URL url = null;
-            try {
-                url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid=" + mPatientUid);
-            } catch (MalformedURLException e) {
-                //erro
-            }
+            toast(getResources().getString(R.string.report_generating));
 
-            try {
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
+            generateReport();
 
-                String response = readStream(urlConnection.getInputStream());
-
-                urlConnection.disconnect();
-
-                response = response.replaceAll("[\\{\\}\"]+", "");
-                String[] data = response.split(",");
-                String[] positiveWord = data[0].split(":");
-                String[] negativeWord = data[1].split(":");
-                String[] neutralWord = data[2].split(":");
-                String[] classifiedWord = data[3].split(":");
-                String[] notClassifiedWord = data[4].split(":");
-                String[] totalWords = data[5].split(":");
-
-                Report report = new Report(
-                        System.currentTimeMillis(),
-                        mPatientUid,
-                        Integer.parseInt(positiveWord[1]),
-                        Integer.parseInt(negativeWord[1]),
-                        Integer.parseInt(neutralWord[1]),
-                        Integer.parseInt(classifiedWord[1]),
-                        Integer.parseInt(notClassifiedWord[1]),
-                        Integer.parseInt(totalWords[1]));
-
-                DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
-//                userReportDatabase.child(String.valueOf(report.timestamp)).setValue(report);
-                userReportDatabase.child(String.valueOf(report.timestamp)).setValue(String.valueOf(report.timestamp));
-
-            } catch (IOException e) {
-                //error
-            }
             return true;
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    public void generateReport(){
+        URL url = null;
+        try {
+            url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid=" + mPatientUid);
+        } catch (MalformedURLException e) {
+            //erro
+        }
+
+        try {
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+
+            String response = readStream(urlConnection.getInputStream());
+
+            urlConnection.disconnect();
+
+            response = response.replaceAll("[\\{\\}\"]+", "");
+            String[] data = response.split(",");
+            String[] positiveWord = data[0].split(":");
+            String[] negativeWord = data[1].split(":");
+            String[] neutralWord = data[2].split(":");
+            String[] classifiedWord = data[3].split(":");
+            String[] notClassifiedWord = data[4].split(":");
+            String[] totalWords = data[5].split(":");
+
+            Report report = new Report(
+                    System.currentTimeMillis(),
+                    mPatientUid,
+                    Integer.parseInt(positiveWord[1]),
+                    Integer.parseInt(negativeWord[1]),
+                    Integer.parseInt(neutralWord[1]),
+                    Integer.parseInt(classifiedWord[1]),
+                    Integer.parseInt(notClassifiedWord[1]),
+                    Integer.parseInt(totalWords[1]));
+
+            DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
+            DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
+            userReportDatabase.child(String.valueOf(report.timestamp)).setValue(String.valueOf(report.timestamp));
+            reportDatabase.child(String.valueOf(report.timestamp)).setValue(report);
+
+        } catch (IOException e) {
+            //error
+        }
     }
 
     private String readStream(InputStream in) {

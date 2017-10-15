@@ -9,9 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,10 +31,9 @@ public class ReportsFragment extends Fragment {
     private View mFragmentView;
     protected RecyclerView mRecyclerView;
     private ReportsAdapter mReportAdapter;
+    private ProgressBar mProgressBar;
 
-    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    private FirebaseUser user;
 
     private List<Report> reports = new ArrayList<Report>();
 
@@ -61,9 +59,9 @@ public class ReportsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentView = inflater.inflate(R.layout.fragment_patients, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        user = mAuth.getCurrentUser();
+
+        mProgressBar = (ProgressBar) mFragmentView.findViewById(R.id.progress_bar);
 
         mReportAdapter = new ReportsAdapter(reports, mFragmentView.getContext(), onClickReport());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
@@ -77,20 +75,23 @@ public class ReportsFragment extends Fragment {
     }
 
     public void getReports() {
-        DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
+        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
 
-        userReportDatabase.addValueEventListener(new ValueEventListener() {
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        reportDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 reports = mReportAdapter.getReports();
                 for (DataSnapshot reportSnapshot : dataSnapshot.getChildren()) {
                     Report report = reportSnapshot.getValue(Report.class);
-                    if (!reports.contains(report)) {
+                    if (!reports.contains(report) && report.userUid.equals(mPatientUid)) {
                         mReportAdapter.addReport(report);
                         Collections.reverse(reports);
                         mReportAdapter.notifyItemInserted(reports.indexOf(report));
                     }
                 }
+                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override

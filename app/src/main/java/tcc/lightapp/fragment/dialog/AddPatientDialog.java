@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import tcc.lightapp.R;
+import tcc.lightapp.activity.MainMedicActivity;
 import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
 
@@ -29,8 +31,6 @@ import tcc.lightapp.utils.Constants;
 
 public class AddPatientDialog extends DialogFragment {
     private EditText mPatientEmailField = null;
-    private boolean mEmailFound = false;
-
 
     public static void showDialog(android.support.v4.app.FragmentManager fm) {
         FragmentTransaction ft = fm.beginTransaction();
@@ -55,9 +55,8 @@ public class AddPatientDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String patientEmail = mPatientEmailField.getText().toString();
-                                if (addPatient(patientEmail)) {
-                                    dialog.dismiss();
-                                }
+                                addPatient(patientEmail);
+                                dialog.dismiss();
                             }
                         }
                 ).setNegativeButton(R.string.action_cancel,
@@ -68,7 +67,7 @@ public class AddPatientDialog extends DialogFragment {
                         }).create();
     }
 
-    public boolean addPatient(final String patientEmail) {
+    public void addPatient(final String patientEmail) {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -83,7 +82,6 @@ public class AddPatientDialog extends DialogFragment {
                     User patient = userSnapshot.getValue(User.class);
                     if (patient.email.equals(patientEmail)) {
                         userDatabase.child(user.getUid()).child(Constants.ARG_PATIENTS).child(patient.authID).setValue(patient.userName + "_" + patientEmail);
-                        mEmailFound = true;
                         break;
                     }
                 }
@@ -94,12 +92,5 @@ public class AddPatientDialog extends DialogFragment {
 
             }
         });
-
-        if (mEmailFound) {
-            return true;
-        } else {
-            mPatientEmailField.setError("teste");
-            return false;
-        }
     }
 }

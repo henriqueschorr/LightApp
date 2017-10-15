@@ -20,8 +20,6 @@ import tcc.lightapp.fragment.dialog.AddPatientDialog;
 
 public class MainMedicActivity extends BaseActivity {
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
-    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +27,7 @@ public class MainMedicActivity extends BaseActivity {
         setContentView(R.layout.activity_main_medic);
 
         mAuth = FirebaseAuth.getInstance();
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        user = mAuth.getCurrentUser();
+
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,7 +56,7 @@ public class MainMedicActivity extends BaseActivity {
         if (item == R.id.action_add_patient) {
             AddPatientDialog.showDialog(getSupportFragmentManager());
             return true;
-        }  else if (item == android.R.id.home) {
+        } else if (item == android.R.id.home) {
             mAuth.signOut();
             finish();
             return true;
