@@ -2,6 +2,7 @@ package tcc.lightapp.models;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,23 @@ public class Event {
     public String date;
     public String time;
     public Map<String, String> groupsKey;
-    public List<String> confirmedUsersUid;
+    public Map<String, String> invitedUsersUid;
+    public Map<String, String> confirmedUsersUid;
 
     public Event(){}
 
-    public Event(String eventKey, String adminUid, String eventName, String location, String date, String time, Map<String, String> groupsKey) {
+    public Event(String eventKey, String adminUid, String userName, String userEmail, String eventName, String location, String date, String time) {
+        this.eventKey = eventKey;
+        this.adminUid = adminUid;
+        this.eventName = eventName;
+        this.location = location;
+        this.date = date;
+        this.time = time;
+        invitedUsersUid = new HashMap<>();
+        invitedUsersUid.put(adminUid, userName + "_" + userEmail);
+    }
+
+    public Event(String eventKey, String adminUid, String userName, String userEmail, String eventName, String location, String date, String time, Map<String, String> groupsKey) {
         this.eventKey = eventKey;
         this.adminUid = adminUid;
         this.eventName = eventName;
@@ -29,6 +42,8 @@ public class Event {
         this.date = date;
         this.time = time;
         this.groupsKey = groupsKey;
+        invitedUsersUid = new HashMap<>();
+        invitedUsersUid.put(adminUid, userName + "_" + userEmail);
     }
 
     @Override

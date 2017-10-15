@@ -18,17 +18,23 @@ public class CreateEventActivity extends BaseActivity {
 
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
-        String mGroupKey = args.getString(Constants.ARG_GROUP_KEY);
-        String mGroupName = args.getString(Constants.ARG_GROUP_NAME);
+
+        if(args != null) {
+            String mGroupKey = args.getString(Constants.ARG_GROUP_KEY);
+            String mGroupName = args.getString(Constants.ARG_GROUP_NAME);
+        }
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.create_event);
 
+        CreateEventFragment createEventFragment = new CreateEventFragment();
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.create_event_container,
-                CreateEventFragment.newInstance(mGroupKey, mGroupName),
+                createEventFragment,
                 CreateEventFragment.class.getSimpleName());
+        createEventFragment.setArguments(args);
         fragmentTransaction.commit();
     }
 

@@ -20,13 +20,13 @@ public class GroupRoom {
     public GroupRoom(){
     }
 
-    public GroupRoom(String groupKey, String groupName, String adminUid, boolean isPrivate) {
+    public GroupRoom(String groupKey, String groupName, String adminUid, String userName, String userEmail, boolean isPrivate) {
         this.groupKey = groupKey;
         this.groupName = groupName;
         this.adminUid = adminUid;
         this.isPrivate = isPrivate;
         this.membersUid = new HashMap<String, String>();
-        this.membersUid.put(adminUid, "true");
+        this.membersUid.put(adminUid, userName + "_" + userEmail);
     }
 
     @Override

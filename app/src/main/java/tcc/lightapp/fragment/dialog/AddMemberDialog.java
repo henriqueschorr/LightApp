@@ -76,7 +76,7 @@ public class AddMemberDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 for(User friend : friendsSelected) {
-                                    mDatabase.child(Constants.ARG_GROUPS).child(groupKey).child(Constants.ARG_GROUP_MEMBER).child(friend.authID).setValue(Constants.ARG_DEFAULT_VALUE);
+                                    mDatabase.child(Constants.ARG_GROUPS).child(groupKey).child(Constants.ARG_GROUP_MEMBER).child(friend.authID).setValue(friend.userName + "_" + friend.email);
                                 }
                                 dialog.dismiss();
                             }

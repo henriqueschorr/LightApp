@@ -5,6 +5,11 @@ package tcc.lightapp.utils;
  */
 public class Constants {
     public static final String ARG_USERS = "users";
+    public static final String ARG_USER_EMAIL = "email";
+    public static final String ARG_EVENT_NAME = "eventName";
+    public static final String ARG_EVENT_LOCATION = "location";
+    public static final String ARG_EVENT_DATE = "date";
+    public static final String ARG_EVENT_TIME = "time";
     public static final String ARG_RECEIVER_NAME = "receiverName";
     public static final String ARG_RECEIVER_EMAIL = "receiverEmail";
     public static final String ARG_RECEIVER_UID = "receiver_uid";
@@ -35,4 +40,5 @@ public class Constants {
     public static final String ARG_REPORT_CLASSIFIED = "classifiedWords";
     public static final String ARG_REPORT_NOT_CLASSIFIED = "notClassifiedWords";
     public static final String ARG_REPORT_TOTAL_WORDS = "totalWords";
+    public static final String ARG_INVITED_USERS = "invitedUsersUid";
 }

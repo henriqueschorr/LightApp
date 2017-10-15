@@ -77,11 +77,8 @@ public class CreateGroupDialog extends DialogFragment {
         DatabaseReference groups = database.child(Constants.ARG_GROUPS).push();
         String groupKey = groups.getKey();
 
-        GroupRoom groupRoom = new GroupRoom(groupKey, groupName, user.getUid(), isPrivate);
+        GroupRoom groupRoom = new GroupRoom(groupKey, groupName, user.getUid(), user.getDisplayName(), user.getEmail(), isPrivate);
 
         groups.setValue(groupRoom);
-
-        //TODO: add groups to events
-//        database.child(Constants.ARG_USERS).child(user.getUid()).child(Constants.ARG_GROUP_ADMIN).child(groupKey).setValue(groupName);
     }
 }

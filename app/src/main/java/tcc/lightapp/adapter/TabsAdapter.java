@@ -29,12 +29,6 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-//        if (position == 0) {
-//            return "Individual";
-//        } else if (position == 1) {
-//            return "Grupo";
-//        }
-//        return "Event";
         return null;
     }
 
@@ -44,7 +38,6 @@ public class TabsAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             f = IndividualFragment.newInstance();
         } else if (position == 1){
-            //TODO: friendsFragment
             f = FriendsFragment.newInstance();
         } else if (position == 2) {
             f = GroupsFragment.newInstance();

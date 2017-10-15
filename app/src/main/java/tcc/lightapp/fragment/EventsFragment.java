@@ -1,9 +1,11 @@
 package tcc.lightapp.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcc.lightapp.R;
+import tcc.lightapp.activity.CreateEventActivity;
 import tcc.lightapp.adapter.EventsAdapter;
 import tcc.lightapp.models.Event;
 import tcc.lightapp.utils.Constants;
@@ -70,18 +73,8 @@ public class EventsFragment extends Fragment {
         return mFragmentView;
     }
 
-    public void setClickListener() {
-        FloatingActionButton createGroupButton = (FloatingActionButton) mFragmentView.findViewById(R.id.create_event);
-
-        createGroupButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-//                TODO: Create Activity with event creation form
-            }
-        });
-    }
-
     public void getEvents() {
-        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_EVENTS).getRef();
+        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_EVENTS);
 
         mProgressBar.setVisibility(View.VISIBLE);
 
@@ -102,6 +95,24 @@ public class EventsFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public void setClickListener() {
+        FloatingActionButton createGroupButton = (FloatingActionButton) mFragmentView.findViewById(R.id.create_event);
+
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+//                CreateEventFragment createEventFragment = new CreateEventFragment();
+//
+//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.create_event_container,
+//                        createEventFragment,
+//                        CreateEventFragment.class.getSimpleName());
+//                fragmentTransaction.commit();
+                Intent intent = new Intent(getContext(), CreateEventActivity.class);
+                startActivity(intent);
             }
         });
     }

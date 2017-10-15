@@ -78,7 +78,6 @@ public class LoginActivity extends BaseActivity implements
         mRegisterButton.setOnClickListener(this);
         mLoginButton.setOnClickListener(this);
 
-//        TODO: Create loading effect when getting data
     }
 
     @Override
@@ -86,7 +85,6 @@ public class LoginActivity extends BaseActivity implements
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
         if (mAuth.getCurrentUser() != null) {
-            //Navigate to Main Activity
             FirebaseUser user = mAuth.getCurrentUser();
             navigateToMainActivity(user);
         }

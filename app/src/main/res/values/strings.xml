@@ -10,6 +10,7 @@
 
     <string name="report_generated">Relatório gerado</string>
     <string name="report_generating">Gerando relatório</string>
+    <string name="event_created">Evento criado</string>
 
     <string name="action_sign_in">Entrar</string>
     <string name="action_register">Registrar</string>
@@ -22,9 +23,10 @@
 
     <string name="add_friend">Adicionar amigo</string>
     <string name="add_member">Adicionar amigos ao grupo</string>
-    <string name="add_patient">Adicionar Paciente</string>
-    <string name="create_group">Criar Grupo</string>
+    <string name="add_patient">Adicionar paciente</string>
+    <string name="create_group">Criar grupo</string>
     <string name="create_event">Criar evento</string>
+    <string name="select_group">Selecione um grupo</string>
 
     <string name="isPrivate">Privado</string>
     <string name="required">Obrigatório</string>
@@ -50,6 +52,4 @@
     <string name="report_not_classified">Palavras não classificadas</string>
     <string name="report_total_words">Total de palavras</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
