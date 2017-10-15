@@ -98,15 +98,10 @@ public class PatientsFragment extends Fragment {
         return new UserAdapter.UserOnClickListener() {
             @Override
             public void onClickUser(View view, int idx) {
-                //TODO: create patients report activity
-                //TODO:navigate to patients report
                 User patient = patients.get(idx);
                 Intent intent = new Intent(getContext(), ReportsActivity.class);
                 intent.putExtra(Constants.ARG_UID, patient.authID);
-//                intent.putExtra(Constants.ARG_RECEIVER_EMAIL, user.email);
-//                intent.putExtra(Constants.ARG_RECEIVER_UID, user.authID);
-//                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
-//                intent.putExtra(Constants.ARG_INDIVIDUAL, true);
+                intent.putExtra(Constants.ARG_USER_NAME, patient.userName);
                 startActivity(intent);
             }
         };

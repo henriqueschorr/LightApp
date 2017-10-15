@@ -18,7 +18,7 @@ public class User {
 //    public Map<String, String> groupsAdmin;
     public Map<String, String> friends;
     public Map<String, String> patients;
-    public Map<String, String> reports;
+    public Map<String, Map<String, String>> reports;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)

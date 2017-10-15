@@ -23,7 +23,7 @@ public class CreateEventActivity extends BaseActivity {
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.createEvent);
+        getSupportActionBar().setTitle(R.string.create_event);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.create_event_container,

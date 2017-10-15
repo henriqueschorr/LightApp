@@ -28,6 +28,7 @@ public class ReportsActivity extends BaseActivity {
     private DatabaseReference mDatabase;
 
     private String mPatientUid;
+    private String mPatientName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,11 @@ public class ReportsActivity extends BaseActivity {
 
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
-        //TODO mPatienUid is null when coming back from ReportActivity
-        if(mPatientUid == null) {
-            mPatientUid = args.getString(Constants.ARG_UID);
-        }
+
+        mPatientUid = args.getString(Constants.ARG_UID);
+        mPatientName = args.getString(Constants.ARG_USER_NAME);
+
+        this.setTitle(mPatientName);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.reports_container,
@@ -97,7 +99,9 @@ public class ReportsActivity extends BaseActivity {
                         Integer.parseInt(notClassifiedWord[1]),
                         Integer.parseInt(totalWords[1]));
 
-                mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS).child(String.valueOf(report.timestamp)).setValue(report);
+                DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
+//                userReportDatabase.child(String.valueOf(report.timestamp)).setValue(report);
+                userReportDatabase.child(String.valueOf(report.timestamp)).setValue(String.valueOf(report.timestamp));
 
             } catch (IOException e) {
                 //error

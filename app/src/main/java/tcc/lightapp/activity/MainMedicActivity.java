@@ -59,11 +59,11 @@ public class MainMedicActivity extends BaseActivity {
         if (item == R.id.action_add_patient) {
             AddPatientDialog.showDialog(getSupportFragmentManager());
             return true;
-        } else {
+        }  else if (item == android.R.id.home) {
             mAuth.signOut();
             finish();
             return true;
         }
-//        return super.onOptionsItemSelected(menuItem);
+        return super.onOptionsItemSelected(menuItem);
     }
 }

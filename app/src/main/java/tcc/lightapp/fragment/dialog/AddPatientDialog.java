@@ -28,6 +28,9 @@ import tcc.lightapp.utils.Constants;
  */
 
 public class AddPatientDialog extends DialogFragment {
+    private EditText mPatientEmailField = null;
+    private boolean mEmailFound = false;
+
 
     public static void showDialog(android.support.v4.app.FragmentManager fm) {
         FragmentTransaction ft = fm.beginTransaction();
@@ -43,7 +46,7 @@ public class AddPatientDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = (View) inflater.inflate(R.layout.dialog_add_patient, null);
-        final EditText patientEmailField = (EditText) view.findViewById(R.id.patient_email);
+        mPatientEmailField = (EditText) view.findViewById(R.id.patient_email);
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_patient)
@@ -51,9 +54,10 @@ public class AddPatientDialog extends DialogFragment {
                 .setPositiveButton(R.string.action_add,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String patientEmail = patientEmailField.getText().toString();
-                                addPatient(patientEmail);
-                                dialog.dismiss();
+                                String patientEmail = mPatientEmailField.getText().toString();
+                                if (addPatient(patientEmail)) {
+                                    dialog.dismiss();
+                                }
                             }
                         }
                 ).setNegativeButton(R.string.action_cancel,
@@ -64,20 +68,22 @@ public class AddPatientDialog extends DialogFragment {
                         }).create();
     }
 
-    public void addPatient(final String patientEmail) {
+    public boolean addPatient(final String patientEmail) {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference userDatabase = database.child(Constants.ARG_USERS);
         final FirebaseUser user = auth.getCurrentUser();
 
+
         userDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User patient = userSnapshot.getValue(User.class);
-                    if(patient.email.equals(patientEmail)) {
+                    if (patient.email.equals(patientEmail)) {
                         userDatabase.child(user.getUid()).child(Constants.ARG_PATIENTS).child(patient.authID).setValue(patient.userName + "_" + patientEmail);
+                        mEmailFound = true;
                         break;
                     }
                 }
@@ -88,5 +94,12 @@ public class AddPatientDialog extends DialogFragment {
 
             }
         });
+
+        if (mEmailFound) {
+            return true;
+        } else {
+            mPatientEmailField.setError("teste");
+            return false;
+        }
     }
 }

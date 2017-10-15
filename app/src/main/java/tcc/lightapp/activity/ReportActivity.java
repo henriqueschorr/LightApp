@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import tcc.lightapp.R;
 import tcc.lightapp.fragment.ReportFragment;
 import tcc.lightapp.utils.Constants;
 
 public class ReportActivity extends BaseActivity {
+    public String mReportTimestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,14 @@ public class ReportActivity extends BaseActivity {
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
 
+        mReportTimestamp = args.getString(Constants.ARG_REPORT_TIMESTAMP);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Long timestamp = Long.parseLong(mReportTimestamp);
+        Date resultdate = new Date(timestamp);
+        String date = sdf.format(resultdate);
+
+        this.setTitle(getResources().getString(R.string.report) + " - " + date);
+
         ReportFragment fragment = new ReportFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -35,5 +48,13 @@ public class ReportActivity extends BaseActivity {
         fragmentTransaction.commit();
     }
 
-    //TODO: FIX BACK FUNCTION
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

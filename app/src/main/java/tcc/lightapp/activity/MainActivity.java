@@ -91,10 +91,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        setAvailability(false);
-        mAuth.signOut();
-        finish();
-        return true;
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            setAvailability(false);
+            mAuth.signOut();
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void setAvailability(boolean available) {

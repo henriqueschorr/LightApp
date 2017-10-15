@@ -20,4 +20,7 @@
 
     <dimen name="user_icon_width">36dp</dimen>
     <dimen name="user_icon_height">36dp</dimen>
+
+    <dimen name="label_size">20sp</dimen>
+    <dimen name="text_size">17sp</dimen>
 </resources>

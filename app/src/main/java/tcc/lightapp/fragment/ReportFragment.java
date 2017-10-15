@@ -33,7 +33,14 @@ public class ReportFragment extends Fragment {
     private String mClassified;
     private String mNotClassified;
     private String mTotalWords;
+
     private TextView mTimestampField;
+    private TextView mPositiveField;
+    private TextView mNegativeField;
+    private TextView mNeutralField;
+    private TextView mClassifiedField;
+    private TextView mNotClassifiedField;
+    private TextView mTotalWordsField;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -65,16 +72,25 @@ public class ReportFragment extends Fragment {
     }
 
     public void getFields(){
-        mTimestampField = mFragmentView.findViewById(R.id.report_timestamp);
+//        mTimestampField = mFragmentView.findViewById(R.id.report_timestamp);
+        mPositiveField = mFragmentView.findViewById(R.id.report_positive);
+        mNegativeField = mFragmentView.findViewById(R.id.report_negative);
+        mNeutralField = mFragmentView.findViewById(R.id.report_neutral);
+        mClassifiedField = mFragmentView.findViewById(R.id.report_classified);
+        mNotClassifiedField = mFragmentView.findViewById(R.id.report_not_classified);
+        mTotalWordsField = mFragmentView.findViewById(R.id.report_total_words);
     }
 
     public void setFieldsContent(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Long timestamp = Long.parseLong(mReportKey);
-        Date resultdate = new Date(timestamp);
-        String date = sdf.format(resultdate);
 
-        mTimestampField.setText(date);
+//
+//        mTimestampField.setText(date);
+        mPositiveField.setText(mPositive);
+        mNegativeField.setText(mNegative);
+        mNeutralField.setText(mNeutral);
+        mClassifiedField.setText(mClassified);
+        mNotClassifiedField.setText(mNotClassified);
+        mTotalWordsField.setText(mTotalWords);
     }
 
 }
