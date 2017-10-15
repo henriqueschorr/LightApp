@@ -1,16 +1,13 @@
 package tcc.lightapp.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -24,40 +21,37 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import tcc.lightapp.R;
 import tcc.lightapp.activity.ChatActivity;
-import tcc.lightapp.activity.MainActivity;
 import tcc.lightapp.adapter.UserAdapter;
+import tcc.lightapp.fragment.dialog.AddFriendDialog;
 import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
 
-
-public class IndividualFragment extends Fragment {
+public class FriendsFragment extends Fragment {
     private View mFragmentView;
     protected RecyclerView mRecyclerView;
-    private UserAdapter mUserAdapter;
+    private UserAdapter mFriendAdapter;
     private ProgressBar mProgressBar;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
 
-    private List<User> availableUsers = new ArrayList<User>();
+    private List<User> friends = new ArrayList<User>();
 
-    private static final String TAG = "UserList";
+    private static final String TAG = "FriendList";
 
-    public static IndividualFragment newInstance() {
-        IndividualFragment fragment = new IndividualFragment();
+    public static FriendsFragment newInstance() {
+        FriendsFragment fragment = new FriendsFragment();
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFragmentView = inflater.inflate(R.layout.fragment_individual, container, false);
+        mFragmentView = inflater.inflate(R.layout.fragment_friends, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -65,40 +59,40 @@ public class IndividualFragment extends Fragment {
 
         mProgressBar = (ProgressBar) mFragmentView.findViewById(R.id.progress_bar);
 
-        mUserAdapter = new UserAdapter(availableUsers, mFragmentView.getContext(), onClickUser());
+        mFriendAdapter = new UserAdapter(friends, mFragmentView.getContext(), onClickUser());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentView.getContext()));
-        mRecyclerView.setAdapter(mUserAdapter);
+        mRecyclerView.setAdapter(mFriendAdapter);
 
-        getAvailableUsers();
+        getFriends();
+
+        setClickListener();
+
         return mFragmentView;
     }
 
-    public void getAvailableUsers() {
-        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_USERS).getRef();
+    public void getFriends() {
+        final DatabaseReference userDatabase = mDatabase.child(Constants.ARG_USERS);
+        DatabaseReference friendDatabase = userDatabase.child(user.getUid()).child(Constants.ARG_FRIENDS);
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        friendDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                availableUsers = mUserAdapter.getUsers();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    if (userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString() == "true") {
-                        Log.d(TAG, userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString());
-                        User availableUser = userSnapshot.getValue(User.class);
-                        if (!availableUsers.contains(availableUser) && !availableUser.authID.equals(user.getUid()) && !isMedic(availableUser)) {
-                            mUserAdapter.addUser(availableUser);
-                            mUserAdapter.notifyItemInserted(availableUsers.indexOf(availableUser));
-                        }
-                    } else {
-                        User availableUser = userSnapshot.getValue(User.class);
-                        if (availableUsers.contains(availableUser)) {
-                            mUserAdapter.removeUser(availableUsers.indexOf(availableUser));
-                            mUserAdapter.notifyItemRemoved(availableUsers.indexOf(availableUser));
-                        }
+                friends = mFriendAdapter.getUsers();
+                for (DataSnapshot friendSnapshot : dataSnapshot.getChildren()) {
+                    String friendUid = friendSnapshot.getKey();
+                    String[] friendData = friendSnapshot.getValue().toString().split("_");
+                    String friendName = friendData[0];
+                    String friendEmail = friendData[1];
+
+                    User userFriend = new User(friendName, friendEmail, friendUid);
+                    if (!friends.contains(userFriend)) {
+                        mFriendAdapter.addUser(userFriend);
+                        mFriendAdapter.notifyItemInserted(friends.indexOf(userFriend));
                     }
                 }
                 mProgressBar.setVisibility(View.GONE);
@@ -109,13 +103,24 @@ public class IndividualFragment extends Fragment {
 
             }
         });
+
+    }
+
+    public void setClickListener() {
+        FloatingActionButton addFriendButton = (FloatingActionButton) mFragmentView.findViewById(R.id.add_friend);
+
+        addFriendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                AddFriendDialog.showDialog(getFragmentManager());
+            }
+        });
     }
 
     private UserAdapter.UserOnClickListener onClickUser() {
         return new UserAdapter.UserOnClickListener() {
             @Override
             public void onClickUser(View view, int idx) {
-                User user = availableUsers.get(idx);
+                User user = friends.get(idx);
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra(Constants.ARG_RECEIVER_NAME, user.userName);
                 intent.putExtra(Constants.ARG_RECEIVER_EMAIL, user.email);
@@ -125,13 +130,5 @@ public class IndividualFragment extends Fragment {
                 startActivity(intent);
             }
         };
-    }
-
-    public boolean isMedic(User user) {
-        String[] emailSplit = user.email.split("@");
-        if (emailSplit[1].contains("medic")) {
-            return true;
-        }
-        return false;
     }
 }

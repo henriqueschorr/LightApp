@@ -50,12 +50,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.GroupActivity">
+        <activity android:name=".activity.GroupsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.EventActivity" />
+        <activity android:name=".activity.EventsActivity" />
         <activity android:name=".activity.CreateEventActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

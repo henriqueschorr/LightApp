@@ -16,12 +16,13 @@ import tcc.lightapp.models.Event;
  * Created by Henrique on 05/10/2017.
  */
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventsViewHolder>{
+public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsViewHolder> {
     private List<Event> events;
     private Context context;
+    //TODO: create event details
 //    private GroupOnClickListener groupOnClickListener;
 
-    public EventAdapter(List<Event> events, Context context) {
+    public EventsAdapter(List<Event> events, Context context) {
         this.events = events;
         this.context = context;
 //        this.groupOnClickListener = groupOnClickListener;

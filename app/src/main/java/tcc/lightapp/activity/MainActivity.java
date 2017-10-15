@@ -24,9 +24,10 @@ import tcc.lightapp.utils.Constants;
 import tcc.lightapp.utils.SharedPrefUtil;
 
 public class MainActivity extends BaseActivity {
-    private int mTabIndex;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private int mTabIndex;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -60,6 +61,8 @@ public class MainActivity extends BaseActivity {
         mTabLayout.setTabTextColors(cor, cor);
 
         mViewPager.setOffscreenPageLimit(2);
+
+        setTabIcons();
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -113,8 +116,16 @@ public class MainActivity extends BaseActivity {
         mDatabase.updateChildren(childUpdates);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu){
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void setTabIcons(){
+        int[] tabIcons = {
+                R.drawable.ic_person_white_24dp,
+                R.drawable.ic_favorite_white_24dp,
+                R.drawable.ic_group_white_24dp,
+                R.drawable.ic_assignment_white_24dp
+        };
+
+        for(int i=0; i<mTabLayout.getTabCount(); i++) {
+            mTabLayout.getTabAt(i).setIcon(tabIcons[i]);
+        }
     }
 }

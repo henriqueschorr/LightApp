@@ -3,19 +3,14 @@ package tcc.lightapp.fragment.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,9 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcc.lightapp.R;
-import tcc.lightapp.activity.ChatActivity;
 import tcc.lightapp.adapter.UserAdapter;
-import tcc.lightapp.fragment.GroupFragment;
 import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
 
@@ -111,9 +104,9 @@ public class AddMemberDialog extends DialogFragment {
                     String friendEmail = friendData[1];
 
                     User userFriend = new User(friendName, friendEmail, friendUid);
-                    if (!friends.contains(friendUid)) {
+                    if (!friends.contains(userFriend)) {
                         mFriendAdapter.addUser(userFriend);
-                        mFriendAdapter.notifyItemInserted(friends.indexOf(friendUid));
+                        mFriendAdapter.notifyItemInserted(friends.indexOf(userFriend));
 
                     }
                 }

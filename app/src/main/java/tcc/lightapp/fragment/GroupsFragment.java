@@ -8,10 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,26 +26,25 @@ import java.util.List;
 
 import tcc.lightapp.R;
 import tcc.lightapp.activity.ChatActivity;
-import tcc.lightapp.adapter.GroupAdapter;
+import tcc.lightapp.adapter.GroupsAdapter;
 import tcc.lightapp.fragment.dialog.CreateGroupDialog;
 import tcc.lightapp.models.GroupRoom;
-import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class GroupFragment extends Fragment {
+public class GroupsFragment extends Fragment {
     private View mFragmentView;
+    protected RecyclerView mRecyclerView;
+    private GroupsAdapter mGroupAdapter;
+    private ProgressBar mProgressBar;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private List<GroupRoom> groupRooms = new ArrayList<GroupRoom>();
-    private GroupAdapter mGroupAdapter;
-    protected RecyclerView mRecyclerView;
 
-    public static GroupFragment newInstance() {
-        GroupFragment fragment = new GroupFragment();
+    private List<GroupRoom> groupRooms = new ArrayList<GroupRoom>();
+
+    public static GroupsFragment newInstance() {
+        GroupsFragment fragment = new GroupsFragment();
         return fragment;
     }
 
@@ -59,7 +58,9 @@ public class GroupFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        mGroupAdapter = new GroupAdapter(groupRooms, mFragmentView.getContext(), onClickGroup());
+        mProgressBar = (ProgressBar) mFragmentView.findViewById(R.id.progress_bar);
+
+        mGroupAdapter = new GroupsAdapter(groupRooms, mFragmentView.getContext(), onClickGroup());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
@@ -73,6 +74,34 @@ public class GroupFragment extends Fragment {
         return mFragmentView;
     }
 
+    public void getGroupRooms() {
+        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_GROUPS).getRef();
+
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                groupRooms = mGroupAdapter.getGroupRooms();
+                for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
+                    GroupRoom groupRoom = groupSnapshot.getValue(GroupRoom.class);
+                    if (!groupRooms.contains(groupRoom)) {
+                        if ((groupRoom.isPrivate && groupRoom.membersUid.containsKey(user.getUid())) || !groupRoom.isPrivate) {
+                            mGroupAdapter.addGroupRoom(groupRoom);
+                            mGroupAdapter.notifyItemInserted(groupRooms.indexOf(groupRoom));
+                        }
+                    }
+                }
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void setClickListener() {
         FloatingActionButton createGroupButton = (FloatingActionButton) mFragmentView.findViewById(R.id.create_group);
 
@@ -83,33 +112,8 @@ public class GroupFragment extends Fragment {
         });
     }
 
-    public void getGroupRooms() {
-        DatabaseReference databaseReference = mDatabase.child(Constants.ARG_GROUPS).getRef();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                groupRooms = mGroupAdapter.getGroupRooms();
-                for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
-                    GroupRoom groupRoom = groupSnapshot.getValue(GroupRoom.class);
-                    if(!groupRooms.contains(groupRoom)) {
-                        if ((groupRoom.isPrivate && groupRoom.membersUid.containsKey(user.getUid())) || !groupRoom.isPrivate){
-                            mGroupAdapter.addGroupRoom(groupRoom);
-                            mGroupAdapter.notifyItemInserted(groupRooms.indexOf(groupRoom));
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private GroupAdapter.GroupOnClickListener onClickGroup() {
-        return new GroupAdapter.GroupOnClickListener() {
+    private GroupsAdapter.GroupOnClickListener onClickGroup() {
+        return new GroupsAdapter.GroupOnClickListener() {
             @Override
             public void onClickGroup(View view, int idx) {
                 GroupRoom groupRoom = groupRooms.get(idx);
@@ -118,6 +122,7 @@ public class GroupFragment extends Fragment {
                 intent.putExtra(Constants.ARG_GROUP_KEY, groupRoom.groupKey);
                 intent.putExtra(Constants.ARG_INDIVIDUAL, false);
                 intent.putExtra(Constants.ARG_GROUP_ADMIN, groupRoom.adminUid);
+                //TODO: send notification
 //                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
                 startActivity(intent);
             }

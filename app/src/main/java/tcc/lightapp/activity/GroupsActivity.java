@@ -1,14 +1,12 @@
 package tcc.lightapp.activity;
 
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import tcc.lightapp.R;
-import tcc.lightapp.fragment.GroupFragment;
-import tcc.lightapp.fragment.IndividualFragment;
+import tcc.lightapp.fragment.GroupsFragment;
 
-public class GroupActivity extends BaseActivity {
+public class GroupsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +15,8 @@ public class GroupActivity extends BaseActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.group_container,
-                GroupFragment.newInstance(),
-                GroupFragment.class.getSimpleName());
+                GroupsFragment.newInstance(),
+                GroupsFragment.class.getSimpleName());
         fragmentTransaction.commit();
     }
 }

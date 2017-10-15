@@ -20,7 +20,6 @@ import tcc.lightapp.utils.Constants;
 
 public class IndividualActivity extends BaseActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +31,4 @@ public class IndividualActivity extends BaseActivity {
                 IndividualFragment.class.getSimpleName());
         fragmentTransaction.commit();
     }
-
-
-
-
 }

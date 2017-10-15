@@ -5,8 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import tcc.lightapp.fragment.EventFragment;
-import tcc.lightapp.fragment.GroupFragment;
+import tcc.lightapp.fragment.EventsFragment;
+import tcc.lightapp.fragment.FriendsFragment;
+import tcc.lightapp.fragment.GroupsFragment;
 import tcc.lightapp.fragment.IndividualFragment;
 
 /**
@@ -16,38 +17,39 @@ import tcc.lightapp.fragment.IndividualFragment;
 public class TabsAdapter extends FragmentPagerAdapter {
     private Context context;
 
-    public TabsAdapter(Context context, FragmentManager fm){
+    public TabsAdapter(Context context, FragmentManager fm) {
         super(fm);
         this.context = context;
     }
 
     @Override
-    public int getCount(){
-        return 3;
+    public int getCount() {
+        return 4;
     }
 
     @Override
-    public CharSequence getPageTitle(int position){
-        if (position == 0){
-//            return  context.getString(R.string.classicos);
-            return "Individual";
-        } else if (position == 1){
-//            return  context.getString(R.string.esportivos);
-            return "Grupo";
-        }
-//        return context.getString(R.string.luxo);
-        return "Event";
+    public CharSequence getPageTitle(int position) {
+//        if (position == 0) {
+//            return "Individual";
+//        } else if (position == 1) {
+//            return "Grupo";
+//        }
+//        return "Event";
+        return null;
     }
 
     @Override
-    public Fragment getItem(int position){
+    public Fragment getItem(int position) {
         Fragment f = null;
-        if (position == 0){
+        if (position == 0) {
             f = IndividualFragment.newInstance();
         } else if (position == 1){
-            f = GroupFragment.newInstance();
-        } else {
-            f = EventFragment.newInstance();
+            //TODO: friendsFragment
+            f = FriendsFragment.newInstance();
+        } else if (position == 2) {
+            f = GroupsFragment.newInstance();
+        } else if (position == 3){
+            f = EventsFragment.newInstance();
         }
         return f;
     }

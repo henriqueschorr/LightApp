@@ -67,7 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         holder.userName.setText(user.userName);
 
         //                TODO: set item selected in screen
-        if(position == teste) {
+        if (position == teste) {
 //            int red = Color.parseColor("#C62828");
 //            holder.cardView.setBackgroundColor(red);
             holder.cardView.setSelected(true);
@@ -115,7 +115,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         }
     }
 
-    public void setItemSelected(){
+    public void setItemSelected() {
         View item = mViewFriend.findViewById(R.id.card_view);
         item.setSelected(true);
     }

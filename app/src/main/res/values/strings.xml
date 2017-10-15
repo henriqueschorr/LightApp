@@ -20,6 +20,7 @@
     <string name="action_send">Enviar</string>
     <string name="action_create">Criar</string>
 
+    <string name="add_friend">Adicionar amigo</string>
     <string name="add_member">Adicionar amigos ao grupo</string>
     <string name="add_patient">Adicionar Paciente</string>
     <string name="create_group">Criar Grupo</string>
@@ -38,6 +39,7 @@
     <string name="prompt_event_date">Data</string>
     <string name="prompt_event_time">Horário</string>
     <string name="prompt_patient_email">Email do paciente</string>
+    <string name="prompt_friend_email">Email do amigo</string>
 
     <string name="report">Relatório</string>
     <string name="report_timestamp">Data de geração</string>
@@ -47,4 +49,7 @@
     <string name="report_classified">Palavras classificadas</string>
     <string name="report_not_classified">Palavras não classificadas</string>
     <string name="report_total_words">Total de palavras</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

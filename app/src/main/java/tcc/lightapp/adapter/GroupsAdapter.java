@@ -1,7 +1,6 @@
 package tcc.lightapp.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +16,12 @@ import tcc.lightapp.models.GroupRoom;
  * Created by Henrique on 05/10/2017.
  */
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupsViewHolder>{
+public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsViewHolder> {
     private List<GroupRoom> groupRooms;
     private Context context;
     private GroupOnClickListener groupOnClickListener;
 
-    public GroupAdapter(List<GroupRoom> groupRooms, Context context, GroupOnClickListener groupOnClickListener) {
+    public GroupsAdapter(List<GroupRoom> groupRooms, Context context, GroupOnClickListener groupOnClickListener) {
         this.groupRooms = groupRooms;
         this.context = context;
         this.groupOnClickListener = groupOnClickListener;

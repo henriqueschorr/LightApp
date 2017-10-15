@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,24 +24,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcc.lightapp.R;
-import tcc.lightapp.adapter.EventAdapter;
+import tcc.lightapp.adapter.EventsAdapter;
 import tcc.lightapp.models.Event;
 import tcc.lightapp.utils.Constants;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class EventFragment extends Fragment {
+public class EventsFragment extends Fragment {
     private View mFragmentView;
+    protected RecyclerView mRecyclerView;
+    private EventsAdapter mEventAdapter;
+    private ProgressBar mProgressBar;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private List<Event> events = new ArrayList<Event>();
-    private EventAdapter mEventAdapter;
-    protected RecyclerView mRecyclerView;
 
-    public static EventFragment newInstance() {
-        EventFragment fragment = new EventFragment();
+    private List<Event> events = new ArrayList<Event>();
+
+    public static EventsFragment newInstance() {
+        EventsFragment fragment = new EventsFragment();
         return fragment;
     }
 
@@ -53,15 +54,17 @@ public class EventFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
-        mEventAdapter = new EventAdapter(events, mFragmentView.getContext());
+        mProgressBar = (ProgressBar) mFragmentView.findViewById(R.id.progress_bar);
+
+        mEventAdapter = new EventsAdapter(events, mFragmentView.getContext());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentView.getContext()));
         mRecyclerView.setAdapter(mEventAdapter);
-//
+
         getEvents();
-//
+
         setClickListener();
 
         return mFragmentView;
@@ -80,17 +83,20 @@ public class EventFragment extends Fragment {
     public void getEvents() {
         DatabaseReference databaseReference = mDatabase.child(Constants.ARG_EVENTS).getRef();
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 events = mEventAdapter.getEvents();
                 for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
                     Event event = groupSnapshot.getValue(Event.class);
-                    if(!events.contains(event)) {
+                    if (!events.contains(event)) {
                         mEventAdapter.addEvent(event);
                         mEventAdapter.notifyItemInserted(events.indexOf(event));
                     }
                 }
+                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override

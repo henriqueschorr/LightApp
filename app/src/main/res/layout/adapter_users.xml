@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:background="@drawable/selector_row"
     android:foreground="?attr/selectableItemBackground"
-    app:cardUseCompatPadding="true"
-    android:background="@drawable/selector_row">
+    app:cardUseCompatPadding="true">
 
     <TextView
         android:id="@+id/userName"

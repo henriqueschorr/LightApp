@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.EventFragment">
+    tools:context=".fragment.EventsFragment">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -16,6 +16,14 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/create_event"
             android:layout_width="wrap_content"
@@ -23,8 +31,8 @@
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="@dimen/margin_avg"
             android:layout_marginRight="@dimen/margin_avg"
-            app:backgroundTint="@color/colorAccent"
             android:clickable="true"
-            android:src="@drawable/ic_add_white_24dp" />
+            android:src="@drawable/ic_add_white_24dp"
+            app:backgroundTint="@color/colorAccent" />
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>
