@@ -76,6 +76,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ReportsActivity" />
         </activity>
+        <activity android:name=".activity.EventActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.EventsActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -19,13 +19,12 @@ import tcc.lightapp.models.Event;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsViewHolder> {
     private List<Event> events;
     private Context context;
-    //TODO: create event details
-//    private GroupOnClickListener groupOnClickListener;
+    private EventOnClickListener eventOnClickListener;
 
-    public EventsAdapter(List<Event> events, Context context) {
+    public EventsAdapter(List<Event> events, Context context, EventOnClickListener eventOnClickListener) {
         this.events = events;
         this.context = context;
-//        this.groupOnClickListener = groupOnClickListener;
+        this.eventOnClickListener = eventOnClickListener;
     }
 
     @Override
@@ -46,14 +45,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
 
         holder.eventName.setText(event.eventName);
 
-//        if (groupOnClickListener != null) {
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    groupOnClickListener.onClickGroup(holder.itemView, position);
-//                }
-//            });
-//        }
+        if (eventOnClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    eventOnClickListener.onClickEvent(holder.itemView, position);
+                }
+            });
+        }
     }
 
     @Override

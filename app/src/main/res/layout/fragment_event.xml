@@ -1,38 +1,61 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.EventsFragment">
+    tools:context=".fragment.EventFragment">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:visibility="invisible" />
+            android:labelFor="@+id/event_location"
+            android:text="@string/event_location"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/label_size"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/create_event"
+        <TextView
+            android:id="@+id/event_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/margin_avg"
-            android:layout_marginRight="@dimen/margin_avg"
-            android:clickable="true"
-            android:src="@drawable/ic_add_white_24dp"
-            app:backgroundTint="@color/colorAccent" />
-    </android.support.design.widget.CoordinatorLayout>
+            android:textSize="@dimen/text_size"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/event_date"
+            android:text="@string/event_date"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/label_size"/>
+
+        <TextView
+            android:id="@+id/event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/event_time"
+            android:text="@string/event_time"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/label_size"/>
+
+        <TextView
+            android:id="@+id/event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"/>
+
+    </LinearLayout>
 </FrameLayout>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +26,7 @@ import java.util.List;
 
 import tcc.lightapp.R;
 import tcc.lightapp.activity.CreateEventActivity;
+import tcc.lightapp.activity.EventActivity;
 import tcc.lightapp.adapter.EventsAdapter;
 import tcc.lightapp.models.Event;
 import tcc.lightapp.utils.Constants;
@@ -52,14 +52,14 @@ public class EventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mFragmentView = inflater.inflate(R.layout.fragment_event, container, false);
+        mFragmentView = inflater.inflate(R.layout.fragment_events, container, false);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         user = mAuth.getCurrentUser();
 
         mProgressBar = (ProgressBar) mFragmentView.findViewById(R.id.progress_bar);
 
-        mEventAdapter = new EventsAdapter(events, mFragmentView.getContext());
+        mEventAdapter = new EventsAdapter(events, mFragmentView.getContext(), onClickEvent());
         mRecyclerView = (RecyclerView) mFragmentView.findViewById(R.id.recyclerView);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
@@ -104,17 +104,25 @@ public class EventsFragment extends Fragment {
 
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                CreateEventFragment createEventFragment = new CreateEventFragment();
-//
-//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                fragmentTransaction.replace(R.id.create_event_container,
-//                        createEventFragment,
-//                        CreateEventFragment.class.getSimpleName());
-//                fragmentTransaction.commit();
                 Intent intent = new Intent(getContext(), CreateEventActivity.class);
                 startActivity(intent);
             }
         });
+    }
+
+    private EventsAdapter.EventOnClickListener onClickEvent() {
+        return new EventsAdapter.EventOnClickListener() {
+            @Override
+            public void onClickEvent(View view, int idx) {
+                Event event = events.get(idx);
+                Intent intent = new Intent(getContext(), EventActivity.class);
+                intent.putExtra(Constants.ARG_EVENT_NAME, event.eventName);
+                intent.putExtra(Constants.ARG_EVENT_LOCATION, event.location);
+                intent.putExtra(Constants.ARG_EVENT_DATE, event.date);
+                intent.putExtra(Constants.ARG_EVENT_TIME, event.time);
+                startActivity(intent);
+            }
+        };
     }
 
 }
