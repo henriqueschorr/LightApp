@@ -87,7 +87,7 @@ public class IndividualFragment extends Fragment {
                 availableUsers = mUserAdapter.getUsers();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     if (userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString() == "true") {
-                        Log.d(TAG, userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString());
+//                        Log.d(TAG, userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString() + " - " + userSnapshot.getKey() + " - " + userSnapshot.child(Constants.ARG_USER_AVAILABLE).getValue().toString());
                         User availableUser = userSnapshot.getValue(User.class);
                         if (!availableUsers.contains(availableUser) && !availableUser.authID.equals(user.getUid()) && !isMedic(availableUser)) {
                             mUserAdapter.addUser(availableUser);

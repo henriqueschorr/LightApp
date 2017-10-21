@@ -58,10 +58,10 @@ public class LoginActivity extends BaseActivity implements
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+//                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+//                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
         };
@@ -112,10 +112,10 @@ public class LoginActivity extends BaseActivity implements
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+//                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "createUserWithEmail:success");
+//                                Log.d(TAG, "createUserWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String name = mNameField.getText().toString();
 
@@ -125,7 +125,7 @@ public class LoginActivity extends BaseActivity implements
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Log.d(TAG, "User profile updated.");
+//                                            Log.d(TAG, "User profile updated.");
                                         }
                                     }
                                 });
@@ -137,7 +137,7 @@ public class LoginActivity extends BaseActivity implements
                                 navigateToMainActivity(user);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 toast(getResources().getString(R.string.auth_failed));
                             }
                             mProgressBar.setVisibility(View.GONE);
@@ -157,14 +157,14 @@ public class LoginActivity extends BaseActivity implements
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
+//                                Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
 
                                 //Navigate to Main Activity
                                 navigateToMainActivity(user);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+//                                Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 toast(getResources().getString(R.string.auth_failed));
                             }
                             mProgressBar.setVisibility(View.GONE);

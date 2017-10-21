@@ -104,12 +104,12 @@ public class FcmNotificationBuilder {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "onGetAllUsersFailure: " + e.getMessage());
+//                Log.e(TAG, "onGetAllUsersFailure: " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.e(TAG, "onResponse: " + response.body().string());
+//                Log.e(TAG, "onResponse: " + response.body().string());
             }
         });
     }

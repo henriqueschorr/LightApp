@@ -65,7 +65,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     public void add(ChatMessage chatMessage) {
         mChatMessages.add(chatMessage);
-        Log.e(TAG, "Add");
+//        Log.e(TAG, "Add");
         notifyItemInserted(mChatMessages.indexOf(chatMessage));
     }
 
