@@ -5,12 +5,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,16 +35,21 @@ import tcc.lightapp.utils.Constants;
  */
 
 public class AddMemberDialog extends DialogFragment {
+    private View mView;
+    private UserAdapter mFriendAdapter;
+    protected RecyclerView mRecyclerView;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
-    private UserAdapter mFriendAdapter;
-    protected RecyclerView mRecyclerView;
+
+
     private List<User> friends = new ArrayList<User>();
     private List<User> friendsSelected = new ArrayList<User>();
     private String groupKey;
+
     private static final String TAG = "AddMember";
-    private View mView;
+
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -78,6 +85,7 @@ public class AddMemberDialog extends DialogFragment {
                                 for(User friend : friendsSelected) {
                                     mDatabase.child(Constants.ARG_GROUPS).child(groupKey).child(Constants.ARG_GROUP_MEMBER).child(friend.authID).setValue(friend.userName + "_" + friend.email);
                                 }
+                                toast(getResources().getString(R.string.friend_group_added));
                                 dialog.dismiss();
                             }
                         }
@@ -125,9 +133,19 @@ public class AddMemberDialog extends DialogFragment {
             @Override
             public void onClickUser(View view, int idx) {
                 User friend = friends.get(idx);
-                friendsSelected.add(friend);
+                if(friendsSelected.contains(friend)){
+                    friendsSelected.remove(friend);
+                    toast(getResources().getString(R.string.friend_list_removed));
+                } else {
+                    friendsSelected.add(friend);
+                    toast(getResources().getString(R.string.friend_list_added));
+                }
             }
         };
+    }
+
+    protected void toast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
 }

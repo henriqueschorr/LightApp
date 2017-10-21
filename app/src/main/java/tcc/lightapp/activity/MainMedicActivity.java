@@ -22,12 +22,9 @@ public class MainMedicActivity extends BaseActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Runs the HTTP Request
-        //TODO: Make assynchrounus http request
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

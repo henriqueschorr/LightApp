@@ -11,6 +11,10 @@
     <string name="report_generated">Relatório gerado</string>
     <string name="report_generating">Gerando relatório</string>
     <string name="event_created">Evento criado</string>
+    <string name="friend_list_added">Amigo adicionado à lista</string>
+    <string name="friend_list_removed">Amigo removido da lista</string>
+    <string name="friend_group_added">Amigo(s) adicionados ao grupo</string>
+    <string name="friend_added">Usuário adicionado como amigo</string>
 
     <string name="action_sign_in">Entrar</string>
     <string name="action_register">Registrar</string>
@@ -54,8 +58,5 @@
     <string name="event_location">Local</string>
     <string name="event_date">Data</string>
     <string name="event_time">Horário</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

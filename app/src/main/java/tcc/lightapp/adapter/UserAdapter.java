@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,14 +23,17 @@ import tcc.lightapp.models.User;
  */
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolder> {
-    private List<User> users;
     private Context context;
-    private UserOnClickListener userOnClickListener;
+
     private View mViewUser;
     private View mViewFriend;
+    private UserOnClickListener userOnClickListener;
+
     private static final int USER_LIST = 1;
     private static final int FRIEND_LIST = 2;
-    private int teste;
+
+    private List<User> users;
+    private int mPosition;
 
     public UserAdapter(List<User> users, Context context) {
         this.users = users;
@@ -66,20 +70,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
 
         holder.userName.setText(user.userName);
 
-        //                TODO: set item selected in screen
-        if (position == teste) {
-//            int red = Color.parseColor("#C62828");
-//            holder.cardView.setBackgroundColor(red);
-            holder.cardView.setSelected(true);
-        }
-
         if (userOnClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     userOnClickListener.onClickUser(holder.itemView, position);
-                    teste = position;
-                    notifyItemChanged(teste);
+                    mPosition = position;
+                    notifyItemChanged(position);
                 }
             });
         }
@@ -120,7 +117,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UsersViewHolde
         item.setSelected(true);
     }
 
-    public static class UsersViewHolder extends RecyclerView.ViewHolder {
+    public class UsersViewHolder extends RecyclerView.ViewHolder {
         public TextView userName;
         public CardView cardView;
 

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".activity.ChatActivity">
 
     <item
         android:id="@+id/action_add_friend"
-        android:icon="@drawable/ic_person_add_white_24dp"
+        android:icon="@drawable/ic_favorite_white_24dp"
         android:orderInCategory="100"
         android:title="Add Friend"
         app:showAsAction="always" />

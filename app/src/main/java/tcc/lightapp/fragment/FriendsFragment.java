@@ -127,6 +127,7 @@ public class FriendsFragment extends Fragment {
                 intent.putExtra(Constants.ARG_RECEIVER_UID, user.authID);
                 intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
                 intent.putExtra(Constants.ARG_INDIVIDUAL, true);
+                intent.putExtra(Constants.ARG_FRIEND, true);
                 startActivity(intent);
             }
         };

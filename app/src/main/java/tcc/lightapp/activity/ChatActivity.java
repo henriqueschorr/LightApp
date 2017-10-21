@@ -6,34 +6,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.support.v4.app.Fragment;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,36 +27,39 @@ import tcc.lightapp.chat.ChatContract;
 import tcc.lightapp.chat.ChatPresenter;
 import tcc.lightapp.fragment.dialog.AddMemberDialog;
 import tcc.lightapp.models.ChatMessage;
-import tcc.lightapp.models.GroupRoom;
 import tcc.lightapp.utils.Constants;
 import tcc.lightapp.utils.FirebaseChatMainApp;
 
 public class ChatActivity extends BaseActivity implements ChatContract.View {
-    private DatabaseReference mDatabase;
-    private DatabaseReference mUserDatabase;
-    private String mSenderEmail;
-    private String mReceiverName;
-    private String mReceiverEmail;
-    private String mSenderUid;
-    private String mReceiverUid;
-    private String mReceiverFirebaseToken;
-    private String mGroupAdmin;
-    private EditText mTextMessage;
-    private Button mSendMessage;
+    protected RecyclerView mRecyclerView;
     private ChatPresenter mChatPresenter;
     private ChatAdapter mChatAdapter;
-    private List<ChatMessage> mChatMessages = new ArrayList<ChatMessage>();
-    private boolean isIndividual;
-    private Toolbar mToolbar;
-    protected RecyclerView mRecyclerView;
 
+    private DatabaseReference mDatabase;
+    private DatabaseReference mUserDatabase;
+
+    private String mSenderUid;
+    private String mSenderEmail;
+    private String mReceiverUid;
+    private String mReceiverName;
+    private String mReceiverEmail;
+    private String mReceiverFirebaseToken;
+    private String mGroupAdmin;
+    private boolean isIndividual;
+    private boolean isFriend;
+
+    private ProgressBar mProgressBar;
+    private EditText mTextMessage;
+    private Button mSendMessage;
+
+    private List<ChatMessage> mChatMessages = new ArrayList<ChatMessage>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mToolbar = setUpToolbar();
+        setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -81,6 +68,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         Bundle args = intent.getExtras();
 
         isIndividual = args.getBoolean(Constants.ARG_INDIVIDUAL);
+        isFriend = args.getBoolean(Constants.ARG_FRIEND);
 
         mSenderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         mSenderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -102,7 +90,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
 
         mReceiverFirebaseToken = args.getString(Constants.ARG_FIREBASE_TOKEN);
 
-
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mTextMessage = (EditText) findViewById(R.id.edit_text_message);
         mSendMessage = (Button) findViewById(R.id.send_text_message);
 
@@ -127,6 +115,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     }
 
     public void getChatRoom() {
+        mProgressBar.setVisibility(View.VISIBLE);
         mChatPresenter = new ChatPresenter(this);
         mChatPresenter.getMessage(mSenderUid, mReceiverUid, isIndividual);
     }
@@ -165,12 +154,12 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     @Override
     public void onGetMessagesSuccess(ChatMessage chatMessage) {
         mChatAdapter.add(chatMessage);
-//        mRecyclerView.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
     }
 
     @Override
     public void onGetMessagesFailure(String message) {
-//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -181,10 +170,12 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        String teste;
         if (isIndividual) {
-            getMenuInflater().inflate(R.menu.menu_chat_indiv, menu);
-//            FirebaseDatabase data = mUserDatabase.child(mSenderUid).child(Constants.ARG_GROUP_ADMIN).getDatabase();
+            if(isFriend){
+                getMenuInflater().inflate(R.menu.menu_chat_friend, menu);
+            } else {
+                getMenuInflater().inflate(R.menu.menu_chat_indiv, menu);
+            }
         } else {
             if (mGroupAdmin.equals(mSenderUid)) {
                 getMenuInflater().inflate(R.menu.menu_chat_group_admin, menu);
@@ -225,6 +216,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
 
     public void addFriend() {
         mUserDatabase.child(Constants.ARG_FRIENDS).child(mReceiverUid).setValue(mReceiverName + "_" + mReceiverEmail);
+        toast(getResources().getString(R.string.friend_added));
     }
 
 }
