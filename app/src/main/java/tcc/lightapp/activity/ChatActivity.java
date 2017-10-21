@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,8 +36,10 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     private ChatPresenter mChatPresenter;
     private ChatAdapter mChatAdapter;
 
+    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private DatabaseReference mUserDatabase;
+    private FirebaseUser mUser;
 
     private String mSenderUid;
     private String mSenderEmail;
@@ -62,16 +65,20 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUser = mAuth.getCurrentUser();
 
         Intent intent = getIntent();
         Bundle args = intent.getExtras();
 
         isIndividual = args.getBoolean(Constants.ARG_INDIVIDUAL);
         isFriend = args.getBoolean(Constants.ARG_FRIEND);
+        mReceiverFirebaseToken = args.getString(Constants.ARG_FIREBASE_TOKEN);
 
-        mSenderEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        mSenderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mSenderEmail = mUser.getEmail();
+        mSenderUid = mUser.getUid();
+
 
         if (isIndividual) {
             mReceiverName = args.getString(Constants.ARG_RECEIVER_NAME);
@@ -126,6 +133,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         ChatMessage chatMessage = null;
 
         chatMessage = new ChatMessage(mSenderEmail,
+                mUser.getDisplayName(),
                 mReceiverEmail,
                 mSenderUid,
                 mReceiverUid,
@@ -171,7 +179,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isIndividual) {
-            if(isFriend){
+            if (isFriend) {
                 getMenuInflater().inflate(R.menu.menu_chat_friend, menu);
             } else {
                 getMenuInflater().inflate(R.menu.menu_chat_indiv, menu);

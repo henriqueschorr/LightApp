@@ -122,8 +122,6 @@ public class GroupsFragment extends Fragment {
                 intent.putExtra(Constants.ARG_GROUP_KEY, groupRoom.groupKey);
                 intent.putExtra(Constants.ARG_INDIVIDUAL, false);
                 intent.putExtra(Constants.ARG_GROUP_ADMIN, groupRoom.adminUid);
-                //TODO: send notification
-//                intent.putExtra(Constants.ARG_FIREBASE_TOKEN, user.firebaseToken);
                 startActivity(intent);
             }
         };

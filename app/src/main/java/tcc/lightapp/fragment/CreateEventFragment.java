@@ -39,9 +39,11 @@ import tcc.lightapp.utils.Constants;
 
 public class CreateEventFragment extends Fragment {
     private View mFragmentView;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
+
     private EditText mEventNameField;
     private EditText mLocationField;
     private EditText mDateField;
@@ -49,7 +51,6 @@ public class CreateEventFragment extends Fragment {
     private Button mCreateEventButton;
     private String mGroupKey;
     private String mGroupName;
-//    private String mEventKey;
 
     @Override
     public void onCreate(Bundle savedInstance) {

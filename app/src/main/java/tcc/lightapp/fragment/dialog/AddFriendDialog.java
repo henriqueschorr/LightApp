@@ -72,8 +72,6 @@ public class AddFriendDialog extends DialogFragment {
         final DatabaseReference userDatabase = database.child(Constants.ARG_USERS);
         final FirebaseUser user = auth.getCurrentUser();
 
-        //TODO: notify friend
-
         userDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

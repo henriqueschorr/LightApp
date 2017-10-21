@@ -5,6 +5,7 @@ package tcc.lightapp.models;
  */
 public class ChatMessage {
     public String sender;
+    public String senderName;
     public String receiver;
     public String senderUid;
     public String receiverUid;
@@ -14,8 +15,9 @@ public class ChatMessage {
     public ChatMessage() {
     }
 
-    public ChatMessage(String sender, String receiver, String senderUid, String receiverUid, String message, long timestamp) {
+    public ChatMessage(String sender, String senderName, String receiver, String senderUid, String receiverUid, String message, long timestamp) {
         this.sender = sender;
+        this.sender = senderName;
         this.receiver = receiver;
         this.senderUid = senderUid;
         this.receiverUid = receiverUid;

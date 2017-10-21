@@ -25,10 +25,12 @@ import tcc.lightapp.utils.FirebaseChatMainApp;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "FCM Service";
+    private static final String TAG = "FCM_Service";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.e(TAG, "From: " + remoteMessage.getFrom());
+//        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -40,7 +42,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String uid = remoteMessage.getData().get("uid");
             String fcmToken = remoteMessage.getData().get("fcm_token");
 
-            // Don't show notification if chat activity is open.
+//             Don't show notification if chat activity is open.
             if (!FirebaseChatMainApp.isChatActivityOpen()) {
                 sendNotification(title,
                         message,

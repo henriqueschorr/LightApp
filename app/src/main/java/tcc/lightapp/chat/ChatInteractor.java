@@ -62,12 +62,11 @@ public class ChatInteractor implements ChatContract.Interactor {
                         getMessageFromFirebaseUser(chatMessage.senderUid, chatMessage.receiverUid);
                     }
                     // send push notification to the receiver
-//                TODO: Send pushNotification
-//                sendPushNotificationToReceiver(chatMessage.sender,
-//                        chatMessage.message,
-//                        chatMessage.senderUid,
-//                        new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
-//                        receiverFirebaseToken);
+                sendPushNotificationToReceiver(chatMessage.senderName,
+                        chatMessage.message,
+                        chatMessage.senderUid,
+                        new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
+                        receiverFirebaseToken);
 //                mOnSendMessageListener.onSendMessageSuccess();
                 }
 
@@ -83,13 +82,12 @@ public class ChatInteractor implements ChatContract.Interactor {
 
                     databaseReference.child(Constants.ARG_GROUPS).child(chatMessage.receiverUid).child(Constants.ARG_CHAT_ROOM).child(String.valueOf(chatMessage.timestamp)).setValue(chatMessage);
 
-                    // send push notification to the receiver
-//                TODO: Send pushNotification
+
 //                sendPushNotificationToReceiver(chatMessage.sender,
-//                        chatMessage.message,
-//                        chatMessage.senderUid,
-//                        new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
-//                        receiverFirebaseToken);
+//                            chatMessage.message,
+//                            chatMessage.senderUid,
+//                            new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
+//                            receiverFirebaseToken);
 //                mOnSendMessageListener.onSendMessageSuccess();
                 }
 
