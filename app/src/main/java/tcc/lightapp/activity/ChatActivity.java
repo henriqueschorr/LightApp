@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +17,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,7 @@ import tcc.lightapp.chat.ChatContract;
 import tcc.lightapp.chat.ChatPresenter;
 import tcc.lightapp.fragment.dialog.AddMemberDialog;
 import tcc.lightapp.models.ChatMessage;
+import tcc.lightapp.models.User;
 import tcc.lightapp.utils.Constants;
 import tcc.lightapp.utils.FirebaseChatMainApp;
 
@@ -41,6 +46,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
     private DatabaseReference mUserDatabase;
     private FirebaseUser mUser;
 
+    private String mUserName;
     private String mSenderUid;
     private String mSenderEmail;
     private String mReceiverUid;
@@ -76,6 +82,26 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         isFriend = args.getBoolean(Constants.ARG_FRIEND);
         mReceiverFirebaseToken = args.getString(Constants.ARG_FIREBASE_TOKEN);
 
+        mUserName = mUser.getDisplayName();
+        if (mUserName == null){
+            DatabaseReference databaseReference = mDatabase.child(Constants.ARG_USERS);
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        if (userSnapshot.child(Constants.ARG_USER_UID).getValue().toString().equals(mUser.getUid().toString())) {
+                            mUserName = userSnapshot.child(Constants.ARG_USER_NAME).getValue().toString();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
         mSenderEmail = mUser.getEmail();
         mSenderUid = mUser.getUid();
 
@@ -133,7 +159,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
         ChatMessage chatMessage = null;
 
         chatMessage = new ChatMessage(mSenderEmail,
-                mUser.getDisplayName(),
+                mUserName,
                 mReceiverEmail,
                 mSenderUid,
                 mReceiverUid,

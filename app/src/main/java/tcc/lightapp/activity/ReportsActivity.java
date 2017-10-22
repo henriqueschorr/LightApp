@@ -30,6 +30,9 @@ import tcc.lightapp.utils.Constants;
 public class ReportsActivity extends BaseActivity {
     private DatabaseReference mDatabase;
 
+    private ReportsFragment mFragment;
+    private ProgressBar mProgressBar;
+
     private String mPatientUid;
     private String mPatientName;
 
@@ -51,11 +54,18 @@ public class ReportsActivity extends BaseActivity {
 
         this.setTitle(mPatientName);
 
+        mFragment = new ReportsFragment();
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.reports_container,
-                ReportsFragment.newInstance(mPatientUid),
+                mFragment,
                 ReportsFragment.class.getSimpleName());
+        mFragment.setArguments(args);
         fragmentTransaction.commit();
+
+
+
+//        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -68,16 +78,18 @@ public class ReportsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int item = menuItem.getItemId();
         if (item == R.id.action_generate_report) {
-            toast(getResources().getString(R.string.report_generating));
+//            Toast.makeText(mFragment.getContext(), getResources().getString(R.string.report_generating), Toast.LENGTH_SHORT).show();
 
             generateReport();
 
             return true;
         }
-        return super.onOptionsItemSelected(menuItem);
+//        return super.onOptionsItemSelected(menuItem);
+        return true;
     }
 
     public void generateReport(){
+//        mProgressBar.setVisibility(View.VISIBLE);
         URL url = null;
         try {
             url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid=" + mPatientUid);

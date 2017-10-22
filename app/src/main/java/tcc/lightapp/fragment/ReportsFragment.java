@@ -39,13 +39,13 @@ public class ReportsFragment extends Fragment {
 
     private String mPatientUid;
 
-    public static ReportsFragment newInstance(String patientUid) {
-        Bundle args = new Bundle();
-        args.putString(Constants.ARG_UID, patientUid);
-        ReportsFragment fragment = new ReportsFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static ReportsFragment newInstance(String patientUid) {
+//        Bundle args = new Bundle();
+//        args.putString(Constants.ARG_UID, patientUid);
+//        ReportsFragment fragment = new ReportsFragment();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstance) {
