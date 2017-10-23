@@ -17,7 +17,7 @@ public class ChatMessage {
 
     public ChatMessage(String sender, String senderName, String receiver, String senderUid, String receiverUid, String message, long timestamp) {
         this.sender = sender;
-        this.sender = senderName;
+        this.senderName = senderName;
         this.receiver = receiver;
         this.senderUid = senderUid;
         this.receiverUid = receiverUid;
