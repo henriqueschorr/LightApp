@@ -90,15 +90,15 @@ public class ReportsActivity extends BaseActivity {
 
     public void generateReport(){
 //        mProgressBar.setVisibility(View.VISIBLE);
-        URL url = null;
-        try {
-            url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid=" + mPatientUid);
-        } catch (MalformedURLException e) {
-            //erro
-        }
+                URL url = null;
+                try {
+                    url = new URL("https://us-central1-lightapp-d3dc5.cloudfunctions.net/doSentimentAnalysis?userUid=" + mPatientUid);
+                } catch (MalformedURLException e) {
+                    //erro
+                }
 
-        try {
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                try {
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
 
             String response = readStream(urlConnection.getInputStream());

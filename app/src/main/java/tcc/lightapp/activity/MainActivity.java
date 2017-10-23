@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class MainActivity extends BaseActivity {
         user = mAuth.getCurrentUser();
 
         setAvailability(true);
+        setToken();
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,15 +108,15 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setAvailability(boolean available) {
-        Map<String, Object> childUpdates = new HashMap<>();
-
         if (available) {
-            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, true);
+            mDatabase.child(Constants.ARG_USERS).child(user.getUid()).child(Constants.ARG_USER_AVAILABLE).setValue(true);
         } else {
-            childUpdates.put("/" + Constants.ARG_USERS + "/" + user.getUid() + "/" + Constants.ARG_USER_AVAILABLE, false);
+            mDatabase.child(Constants.ARG_USERS).child(user.getUid()).child(Constants.ARG_USER_AVAILABLE).setValue(false);
         }
+    }
 
-        mDatabase.updateChildren(childUpdates);
+    public void setToken(){
+        mDatabase.child(Constants.ARG_USERS).child(user.getUid()).child(Constants.ARG_FIREBASE_TOKEN).setValue(FirebaseInstanceId.getInstance().getToken());
     }
 
     public void setTabIcons(){
