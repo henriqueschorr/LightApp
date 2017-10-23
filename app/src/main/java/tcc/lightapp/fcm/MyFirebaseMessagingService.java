@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import tcc.lightapp.R;
 import tcc.lightapp.activity.ChatActivity;
+import tcc.lightapp.activity.MainActivity;
 import tcc.lightapp.event.PushNotificationEvent;
 import tcc.lightapp.utils.Constants;
 import tcc.lightapp.utils.FirebaseChatMainApp;
@@ -64,7 +65,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                   String receiver,
                                   String receiverUid,
                                   String firebaseToken) {
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.ARG_RECEIVER_EMAIL, receiver);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
