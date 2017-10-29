@@ -113,6 +113,9 @@ public class ReportsActivity extends BaseActivity {
             String[] classifiedWord = data[3].split(":");
             String[] notClassifiedWord = data[4].split(":");
             String[] totalWords = data[5].split(":");
+            String[] positivePhrase = data[6].split(":");
+            String[] negativePhrase = data[7].split(":");
+            String[] neutralPhrase = data[8].split(":");
 
             Report report = new Report(
                     System.currentTimeMillis(),
@@ -122,7 +125,10 @@ public class ReportsActivity extends BaseActivity {
                     Integer.parseInt(neutralWord[1]),
                     Integer.parseInt(classifiedWord[1]),
                     Integer.parseInt(notClassifiedWord[1]),
-                    Integer.parseInt(totalWords[1]));
+                    Integer.parseInt(totalWords[1]),
+                    Integer.parseInt(positivePhrase[1]),
+                    Integer.parseInt(negativePhrase[1]),
+                    Integer.parseInt(neutralPhrase[1]));
 
             DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
             DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);

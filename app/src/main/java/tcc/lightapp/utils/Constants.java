@@ -41,5 +41,8 @@ public class Constants {
     public static final String ARG_REPORT_CLASSIFIED = "classifiedWords";
     public static final String ARG_REPORT_NOT_CLASSIFIED = "notClassifiedWords";
     public static final String ARG_REPORT_TOTAL_WORDS = "totalWords";
+    public static final String ARG_REPORT_POSITIVE_PHRASE = "positivePhrases";
+    public static final String ARG_REPORT_NEGATIVE_PHRASE = "negativePhrases";
+    public static final String ARG_REPORT_NEUTRAL_PHRASE = "neutralPhrases";
     public static final String ARG_INVITED_USERS = "invitedUsersUid";
 }

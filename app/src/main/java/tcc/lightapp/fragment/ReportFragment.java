@@ -31,6 +31,9 @@ public class ReportFragment extends Fragment {
     private String mClassified;
     private String mNotClassified;
     private String mTotalWords;
+    private String mPositivePhrase;
+    private String mNegativePhrase;
+    private String mNeutralPhrase;
 
     private TextView mPositiveField;
     private TextView mNegativeField;
@@ -38,6 +41,9 @@ public class ReportFragment extends Fragment {
     private TextView mClassifiedField;
     private TextView mNotClassifiedField;
     private TextView mTotalWordsField;
+    private TextView mPositivePhraseField;
+    private TextView mNegativePhraseField;
+    private TextView mNeutralPhraseField;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -50,6 +56,9 @@ public class ReportFragment extends Fragment {
         mClassified = args.getString(Constants.ARG_REPORT_CLASSIFIED);
         mNotClassified = args.getString(Constants.ARG_REPORT_NOT_CLASSIFIED);
         mTotalWords = args.getString(Constants.ARG_REPORT_TOTAL_WORDS);
+        mPositivePhrase = args.getString(Constants.ARG_REPORT_POSITIVE_PHRASE);
+        mNegativePhrase = args.getString(Constants.ARG_REPORT_NEGATIVE_PHRASE);
+        mNeutralPhrase = args.getString(Constants.ARG_REPORT_NEUTRAL_PHRASE);
     }
 
     @Override
@@ -68,18 +77,24 @@ public class ReportFragment extends Fragment {
         mPositiveField = mFragmentView.findViewById(R.id.report_positive);
         mNegativeField = mFragmentView.findViewById(R.id.report_negative);
         mNeutralField = mFragmentView.findViewById(R.id.report_neutral);
-        mClassifiedField = mFragmentView.findViewById(R.id.report_classified);
+//        mClassifiedField = mFragmentView.findViewById(R.id.report_classified);
         mNotClassifiedField = mFragmentView.findViewById(R.id.report_not_classified);
         mTotalWordsField = mFragmentView.findViewById(R.id.report_total_words);
+        mPositivePhraseField = mFragmentView.findViewById(R.id.report_positive_phrase);
+        mNegativePhraseField = mFragmentView.findViewById(R.id.report_negative_phrase);
+        mNeutralPhraseField = mFragmentView.findViewById(R.id.report_neutral_phrase);
     }
 
     public void setFieldsContent() {
         mPositiveField.setText(mPositive);
         mNegativeField.setText(mNegative);
         mNeutralField.setText(mNeutral);
-        mClassifiedField.setText(mClassified);
+//        mClassifiedField.setText(mClassified);
         mNotClassifiedField.setText(mNotClassified);
         mTotalWordsField.setText(mTotalWords);
+        mPositivePhraseField.setText(mPositivePhrase);
+        mNegativePhraseField.setText(mNegativePhrase);
+        mNeutralPhraseField.setText(mNeutralPhrase);
     }
 
 }
