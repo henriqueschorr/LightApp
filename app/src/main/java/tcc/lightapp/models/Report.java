@@ -17,6 +17,11 @@ public class Report {
     public int negativePhrases;
     public int neutralPhrases;
 
+    public int positivePhrasesThis;
+    public int negativePhrasesThis;
+    public double positiveGrowth;
+    public double negativeGrowth;
+
     public Report(){}
 
     public Report(long timestamp, String userUid, int positiveWords, int negativeWords, int neutralWords, int classifiedWords, int notClassifiedWords, int totalWords, int positivePhrases, int negativePhrases, int neutralPhrases) {
@@ -31,6 +36,8 @@ public class Report {
         this.positivePhrases = positivePhrases;
         this.negativePhrases = negativePhrases;
         this.neutralPhrases = neutralPhrases;
+        this.positivePhrasesThis = positivePhrases;
+        this.negativePhrasesThis = negativePhrases;
     }
 
     @Override

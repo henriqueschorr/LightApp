@@ -115,8 +115,8 @@ public class ReportsFragment extends Fragment {
                 intent.putExtra(Constants.ARG_REPORT_CLASSIFIED, String.valueOf(report.classifiedWords));
                 intent.putExtra(Constants.ARG_REPORT_NOT_CLASSIFIED, String.valueOf(report.notClassifiedWords));
                 intent.putExtra(Constants.ARG_REPORT_TOTAL_WORDS, String.valueOf(report.totalWords));
-                intent.putExtra(Constants.ARG_REPORT_POSITIVE_PHRASE, String.valueOf(report.positivePhrases));
-                intent.putExtra(Constants.ARG_REPORT_NEGATIVE_PHRASE, String.valueOf(report.negativePhrases));
+                intent.putExtra(Constants.ARG_REPORT_POSITIVE_PHRASE, String.valueOf(report.positivePhrasesThis));
+                intent.putExtra(Constants.ARG_REPORT_NEGATIVE_PHRASE, String.valueOf(report.negativePhrasesThis));
                 intent.putExtra(Constants.ARG_REPORT_NEUTRAL_PHRASE, String.valueOf(report.neutralPhrases));
                 startActivity(intent);
             }

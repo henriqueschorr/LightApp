@@ -74,27 +74,27 @@ public class ReportFragment extends Fragment {
     }
 
     public void getFields() {
-        mPositiveField = mFragmentView.findViewById(R.id.report_positive);
-        mNegativeField = mFragmentView.findViewById(R.id.report_negative);
-        mNeutralField = mFragmentView.findViewById(R.id.report_neutral);
+//        mPositiveField = mFragmentView.findViewById(R.id.report_positive);
+//        mNegativeField = mFragmentView.findViewById(R.id.report_negative);
+//        mNeutralField = mFragmentView.findViewById(R.id.report_neutral);
 //        mClassifiedField = mFragmentView.findViewById(R.id.report_classified);
-        mNotClassifiedField = mFragmentView.findViewById(R.id.report_not_classified);
-        mTotalWordsField = mFragmentView.findViewById(R.id.report_total_words);
+//        mNotClassifiedField = mFragmentView.findViewById(R.id.report_not_classified);
+//        mTotalWordsField = mFragmentView.findViewById(R.id.report_total_words);
         mPositivePhraseField = mFragmentView.findViewById(R.id.report_positive_phrase);
         mNegativePhraseField = mFragmentView.findViewById(R.id.report_negative_phrase);
-        mNeutralPhraseField = mFragmentView.findViewById(R.id.report_neutral_phrase);
+//        mNeutralPhraseField = mFragmentView.findViewById(R.id.report_neutral_phrase);
     }
 
     public void setFieldsContent() {
-        mPositiveField.setText(mPositive);
-        mNegativeField.setText(mNegative);
-        mNeutralField.setText(mNeutral);
+//        mPositiveField.setText(mPositive);
+//        mNegativeField.setText(mNegative);
+//        mNeutralField.setText(mNeutral);
 //        mClassifiedField.setText(mClassified);
-        mNotClassifiedField.setText(mNotClassified);
-        mTotalWordsField.setText(mTotalWords);
+//        mNotClassifiedField.setText(mNotClassified);
+//        mTotalWordsField.setText(mTotalWords);
         mPositivePhraseField.setText(mPositivePhrase);
         mNegativePhraseField.setText(mNegativePhrase);
-        mNeutralPhraseField.setText(mNeutralPhrase);
+//        mNeutralPhraseField.setText(mNeutralPhrase);
     }
 
 }

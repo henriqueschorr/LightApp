@@ -55,6 +55,10 @@ public class ReportsActivity extends BaseActivity {
 
     private List<Report> reports = new ArrayList<Report>();
 
+    private Report mReport;
+    private Report mLastReport;
+    private Long mLastReportTime = new Long(0);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +88,7 @@ public class ReportsActivity extends BaseActivity {
         mRecyclerView.setAdapter(mReportAdapter);
 
         mProgressBar = (LinearLayout) findViewById(R.id.progress_bar);
-        
+
         getReports();
     }
 
@@ -209,8 +213,11 @@ public class ReportsActivity extends BaseActivity {
             String[] negativePhrase = data[7].split(":");
             String[] neutralPhrase = data[8].split(":");
 
-            Report report = new Report(
-                    System.currentTimeMillis(),
+            Long currentTime = System.currentTimeMillis();
+            getLastReport(currentTime);
+
+            mReport = new Report(
+                    currentTime,
                     mPatientUid,
                     Integer.parseInt(positiveWord[1]),
                     Integer.parseInt(negativeWord[1]),
@@ -224,8 +231,8 @@ public class ReportsActivity extends BaseActivity {
 
             DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
             DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
-            userReportDatabase.child(String.valueOf(report.timestamp)).setValue(String.valueOf(report.timestamp));
-            reportDatabase.child(String.valueOf(report.timestamp)).setValue(report);
+            userReportDatabase.child(String.valueOf(mReport.timestamp)).setValue(String.valueOf(mReport.timestamp));
+            reportDatabase.child(String.valueOf(mReport.timestamp)).setValue(mReport);
 
             mProgressBar.setVisibility(View.GONE);
 
@@ -255,6 +262,60 @@ public class ReportsActivity extends BaseActivity {
             return response.toString();
         }
 
+    }
+
+    public void getLastReport(final Long currentTime){
+        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
+
+        reportDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot reportSnapshot : dataSnapshot.getChildren()) {
+                    Report report = reportSnapshot.getValue(Report.class);
+                    if (report.userUid.equals(mPatientUid) && report.timestamp > mLastReportTime && mLastReportTime != currentTime) {
+                        mLastReportTime = report.timestamp;
+                        mLastReport = report;
+                    }
+                }
+
+                if(mLastReportTime > 0) {
+                    updateReport();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateReport(){
+        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS).child(String.valueOf(mReport.timestamp));
+
+        int positivePhraseThis = mReport.positivePhrases - mLastReport.positivePhrases;
+        int negativePhraseThis = mReport.negativePhrases - mLastReport.negativePhrases;
+
+        double positiveThis = positivePhraseThis;
+        double negativeThis = negativePhraseThis;
+        double lastPositive = mLastReport.positivePhrasesThis;
+        double lastNegative = mLastReport.negativePhrasesThis;
+
+        double positiveGrowth = 0;
+        double negativeGrowth = 0;
+
+        if (positivePhraseThis > 0) {
+            positiveGrowth = ((positiveThis - lastPositive) / lastPositive);
+        }
+
+        if (negativePhraseThis > 0) {
+            negativeGrowth = ((negativeThis - lastNegative) / lastNegative);
+        }
+
+        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_PHRASE_THIS).setValue(positivePhraseThis);
+        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_PHRASE_THIS).setValue(negativePhraseThis);
+        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_GROWTH).setValue(positiveGrowth * 100);
+        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_GROWTH).setValue(negativeGrowth * 100);
     }
 
 }

@@ -44,5 +44,9 @@ public class Constants {
     public static final String ARG_REPORT_POSITIVE_PHRASE = "positivePhrases";
     public static final String ARG_REPORT_NEGATIVE_PHRASE = "negativePhrases";
     public static final String ARG_REPORT_NEUTRAL_PHRASE = "neutralPhrases";
+    public static final String ARG_REPORT_POSITIVE_PHRASE_THIS = "positivePhrasesThis";
+    public static final String ARG_REPORT_NEGATIVE_PHRASE_THIS = "negativePhrasesThis";
+    public static final String ARG_REPORT_POSITIVE_GROWTH = "positiveGrowth";
+    public static final String ARG_REPORT_NEGATIVE_GROWTH = "negativeGrowth";
     public static final String ARG_INVITED_USERS = "invitedUsersUid";
 }

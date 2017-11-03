@@ -55,65 +55,65 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/report_neutral_phrase"
-            android:text="@string/report_neutral_phrase"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textSize="@dimen/label_size"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:labelFor="@+id/report_neutral_phrase"-->
+            <!--android:text="@string/report_neutral_phrase"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:textSize="@dimen/label_size"/>-->
 
-        <TextView
-            android:id="@+id/report_neutral_phrase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"/>
+        <!--<TextView-->
+            <!--android:id="@+id/report_neutral_phrase"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/report_positive"
-            android:text="@string/report_positive"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textSize="@dimen/label_size"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:labelFor="@+id/report_positive"-->
+            <!--android:text="@string/report_positive"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:textSize="@dimen/label_size"/>-->
 
-        <TextView
-            android:id="@+id/report_positive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"/>
+        <!--<TextView-->
+            <!--android:id="@+id/report_positive"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/report_negative"
-            android:text="@string/report_negative"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textSize="@dimen/label_size"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:labelFor="@+id/report_negative"-->
+            <!--android:text="@string/report_negative"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:textSize="@dimen/label_size"/>-->
 
-        <TextView
-            android:id="@+id/report_negative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"/>
+        <!--<TextView-->
+            <!--android:id="@+id/report_negative"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/report_neutral"
-            android:text="@string/report_neutral"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textSize="@dimen/label_size"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:labelFor="@+id/report_neutral"-->
+            <!--android:text="@string/report_neutral"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:textSize="@dimen/label_size"/>-->
 
-        <TextView
-            android:id="@+id/report_neutral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"/>
+        <!--<TextView-->
+            <!--android:id="@+id/report_neutral"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size"/>-->
 
         <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
@@ -130,35 +130,35 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:textSize="@dimen/text_size"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/report_not_classified"
-            android:text="@string/report_not_classified"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textSize="@dimen/label_size"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:labelFor="@+id/report_not_classified"-->
+            <!--android:text="@string/report_not_classified"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:textSize="@dimen/label_size"/>-->
 
-        <TextView
-            android:id="@+id/report_not_classified"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"/>
+        <!--<TextView-->
+            <!--android:id="@+id/report_not_classified"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/report_total_words"
-            android:text="@string/report_total_words"
-            android:textStyle="bold"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:textSize="@dimen/label_size"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:labelFor="@+id/report_total_words"-->
+            <!--android:text="@string/report_total_words"-->
+            <!--android:textStyle="bold"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:textSize="@dimen/label_size"/>-->
 
-        <TextView
-            android:id="@+id/report_total_words"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"/>
+        <!--<TextView-->
+            <!--android:id="@+id/report_total_words"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size"/>-->
 
     </LinearLayout>
 </FrameLayout>
