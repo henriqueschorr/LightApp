@@ -8,13 +8,42 @@ exports.doSentimentAnalysis = functions.https.onRequest((request, response) => {
     const userUid = request.query.userUid;
 
     var messagesDatabase = 'users/' + userUid + '/messages';
-    var positive = 0;
-    var neutral = 0;
-    var negative = 0;
-    var notClassified = 0;
+    var reportsDatabase = 'users/' + userUid + '/reports';
+    var positiveWords = 0;
+    var neutralWords = 0;
+    var negativeWords = 0;
+    var wordsNotClassified = 0;
     var found = false;
     var totalWords = 0;
     var wordsClassified = 0;
+
+    var positivePhrases = 0;
+    var negativePhrases = 0;
+    var neutralPhrases = 0;
+
+    var positivePhrasesThis = 0;
+    var negativePhrasesThis = 0;
+    var neutralPhrasesThis = 0;
+
+    var positiveGrowth = 0;
+    var negativeGrowth = 0;
+    var neutralGrowth = 0;
+
+    var isPositive = false;
+    var isNegative = false;
+
+    var noGrowth = 666;
+
+    var result = {
+        put : function (key, value){
+            this[key] = value
+        },
+        get : function (key) {
+            return this[key]
+        }
+    };
+
+    var lastReportKey = 0;
 
 var lexicon = {
     "﻿abafada": -1,
@@ -21949,22 +21978,14 @@ var lexicon = {
     "zumbidores": -1
 };
 
-    // var myBucket = gcs.bucket('sentiment_analysis');
-    // var myFile = myBucket.file('teste.txt');
-    //
-    //
-    // myFile.download().then(function(err, data) {
-    //     if (data) {
-    //         response.send(data.toString());
-    //     }
-    // });
-
     return admin.database().ref(messagesDatabase).once('value', (snapshot) => {
        var messages = snapshot.val();
 
        //loop in the messages of the user
         for (var key in messages){
             var words = messages[key].split(" ");
+            isPositive = false;
+            isNegative = false;
             //loop in the words present in the message
             for (var i=0; i<words.length; i++){
                 //eliminates punctuation
@@ -21976,11 +21997,17 @@ var lexicon = {
                         found = true;
                         //classify word
                         if (lexicon[key2] == 1){
-                            positive++;
+                            positiveWords++;
+                            isPositive = true;
+                            isNegative = false;
                         } else if (lexicon[key2] == -1){
-                            negative++;
+                            negativeWords++;
+                            isPositive = false;
+                            isNegative = true;
                         } else if (lexicon[key2] == 0) {
-                            neutral++;
+                            neutralWords++;
+                            isPositive = false;
+                            isNegative = false;
                         }
                         break;
                     } else {
@@ -21989,36 +22016,119 @@ var lexicon = {
                 }
                 //word not found in the lexico
                 if (!found){
-                    notClassified++;
+                    wordsNotClassified++;
                 }
             }
+
+            if(isPositive){
+                positivePhrases++;
+            } else if (isNegative){
+                negativePhrases++;
+            } else {
+                neutralPhrases++;
+            }
+
         }
 
-       wordsClassified = positive + negative + neutral;
-       totalWords = positive + negative + neutral + notClassified;
+       wordsClassified = positiveWords + negativeWords + neutralWords;
+       totalWords = positiveWords + negativeWords + neutralWords + wordsNotClassified;
 
-       console.log("Positive: " + positive );
-       console.log("Negative: " + negative );
-       console.log("Neutral: " + neutral );
-       console.log("Words Classified: " + wordsClassified);
-       console.log("Not Classified: " + notClassified );
-       console.log("Total Words: " + totalWords);
+admin.database().ref(reportsDatabase).once('value', (snapshot) => {
+    var reports = snapshot.val();
+// response.send(reports);
 
-       var result = {
-           put : function (key, value){
-               this[key] = value
-           },
-           get : function (key) {
-               return this[key]
-           }
-       };
+    for (var key in reports) {
+        if (reports[key] > lastReportKey) {
+            lastReportKey = reports[key];
+        }
+    }
 
-       result.put("Positive", positive);
-       result.put("Negative", negative);
-       result.put("Neutral", neutral);
-       result.put("Words Classified", wordsClassified);
-       result.put("Not Classified", notClassified);
-       result.put("Total Words", totalWords);
-       response.send(result);
+    if (lastReportKey > 0) {
+
+        var reportDatabase = 'reports/' + lastReportKey;
+
+        admin.database().ref(reportDatabase).once('value', (snapshot) => {
+            var report = snapshot.val();
+
+            var lastPositivePhrase = report['positivePhrases'];
+            var lastNegativePhrase = report['negativePhrases'];
+            var lastNeutralPhrase = report['neutralPhrases'];
+
+            var lastPositivePhraseThis = report['positivePhrasesThis'];
+            var lastNegativePhraseThis = report['negativePhrasesThis'];
+            var lastNeutralPhraseThis = report['neutralPhrasesThis'];
+
+            positivePhrasesThis = positivePhrases - lastPositivePhrase;
+            negativePhrasesThis = negativePhrases - lastNegativePhrase;
+            neutralPhrasesThis = neutralPhrases - lastNeutralPhrase;
+
+            var positiveGrowth = 0.0;
+            var negativeGrowth = 0.0;
+
+            if (lastPositivePhraseThis > 0) {
+                positiveGrowth = ((positivePhrasesThis - lastPositivePhraseThis) / lastPositivePhraseThis) * 100;
+            } else {
+                positiveGrowth = noGrowth;
+            }
+
+            if (lastNegativePhraseThis > 0) {
+                negativeGrowth = ((negativePhrasesThis - lastNegativePhraseThis) / lastNegativePhraseThis) * 100;
+            } else {
+                negativeGrowth = noGrowth;
+            }
+
+            result.put("Positive Phrases", positivePhrasesThis);
+            result.put("Negative Phrases", negativePhrasesThis);
+            result.put("Neutral Phrases", neutralPhrasesThis);
+            result.put("Positive Growth", positiveGrowth);
+            result.put("Negative Growth", negativeGrowth);
+            result.put("Total Positive Phrases", positivePhrases);
+            result.put("Total Negative Phrases", negativePhrases);
+            result.put("Total Neutral Phrases", neutralPhrases);
+            result.put("Positive Words", positiveWords);
+            result.put("Negative Words", negativeWords);
+            result.put("Neutra Words", neutralWords);
+            result.put("Words Classified", wordsClassified);
+            result.put("Words Not Classified", wordsNotClassified);
+            result.put("Total Words", totalWords);
+            result.put("Last Report Key", lastReportKey);
+            response.send(result);
+        });
+    } else {
+        result.put("Positive Phrases", positivePhrases);
+        result.put("Negative Phrases", negativePhrases);
+        result.put("Neutral Phrases", neutralPhrases);
+        result.put("Positive Growth", noGrowth);
+        result.put("Negative Growth", noGrowth);
+        result.put("Total Positive Phrases", positivePhrases);
+        result.put("Total Negative Phrases", negativePhrases);
+        result.put("Total Neutral Phrases", neutralPhrases);
+        result.put("Positive Words", positiveWords);
+        result.put("Negative Words", negativeWords);
+        result.put("Neutra Words", neutralWords);
+        result.put("Words Classified", wordsClassified);
+        result.put("Words Not Classified", wordsNotClassified);
+        result.put("Total Words", totalWords);
+        result.put("Last Report Key", lastReportKey);
+        response.send(result);
+    }
+
+});
+
+
+
+
+
+
+       // result.put("Positive", positive);
+       // result.put("Negative", negative);
+       // result.put("Neutral", neutral);
+       // result.put("Words Classified", wordsClassified);
+       // result.put("Not Classified", notClassified);
+       // result.put("Total Words", totalWords);
+       // result.put("Positive Phrases", positivePhrase);
+       // result.put("Negative Phrases", negativePhrase);
+       // result.put("Neutral Phrases", neutralPhrase);
+       // response.send(result);
     });
 });

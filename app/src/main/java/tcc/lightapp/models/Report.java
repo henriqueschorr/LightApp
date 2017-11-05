@@ -7,37 +7,40 @@ package tcc.lightapp.models;
 public class Report {
     public long timestamp;
     public String userUid;
-    public int positiveWords;
-    public int negativeWords;
-    public int neutralWords;
-    public int classifiedWords;
-    public int notClassifiedWords;
-    public int totalWords;
+    public int positivePhrasesThis;
+    public int negativePhrasesThis;
+    public int neutralPhrasesThis;
+    public double positiveGrowth;
+    public double negativeGrowth;
     public int positivePhrases;
     public int negativePhrases;
     public int neutralPhrases;
-
-    public int positivePhrasesThis;
-    public int negativePhrasesThis;
-    public double positiveGrowth;
-    public double negativeGrowth;
+    public int positiveWords;
+    public int negativeWords;
+    public int neutralWords;
+    public int wordsClassified;
+    public int wordsNotClassified;
+    public int totalWords;
 
     public Report(){}
 
-    public Report(long timestamp, String userUid, int positiveWords, int negativeWords, int neutralWords, int classifiedWords, int notClassifiedWords, int totalWords, int positivePhrases, int negativePhrases, int neutralPhrases) {
+    public Report(long timestamp, String userUid, int positivePhrasesThis, int negativePhrasesThis, int neutralPhrasesThis, double positiveGrowth, double negativeGrowth, int positivePhrases, int negativePhrases, int neutralPhrases, int positiveWords, int negativeWords, int neutralWords, int wordsClassified, int wordsNotClassified, int totalWords) {
         this.timestamp = timestamp;
         this.userUid = userUid;
-        this.positiveWords = positiveWords;
-        this.negativeWords = negativeWords;
-        this.neutralWords = neutralWords;
-        this.classifiedWords = classifiedWords;
-        this.notClassifiedWords = notClassifiedWords;
-        this.totalWords = totalWords;
+        this.positivePhrasesThis = positivePhrasesThis;
+        this.negativePhrasesThis = negativePhrasesThis;
+        this.neutralPhrasesThis = neutralPhrasesThis;
+        this.positiveGrowth = positiveGrowth;
+        this.negativeGrowth = negativeGrowth;
         this.positivePhrases = positivePhrases;
         this.negativePhrases = negativePhrases;
         this.neutralPhrases = neutralPhrases;
-        this.positivePhrasesThis = positivePhrases;
-        this.negativePhrasesThis = negativePhrases;
+        this.positiveWords = positiveWords;
+        this.negativeWords = negativeWords;
+        this.neutralWords = neutralWords;
+        this.wordsClassified = wordsClassified;
+        this.wordsNotClassified = wordsNotClassified;
+        this.totalWords = totalWords;
     }
 
     @Override

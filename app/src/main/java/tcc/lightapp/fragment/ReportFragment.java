@@ -34,6 +34,11 @@ public class ReportFragment extends Fragment {
     private String mPositivePhrase;
     private String mNegativePhrase;
     private String mNeutralPhrase;
+    private String mPositivePhraseThis;
+    private String mNegativePhraseThis;
+    private String mNeutralPhraseThis;
+    private String mPositiveGrowth;
+    private String mNegativeGrowth;
 
     private TextView mPositiveField;
     private TextView mNegativeField;
@@ -44,6 +49,8 @@ public class ReportFragment extends Fragment {
     private TextView mPositivePhraseField;
     private TextView mNegativePhraseField;
     private TextView mNeutralPhraseField;
+    private TextView mPositiveGrowthField;
+    private TextView mNegativeGrowthField;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -58,7 +65,12 @@ public class ReportFragment extends Fragment {
         mTotalWords = args.getString(Constants.ARG_REPORT_TOTAL_WORDS);
         mPositivePhrase = args.getString(Constants.ARG_REPORT_POSITIVE_PHRASE);
         mNegativePhrase = args.getString(Constants.ARG_REPORT_NEGATIVE_PHRASE);
+        mPositivePhraseThis = args.getString(Constants.ARG_REPORT_POSITIVE_PHRASE_THIS);
+        mNegativePhraseThis = args.getString(Constants.ARG_REPORT_NEGATIVE_PHRASE_THIS);
+        mNeutralPhraseThis = args.getString(Constants.ARG_REPORT_NEUTRAL_PHRASE_THIS);
         mNeutralPhrase = args.getString(Constants.ARG_REPORT_NEUTRAL_PHRASE);
+        mPositiveGrowth = args.getString(Constants.ARG_REPORT_POSITIVE_GROWTH);
+        mNegativeGrowth = args.getString(Constants.ARG_REPORT_NEGATIVE_GROWTH);
     }
 
     @Override
@@ -82,7 +94,9 @@ public class ReportFragment extends Fragment {
 //        mTotalWordsField = mFragmentView.findViewById(R.id.report_total_words);
         mPositivePhraseField = mFragmentView.findViewById(R.id.report_positive_phrase);
         mNegativePhraseField = mFragmentView.findViewById(R.id.report_negative_phrase);
-//        mNeutralPhraseField = mFragmentView.findViewById(R.id.report_neutral_phrase);
+        mPositiveGrowthField = mFragmentView.findViewById(R.id.report_positive_growth);
+        mNegativeGrowthField = mFragmentView.findViewById(R.id.report_negative_growth);
+        mNeutralPhraseField = mFragmentView.findViewById(R.id.report_neutral_phrase);
     }
 
     public void setFieldsContent() {
@@ -92,9 +106,30 @@ public class ReportFragment extends Fragment {
 //        mClassifiedField.setText(mClassified);
 //        mNotClassifiedField.setText(mNotClassified);
 //        mTotalWordsField.setText(mTotalWords);
-        mPositivePhraseField.setText(mPositivePhrase);
-        mNegativePhraseField.setText(mNegativePhrase);
-//        mNeutralPhraseField.setText(mNeutralPhrase);
+        mPositivePhraseField.setText(mPositivePhraseThis);
+        mNegativePhraseField.setText(mNegativePhraseThis);
+        mNeutralPhraseField.setText(mNeutralPhraseThis);
+
+        double noGrowth = 666;
+
+        if (Double.valueOf(mPositiveGrowth) == noGrowth) {
+            mPositiveGrowth = getResources().getString(R.string.no_growth);
+        } else if (Double.valueOf(mPositiveGrowth) > 0){
+            mPositiveGrowth = "+" + mPositiveGrowth + " %";
+        } else {
+            mPositiveGrowth = mPositiveGrowth + " %";
+        }
+
+        if (Double.valueOf(mNegativeGrowth) == noGrowth){
+            mNegativeGrowth = getResources().getString(R.string.no_growth);
+        } else if (Double.valueOf(mNegativeGrowth) > 0){
+            mNegativeGrowth = "+" + mNegativeGrowth + " %";
+        } else {
+            mNegativeGrowth = mNegativeGrowth + " %";
+        }
+
+        mPositiveGrowthField.setText(mPositiveGrowth);
+        mNegativeGrowthField.setText(mNegativeGrowth);
     }
 
 }

@@ -48,6 +48,7 @@
     <string name="prompt_friend_email">Email do amigo</string>
 
     <string name="report">Relatório</string>
+    <string name="report_explanation">A quantidade de frases e o cálculo de crescimento apresentados aqui são feitos levando em conta o último relatório gerado. \n\n \"- - -\" : Não houve palavras desta classificação no último relatório, não há crescimento.</string>
     <string name="report_timestamp">Data de geração</string>
     <string name="report_positive">Palavras positivas</string>
     <string name="report_negative">Palavras negativas</string>
@@ -61,5 +62,6 @@
     <string name="event_location">Local</string>
     <string name="event_date">Data</string>
     <string name="event_time">Horário</string>
+    <string name="no_growth">- - -</string>
 
 </resources>

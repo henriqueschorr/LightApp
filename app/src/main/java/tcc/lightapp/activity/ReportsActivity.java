@@ -147,12 +147,17 @@ public class ReportsActivity extends BaseActivity {
                 intent.putExtra(Constants.ARG_REPORT_POSITIVE, String.valueOf(report.positiveWords));
                 intent.putExtra(Constants.ARG_REPORT_NEGATIVE, String.valueOf(report.negativeWords));
                 intent.putExtra(Constants.ARG_REPORT_NEUTRAL, String.valueOf(report.neutralWords));
-                intent.putExtra(Constants.ARG_REPORT_CLASSIFIED, String.valueOf(report.classifiedWords));
-                intent.putExtra(Constants.ARG_REPORT_NOT_CLASSIFIED, String.valueOf(report.notClassifiedWords));
+                intent.putExtra(Constants.ARG_REPORT_CLASSIFIED, String.valueOf(report.wordsClassified));
+                intent.putExtra(Constants.ARG_REPORT_NOT_CLASSIFIED, String.valueOf(report.wordsNotClassified));
                 intent.putExtra(Constants.ARG_REPORT_TOTAL_WORDS, String.valueOf(report.totalWords));
                 intent.putExtra(Constants.ARG_REPORT_POSITIVE_PHRASE, String.valueOf(report.positivePhrases));
                 intent.putExtra(Constants.ARG_REPORT_NEGATIVE_PHRASE, String.valueOf(report.negativePhrases));
                 intent.putExtra(Constants.ARG_REPORT_NEUTRAL_PHRASE, String.valueOf(report.neutralPhrases));
+                intent.putExtra(Constants.ARG_REPORT_POSITIVE_PHRASE_THIS, String.valueOf(report.positivePhrasesThis));
+                intent.putExtra(Constants.ARG_REPORT_NEGATIVE_PHRASE_THIS, String.valueOf(report.negativePhrasesThis));
+                intent.putExtra(Constants.ARG_REPORT_NEUTRAL_PHRASE_THIS, String.valueOf(report.neutralPhrasesThis));
+                intent.putExtra(Constants.ARG_REPORT_POSITIVE_GROWTH, String.valueOf(report.positiveGrowth));
+                intent.putExtra(Constants.ARG_REPORT_NEGATIVE_GROWTH, String.valueOf(report.negativeGrowth));
                 startActivity(intent);
             }
         };
@@ -203,31 +208,66 @@ public class ReportsActivity extends BaseActivity {
         protected void onPostExecute(String result) {
             String response = result.replaceAll("[\\{\\}\"]+", "");
             String[] data = response.split(",");
-            String[] positiveWord = data[0].split(":");
-            String[] negativeWord = data[1].split(":");
-            String[] neutralWord = data[2].split(":");
-            String[] classifiedWord = data[3].split(":");
-            String[] notClassifiedWord = data[4].split(":");
-            String[] totalWords = data[5].split(":");
-            String[] positivePhrase = data[6].split(":");
-            String[] negativePhrase = data[7].split(":");
-            String[] neutralPhrase = data[8].split(":");
+
+            String[] positivePhrasesThis = data[0].split(":");
+            String[] negativePhrasesThis = data[1].split(":");
+            String[] neutralPhrasesThis = data[2].split(":");
+            String[] positiveGrowth = data[3].split(":");
+            String[] negativeGrowth = data[4].split(":");
+            String[] totalPositivePhrases = data[5].split(":");
+            String[] totalNegativePhrases = data[6].split(":");
+            String[] totalNeutralPhrases = data[7].split(":");
+
+            String[] positiveWords = data[8].split(":");
+            String[] negativeWords = data[9].split(":");
+            String[] neutralWords = data[10].split(":");
+            String[] wordsClassified = data[11].split(":");
+            String[] wordsNotClassified = data[12].split(":");
+            String[] totalWords = data[13].split(":");
+
+//            String[] positiveWord = data[0].split(":");
+//            String[] negativeWord = data[1].split(":");
+//            String[] neutralWord = data[2].split(":");
+//            String[] classifiedWord = data[3].split(":");
+//            String[] notClassifiedWord = data[4].split(":");
+//            String[] totalWords = data[5].split(":");
+//            String[] positivePhrase = data[6].split(":");
+//            String[] negativePhrase = data[7].split(":");
+//            String[] neutralPhrase = data[8].split(":");
 
             Long currentTime = System.currentTimeMillis();
-            getLastReport(currentTime);
+//            getLastReport(currentTime);
 
             mReport = new Report(
                     currentTime,
                     mPatientUid,
-                    Integer.parseInt(positiveWord[1]),
-                    Integer.parseInt(negativeWord[1]),
-                    Integer.parseInt(neutralWord[1]),
-                    Integer.parseInt(classifiedWord[1]),
-                    Integer.parseInt(notClassifiedWord[1]),
-                    Integer.parseInt(totalWords[1]),
-                    Integer.parseInt(positivePhrase[1]),
-                    Integer.parseInt(negativePhrase[1]),
-                    Integer.parseInt(neutralPhrase[1]));
+                    Integer.parseInt(positivePhrasesThis[1]),
+                    Integer.parseInt(negativePhrasesThis[1]),
+                    Integer.parseInt(neutralPhrasesThis[1]),
+                    Integer.parseInt(positiveGrowth[1]),
+                    Integer.parseInt(negativeGrowth[1]),
+                    Integer.parseInt(totalPositivePhrases[1]),
+                    Integer.parseInt(totalNegativePhrases[1]),
+                    Integer.parseInt(totalNeutralPhrases[1]),
+                    Integer.parseInt(positiveWords[1]),
+                    Integer.parseInt(negativeWords[1]),
+                    Integer.parseInt(neutralWords[1]),
+                    Integer.parseInt(wordsClassified[1]),
+                    Integer.parseInt(wordsNotClassified[1]),
+                    Integer.parseInt(totalWords[1])
+            );
+//            mReport = new Report(
+//                    currentTime,
+//                    mPatientUid,
+//                    Integer.parseInt(positiveWord[1]),
+//                    Integer.parseInt(negativeWord[1]),
+//                    Integer.parseInt(neutralWord[1]),
+//                    Integer.parseInt(classifiedWord[1]),
+//                    Integer.parseInt(notClassifiedWord[1]),
+//                    Integer.parseInt(totalWords[1]),
+//                    Integer.parseInt(positivePhrase[1]),
+//                    Integer.parseInt(negativePhrase[1]),
+//                    Integer.parseInt(neutralPhrase[1]));
 
             DatabaseReference userReportDatabase = mDatabase.child(Constants.ARG_USERS).child(mPatientUid).child(Constants.ARG_REPORTS);
             DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
@@ -264,58 +304,58 @@ public class ReportsActivity extends BaseActivity {
 
     }
 
-    public void getLastReport(final Long currentTime){
-        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
-
-        reportDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot reportSnapshot : dataSnapshot.getChildren()) {
-                    Report report = reportSnapshot.getValue(Report.class);
-                    if (report.userUid.equals(mPatientUid) && report.timestamp > mLastReportTime && mLastReportTime != currentTime) {
-                        mLastReportTime = report.timestamp;
-                        mLastReport = report;
-                    }
-                }
-
-                if(mLastReportTime > 0) {
-                    updateReport();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void updateReport(){
-        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS).child(String.valueOf(mReport.timestamp));
-
-        int positivePhraseThis = mReport.positivePhrases - mLastReport.positivePhrases;
-        int negativePhraseThis = mReport.negativePhrases - mLastReport.negativePhrases;
-
-        double positiveThis = positivePhraseThis;
-        double negativeThis = negativePhraseThis;
-        double lastPositive = mLastReport.positivePhrasesThis;
-        double lastNegative = mLastReport.negativePhrasesThis;
-
-        double positiveGrowth = 0;
-        double negativeGrowth = 0;
-
-        if (positivePhraseThis > 0) {
-            positiveGrowth = ((positiveThis - lastPositive) / lastPositive);
-        }
-
-        if (negativePhraseThis > 0) {
-            negativeGrowth = ((negativeThis - lastNegative) / lastNegative);
-        }
-
-        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_PHRASE_THIS).setValue(positivePhraseThis);
-        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_PHRASE_THIS).setValue(negativePhraseThis);
-        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_GROWTH).setValue(positiveGrowth * 100);
-        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_GROWTH).setValue(negativeGrowth * 100);
-    }
+//    public void getLastReport(final Long currentTime){
+//        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS);
+//
+//        reportDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot reportSnapshot : dataSnapshot.getChildren()) {
+//                    Report report = reportSnapshot.getValue(Report.class);
+//                    if (report.userUid.equals(mPatientUid) && report.timestamp > mLastReportTime && mLastReportTime != currentTime) {
+//                        mLastReportTime = report.timestamp;
+//                        mLastReport = report;
+//                    }
+//                }
+//
+//                if(mLastReportTime > 0) {
+//                    updateReport();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+//
+//    public void updateReport(){
+//        DatabaseReference reportDatabase = mDatabase.child(Constants.ARG_REPORTS).child(String.valueOf(mReport.timestamp));
+//
+//        int positivePhraseThis = mReport.positivePhrases - mLastReport.positivePhrases;
+//        int negativePhraseThis = mReport.negativePhrases - mLastReport.negativePhrases;
+//
+//        double positiveThis = positivePhraseThis;
+//        double negativeThis = negativePhraseThis;
+//        double lastPositive = mLastReport.positivePhrasesThis;
+//        double lastNegative = mLastReport.negativePhrasesThis;
+//
+//        double positiveGrowth = 0;
+//        double negativeGrowth = 0;
+//
+//        if (positivePhraseThis > 0) {
+//            positiveGrowth = ((positiveThis - lastPositive) / lastPositive);
+//        }
+//
+//        if (negativePhraseThis > 0) {
+//            negativeGrowth = ((negativeThis - lastNegative) / lastNegative);
+//        }
+//
+//        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_PHRASE_THIS).setValue(positivePhraseThis);
+//        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_PHRASE_THIS).setValue(negativePhraseThis);
+//        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_GROWTH).setValue(positiveGrowth * 100);
+//        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_GROWTH).setValue(negativeGrowth * 100);
+//    }
 
 }

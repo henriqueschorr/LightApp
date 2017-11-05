@@ -112,12 +112,14 @@ public class ReportsFragment extends Fragment {
                 intent.putExtra(Constants.ARG_REPORT_POSITIVE, String.valueOf(report.positiveWords));
                 intent.putExtra(Constants.ARG_REPORT_NEGATIVE, String.valueOf(report.negativeWords));
                 intent.putExtra(Constants.ARG_REPORT_NEUTRAL, String.valueOf(report.neutralWords));
-                intent.putExtra(Constants.ARG_REPORT_CLASSIFIED, String.valueOf(report.classifiedWords));
-                intent.putExtra(Constants.ARG_REPORT_NOT_CLASSIFIED, String.valueOf(report.notClassifiedWords));
+                intent.putExtra(Constants.ARG_REPORT_CLASSIFIED, String.valueOf(report.wordsClassified));
+                intent.putExtra(Constants.ARG_REPORT_NOT_CLASSIFIED, String.valueOf(report.wordsNotClassified));
                 intent.putExtra(Constants.ARG_REPORT_TOTAL_WORDS, String.valueOf(report.totalWords));
                 intent.putExtra(Constants.ARG_REPORT_POSITIVE_PHRASE, String.valueOf(report.positivePhrasesThis));
                 intent.putExtra(Constants.ARG_REPORT_NEGATIVE_PHRASE, String.valueOf(report.negativePhrasesThis));
                 intent.putExtra(Constants.ARG_REPORT_NEUTRAL_PHRASE, String.valueOf(report.neutralPhrases));
+                intent.putExtra(Constants.ARG_REPORT_POSITIVE_GROWTH, String.valueOf(report.positiveGrowth));
+                intent.putExtra(Constants.ARG_REPORT_NEGATIVE_GROWTH, String.valueOf(report.negativeGrowth));
                 startActivity(intent);
             }
         };
