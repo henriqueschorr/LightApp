@@ -32,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -58,6 +59,7 @@ public class ReportsActivity extends BaseActivity {
     private Report mReport;
     private Report mLastReport;
     private Long mLastReportTime = new Long(0);
+    private Long mCurrentTime = new Long(0);
 
 
     @Override
@@ -122,10 +124,17 @@ public class ReportsActivity extends BaseActivity {
                     Report report = reportSnapshot.getValue(Report.class);
                     if (!reports.contains(report) && report.userUid.equals(mPatientUid)) {
                         mReportAdapter.addReport(report);
-                        Collections.reverse(reports);
-                        mReportAdapter.notifyItemInserted(reports.indexOf(report));
+                        mReportAdapter.notifyDataSetChanged();
                     }
                 }
+
+                Collections.sort(reports, new Comparator<Report>() {
+
+                    public int compare(Report o1, Report o2) {
+                        return Long.valueOf(o2.timestamp).compareTo(Long.valueOf(o1.timestamp));
+                    }
+                });
+
                 mProgressBar.setVisibility(View.GONE);
             }
 
@@ -235,11 +244,11 @@ public class ReportsActivity extends BaseActivity {
 //            String[] negativePhrase = data[7].split(":");
 //            String[] neutralPhrase = data[8].split(":");
 
-            Long currentTime = System.currentTimeMillis();
+            mCurrentTime = System.currentTimeMillis();
 //            getLastReport(currentTime);
 
             mReport = new Report(
-                    currentTime,
+                    mCurrentTime,
                     mPatientUid,
                     Integer.parseInt(positivePhrasesThis[1]),
                     Integer.parseInt(negativePhrasesThis[1]),

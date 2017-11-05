@@ -87,7 +87,7 @@ public class ReportsFragment extends Fragment {
                     Report report = reportSnapshot.getValue(Report.class);
                     if (!reports.contains(report) && report.userUid.equals(mPatientUid)) {
                         mReportAdapter.addReport(report);
-                        Collections.reverse(reports);
+//                        Collections.reverse(reports);
                         mReportAdapter.notifyItemInserted(reports.indexOf(report));
                     }
                 }
