@@ -15,6 +15,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:labelFor="@+id/event_group"
+            android:text="@string/event_group"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/label_size"/>
+
+        <TextView
+            android:id="@+id/event_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:labelFor="@+id/event_location"
             android:text="@string/event_location"
             android:textStyle="bold"

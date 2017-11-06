@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import tcc.lightapp.R;
 import tcc.lightapp.activity.CreateEventActivity;
@@ -120,6 +121,11 @@ public class EventsFragment extends Fragment {
                 intent.putExtra(Constants.ARG_EVENT_LOCATION, event.location);
                 intent.putExtra(Constants.ARG_EVENT_DATE, event.date);
                 intent.putExtra(Constants.ARG_EVENT_TIME, event.time);
+
+                Map.Entry<String, String> entry = event.groupsKey.entrySet().iterator().next();
+                String groupName = entry.getValue();
+
+                intent.putExtra(Constants.ARG_GROUP_NAME, groupName);
                 startActivity(intent);
             }
         };

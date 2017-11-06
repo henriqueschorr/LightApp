@@ -59,6 +59,7 @@
     <string name="report_positive_phrase">Frases positivas</string>
     <string name="report_negative_phrase">Frases negativas</string>
     <string name="report_neutral_phrase">Frases neutras</string>
+    <string name="event_group">Grupo do evento</string>
     <string name="event_location">Local</string>
     <string name="event_date">Data</string>
     <string name="event_time">Horário</string>

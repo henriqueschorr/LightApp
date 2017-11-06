@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
+
 import tcc.lightapp.R;
 import tcc.lightapp.models.ChatMessage;
 
@@ -19,16 +20,20 @@ import tcc.lightapp.models.ChatMessage;
  * Created by Henrique on 01/10/2017.
  */
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder>{
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     private List<ChatMessage> mChatMessages;
     private Context context;
+    private String userName;
+    private boolean isIndividual;
     private static final int VIEW_TYPE_ME = 1;
     private static final int VIEW_TYPE_OTHER = 2;
     private static final String TAG = "ChatAdapter";
 
-    public ChatAdapter(List<ChatMessage> chatMessages, Context context) {
+    public ChatAdapter(List<ChatMessage> chatMessages, Context context, String userName, boolean isIndividual) {
         this.mChatMessages = chatMessages;
         this.context = context;
+        this.userName = userName;
+        this.isIndividual = isIndividual;
     }
 
     @Override
@@ -56,8 +61,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public void onBindViewHolder(ChatViewHolder viewHolder, int position) {
         ChatMessage chatMessage = mChatMessages.get(position);
+        String alphabet = "";
 
-        String alphabet = chatMessage.sender.substring(0, 1);
+        if (chatMessage.senderName != null && chatMessage.senderName.equals(userName)) {
+            alphabet = "Você";
+        } else {
+            alphabet = chatMessage.senderName;
+        }
 
         viewHolder.chatMessage.setText(chatMessage.message);
         viewHolder.userAlphabet.setText(alphabet);

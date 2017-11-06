@@ -135,7 +135,7 @@ public class ChatActivity extends BaseActivity implements ChatContract.View {
 
         mChatPresenter = new ChatPresenter(this);
 
-        mChatAdapter = new ChatAdapter(mChatMessages, this);
+        mChatAdapter = new ChatAdapter(mChatMessages, this, mUserName, isIndividual);
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view_chat);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);

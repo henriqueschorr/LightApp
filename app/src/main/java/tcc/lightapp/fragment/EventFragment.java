@@ -14,10 +14,12 @@ import tcc.lightapp.utils.Constants;
 public class EventFragment extends Fragment {
     private View mFragmentView;
 
+    private String mGroup;
     private String mLocation;
     private String mDate;
     private String mTime;
 
+    private TextView mGroupField;
     private TextView mLocationField;
     private TextView mDateField;
     private TextView mTimeField;
@@ -30,6 +32,7 @@ public class EventFragment extends Fragment {
         mLocation = args.getString(Constants.ARG_EVENT_LOCATION);
         mDate = args.getString(Constants.ARG_EVENT_DATE);
         mTime = args.getString(Constants.ARG_EVENT_TIME);
+        mGroup = args.getString(Constants.ARG_GROUP_NAME);
     }
 
     @Override
@@ -44,12 +47,14 @@ public class EventFragment extends Fragment {
     }
 
     public void getFields() {
+        mGroupField = mFragmentView.findViewById(R.id.event_group);
         mLocationField = mFragmentView.findViewById(R.id.event_location);
         mDateField = mFragmentView.findViewById(R.id.event_date);
         mTimeField = mFragmentView.findViewById(R.id.event_time);
     }
 
     public void setFieldsContent() {
+        mGroupField.setText(mGroup);
         mLocationField.setText(mLocation);
         mDateField.setText(mDate);
         mTimeField.setText(mTime);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +45,7 @@ import tcc.lightapp.utils.Constants;
 public class ReportsActivity extends BaseActivity {
     protected RecyclerView mRecyclerView;
     private ReportsAdapter mReportAdapter;
-//    private Context mContext;
+    private Context mContext;
 
     private DatabaseReference mDatabase;
 
@@ -70,6 +71,8 @@ public class ReportsActivity extends BaseActivity {
         setContentView(R.layout.activity_reports);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mContext = ReportsActivity.this;
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,7 +108,6 @@ public class ReportsActivity extends BaseActivity {
         int item = menuItem.getItemId();
         if (item == R.id.action_generate_report) {
             generateReport();
-
             return true;
         }
         return super.onOptionsItemSelected(menuItem);
@@ -366,5 +368,4 @@ public class ReportsActivity extends BaseActivity {
 //        reportDatabase.child(Constants.ARG_REPORT_POSITIVE_GROWTH).setValue(positiveGrowth * 100);
 //        reportDatabase.child(Constants.ARG_REPORT_NEGATIVE_GROWTH).setValue(negativeGrowth * 100);
 //    }
-
 }
